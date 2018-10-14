@@ -4,9 +4,9 @@ module React
       include ::Native::Wrapper
 
       def method_missing(key, *args, &block)
-        if `key.endsWith('=')`
+        if args.any?
           new_state = `{}`
-          new_state.JS[key.chop] = args[0]
+          new_state.JS[(`key.endsWith('=')` ? key.chop : key)] = args[0]
           if block_given?
             @native.JS.setState(new_state, `function() { block.$call(); }`)
           else

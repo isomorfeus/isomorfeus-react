@@ -220,6 +220,20 @@ class MyComponent < React::PureComponent::Base
   end
 end
 ```
+To make the side effect of a set_state more visible, state can be set by using a method call instead of a assignment:
+```ruby
+class MyComponent < React::PureComponent::Base
+  render do
+    previous_state_value = state.variable
+    state.variable(next_state_value) # setting state with a method call, it causes a side effect
+                                     # state may be updated after the next render cycle
+    next_state_value == state.variable # very probably false here until next render
+    previous_state_value == state.variable # probably true here until next render
+    
+    # to work with next_state_value, wait for the next render cycle, or just keep using the next_state_value variable here instead of state.value
+  end
+end
+```
 ### Lifecycle Callbacks
 All lifecycle callbacks that are available in the matching React version are available as DSL. Callback names are underscored.
 Callback names prefixed with UNSAFE_ in React are prefixed with unsafe_ in ruby.

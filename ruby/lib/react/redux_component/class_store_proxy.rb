@@ -9,11 +9,10 @@ module React
       end
 
       def method_missing(key, *args, &block)
-        if `key.endsWith('=')`
+        if args.any?
           # set class state, simply a dispatch
 
-          name = key.chop # remove '=' to get the state name
-          action = { type: 'COMPONENT_CLASS_STATE', class: @component_name, name: name, value: args[0] }
+          action = { type: 'COMPONENT_CLASS_STATE', class: @component_name, name: (`key.endsWith('=')` ? key.chop : key), value: args[0] }
           Isomorfeus.store.dispatch(action)
 
         else
