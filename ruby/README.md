@@ -206,7 +206,20 @@ class MyComponent < React::PureComponent::Base
   end
 end
 ```
-
+When changing state, the state is not immediately available, just like in React! For example:
+```ruby
+class MyComponent < React::PureComponent::Base
+  render do
+    previous_state_value = state.variable
+    state.variable = next_state_value # even though this looks like a assignment, it causes a side effect
+                                      # state may be updated after the next render cycle
+    next_state_value == state.variable # very probably false here until next render
+    previous_state_value == state.variable # probably true here until next render
+    
+    # to work with next_state_value, wait for the next render cycle, or just keep using the next_state_value variable here instead of state.value
+  end
+end
+```
 ### Lifecycle Callbacks
 All lifecycle callbacks that are available in the matching React version are available as DSL. Callback names are underscored.
 Callback names prefixed with UNSAFE_ in React are prefixed with unsafe_ in ruby.
@@ -257,7 +270,36 @@ class MyComponent < React::Component::Base
 end
 ```
 Targets of the event, like current_target, are wrapped Elements as supplied by opal-browser.
-
+### Render blocks
+render or element or component blocks work like ruby blocks, the result of the last expression in a block is returned and then rendered,
+but only if it is a string or a React Element.
+HTML Elements and Components at any place in the blocks are rendered too.
+Examples:
+```ruby
+class MyComponent < React::Component::Base
+  render do
+    SPAN { "string" } # this string is rendered in a SPAN HTML Element
+    SPAN { "another string" } # this string is rendered in a SPAN too
+  end
+end
+```
+```ruby
+class MyComponent < React::Component::Base
+  render do
+    "string" # this string is NOT rendered, its not returned from the block and its not wrapped in a Element,
+             # to render it, wrap it in a element or fragment
+    "another string" # this string is returned from the block, so its rendered
+  end
+end
+```
+```ruby
+class MyComponent < React::Component::Base
+  render do
+    Fragment { "string" } # this string is rendered without surrounding element
+    100 # this is not a string, so its NOT rendered, to render it, simply convert it to a string: "#{100}" or 100.to_s
+  end
+end
+```
 ### Rendering HTML or SVG Elements
 Elements are rendered using a DSL which provides all Elements supported by React following these specs:
 - https://www.w3.org/TR/html52/fullindex.html#index-elements
@@ -443,6 +485,52 @@ class MyOtherComponent < React::Component::Base
 end
 ```
 Otherwise the React Router documentation applies: https://reacttraining.com/react-router/
+
+### React::ReduxComponent
+This component is like a React::Component and in addition to it, allows do manage its state conveniently over redux using a simple DSL:
+- `store` - works similar like the components state, but manages the components state with redux
+- `class_store` - allows to have a class state, when changing this state, all instances of the component class change the state and render
+```ruby
+class MyComponent < React::PureComponent::Base
+  store.a_var = 100 # set a initial value for the instance
+  class_store.another_var = 200 # set a initial value for the class
+  render do
+    # in a React::ReduxComponent state can be used, for local state managed by react:
+    state.some_var
+    # in addition to that, store can be used, for local state managed by redux
+    store.a_var
+    # and for managing class state with
+    class_store.another_var
+  end
+end
+```
+Provided some middleware is used for redux, state changes using `store` or `class_store` can be watched, debugged and otherwise handled by redux
+middleware.
+
+### LucidApp and LucidComponent
+A LucidComponent works very similar like a React::ReduxComponent, the same `store` and `class_store` is available. The difference is, that the
+data changes are passed using props instead of setting component state. Therefore, a LucidComponent needs a LucidApp as outer component.
+LucidApp sets up a React::Context Provider, LucidComponent works as a React::Context Consumer.
+```ruby
+class MyApp < LucidApp::Base # is a React::Context provider
+  render do
+    MyComponent()
+  end
+end
+
+class MyComponent < LucidComponent::Base # is a React::Context Consumer
+  store.a_var = 100 # set a initial value for the instance
+  class_store.another_var = 200 # set a initial value for the class
+  render do
+    # in a React::ReduxComponent state can be used, for local state managed by react:
+    state.some_var
+    # in addition to that, store can be used, for local state managed by redux
+    store.a_var
+    # and for managing class state with
+    class_store.another_var
+  end
+end
+```
 
 ### Development Tools
 The React Developer Tools allow for analyzing, debugging and profiling components. A very helpful toolset and working very nice with isomorfeus-react:
