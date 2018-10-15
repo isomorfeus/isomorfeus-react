@@ -15,20 +15,20 @@ module LucidApp
             } else {
               this.state = {};
             };
-            this.state.__isomorfeus_store_state = Opal.Isomorfeus.store.native.getState();
-            var current_store_state = this.state.__isomorfeus_store_state;
-            if (typeof current_store_state.__component_class_state !== "undefined" && typeof current_store_state.__component_class_state[#{component_name}] !== "undefined") {
-              this.state.__component_class_state = {};
-              this.state.__component_class_state[#{component_name}] = current_store_state.__component_class_state[#{component_name}];
-            } else if (typeof this.state.__component_class_state === "undefined") {
-              this.state.__component_class_state = {};
-              this.state.__component_class_state[#{component_name}] = {};
+            this.state.isomorfeus_store_state = Opal.Isomorfeus.store.native.getState();
+            var current_store_state = this.state.isomorfeus_store_state;
+            if (typeof current_store_state.component_class_state !== "undefined" && typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
+              this.state.component_class_state = {};
+              this.state.component_class_state[#{component_name}] = current_store_state.component_class_state[#{component_name}];
+            } else if (typeof this.state.component_class_state === "undefined") {
+              this.state.component_class_state = {};
+              this.state.component_class_state[#{component_name}] = {};
             };
             this.__ruby_instance = base.$new(this);
             this.__object_id = this.__ruby_instance.$object_id().$to_s();
-            if (!this.state.__component_state) {
-              this.state.__component_state = {};
-              this.state.__component_state[this.__object_id] = {};
+            if (!this.state.component_state) {
+              this.state.component_state = {};
+              this.state.component_state[this.__object_id] = {};
             };
             var event_handlers = #{base.event_handlers};
             for (var i = 0; i < event_handlers.length; i++) {
@@ -53,10 +53,10 @@ module LucidApp
           }
           listener() {
             var next_state = Opal.Isomorfeus.store.native.getState();
-            var current_ruby_state = Opal.Hash.$new(this.state.__isomorfeus_store_state);
+            var current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);
             var next_ruby_state = Opal.Hash.$new(next_state);
             if (#{`next_ruby_state` != `current_ruby_state`}) {
-              this.setState({__isomorfeus_store_state: next_state});
+              this.setState({isomorfeus_store_state: next_state});
             }
           }
           componentWillUnmount() {

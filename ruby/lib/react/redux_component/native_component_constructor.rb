@@ -17,18 +17,18 @@ module React
                 this.state = {};
               };
               var current_store_state = Opal.Isomorfeus.store.native.getState();
-              if (typeof current_store_state.__component_class_state !== "undefined" && typeof current_store_state.__component_class_state[#{component_name}] !== "undefined") {
-                this.state.__component_class_state = {};
-                this.state.__component_class_state[#{component_name}] = current_store_state.__component_class_state[#{component_name}];
-              } else if (typeof this.state.__component_class_state === "undefined") {
-                this.state.__component_class_state = {};
-                this.state.__component_class_state[#{component_name}] = {};
+              if (typeof current_store_state.component_class_state !== "undefined" && typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
+                this.state.component_class_state = {};
+                this.state.component_class_state[#{component_name}] = current_store_state.component_class_state[#{component_name}];
+              } else if (typeof this.state.component_class_state === "undefined") {
+                this.state.component_class_state = {};
+                this.state.component_class_state[#{component_name}] = {};
               };
               this.__ruby_instance = base.$new(this);
               this.__object_id = this.__ruby_instance.$object_id().$to_s();
-              if (!this.state.__component_state) {
-                this.state.__component_state = {};
-                this.state.__component_state[this.__object_id] = {};
+              if (!this.state.component_state) {
+                this.state.component_state = {};
+                this.state.component_state[this.__object_id] = {};
               };
               var event_handlers = #{base.event_handlers};
               for (var i = 0; i < event_handlers.length; i++) {
@@ -53,21 +53,21 @@ module React
             }
             listener() {
               var next_state = Opal.Isomorfeus.store.native.getState();
-              if (typeof next_state.__component_state !== "undefined" && typeof next_state.__component_state[this.__object_id] !== "undefined") {
-                var current_ruby_state = Opal.Hash.$new(this.state.__component_state[this.__object_id]);
-                var next_ruby_state = Opal.Hash.$new(next_state.__component_state[this.__object_id]);
+              if (typeof next_state.component_state[this.__object_id] !== "undefined") {
+                var current_ruby_state = Opal.Hash.$new(this.state.component_state[this.__object_id]);
+                var next_ruby_state = Opal.Hash.$new(next_state.component_state[this.__object_id]);
                 if (#{`next_ruby_state` != `current_ruby_state`}) {
-                  var new_state = { __component_state: {}};
-                  new_state.__component_state[this.__object_id] = current_ruby_state.$merge(next_ruby_state).$to_n();
+                  var new_state = { component_state: {}};
+                  new_state.component_state[this.__object_id] = current_ruby_state.$merge(next_ruby_state).$to_n();
                   this.setState(new_state);
                 }
               }
-              if (typeof next_state.__component_class_state !== "undefined" && typeof next_state.__component_class_state[#{component_name}] !== "undefined") {
-                var current_ruby_state = Opal.Hash.$new(this.state.__component_class_state[#{component_name}]);
-                var next_ruby_state = Opal.Hash.$new(next_state.__component_class_state[#{component_name}]);
+              if (typeof next_state.component_class_state[#{component_name}] !== "undefined") {
+                var current_ruby_state = Opal.Hash.$new(this.state.component_class_state[#{component_name}]);
+                var next_ruby_state = Opal.Hash.$new(next_state.component_class_state[#{component_name}]);
                 if (#{`next_ruby_state` != `current_ruby_state`}) {
-                  var new_state = { __component_class_state: {}};
-                  new_state.__component_class_state[#{component_name}] = current_ruby_state.$merge(next_ruby_state).$to_n();
+                  var new_state = { component_class_state: {}};
+                  new_state.component_class_state[#{component_name}] = current_ruby_state.$merge(next_ruby_state).$to_n();
                   this.setState(new_state);
                 }
               }

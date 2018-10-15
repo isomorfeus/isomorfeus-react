@@ -2,6 +2,10 @@ module LucidComponent
   module API
     def self.included(base)
       base.instance_exec do
+        def class_store
+          @default_class_store ||= ::React::ReduxComponent::StoreDefaults.new(state, self.to_s)
+        end
+
         def prop(name, options = `null`)
           name = `Opal.React.lower_camelize(name)`
           if options

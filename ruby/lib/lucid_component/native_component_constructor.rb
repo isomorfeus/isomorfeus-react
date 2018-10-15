@@ -23,9 +23,9 @@ module LucidComponent
             };
             this.__ruby_instance = base.$new(this);
             this.__object_id = this.__ruby_instance.$object_id().$to_s();
-            if (!this.state.__component_state) {
-              this.state.__component_state = {};
-              this.state.__component_state[this.__object_id] = {};
+            if (!this.state.component_state) {
+              this.state.component_state = {};
+              this.state.component_state[this.__object_id] = {};
             };
             var event_handlers = #{base.event_handlers};
             for (var i = 0; i < event_handlers.length; i++) {

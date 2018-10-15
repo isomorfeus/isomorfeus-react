@@ -32,7 +32,7 @@ module React
           end
         end
 
-        Redux::Store.add_reducers(__component_state: component_reducer, __component_class_state: component_class_reducer)
+        Redux::Store.add_reducers(component_state: component_reducer, component_class_state: component_class_reducer)
       end
     end
   end

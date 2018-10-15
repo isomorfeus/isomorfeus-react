@@ -10,7 +10,7 @@ module LucidApp
               #{`this.__ruby_instance`.instance_exec(&block)};
               Opal.React.active_redux_components.pop();
               var children = Opal.React.render_buffer.pop();
-              return React.createElement(LucidApplicationContext.Provider, { value: this.state.__isomorfeus_store_state }, children);
+              return React.createElement(LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
             }
           }
         end
