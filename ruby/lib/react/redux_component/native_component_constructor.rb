@@ -12,16 +12,11 @@ module React
             constructor(props) {
               super(props);
               if (base.$state().$size() > 0) {
-                this.state = base.$state().$to_n();
+                this.state = Object.assign({}, base.$state().$to_n(), { isomorfeus_store: Opal.Isomorfeus.store.native.getState() });
               } else {
-                this.state = {};
+                this.state = { isomorfeus_store: Opal.Isomorfeus.store.native.getState() };
               };
-              var current_store_state = Opal.Isomorfeus.store.native.getState();
-              if (typeof current_store_state.component_class_state !== "undefined" && typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
-                this.state.component_class_state = {};
-                this.state.component_class_state[#{component_name}] = current_store_state.component_class_state[#{component_name}];
-              } else if (typeof this.state.component_class_state === "undefined") {
-                this.state.component_class_state = {};
+              if (typeof this.state.component_class_state[#{component_name}] === "undefined") {
                 this.state.component_class_state[#{component_name}] = {};
               };
               this.__ruby_instance = base.$new(this);
@@ -48,32 +43,66 @@ module React
               this.listener = this.listener.bind(this);
               this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
             }
+            data_access() {
+              return this.state.isomorfeus_store
+            }
             static get displayName() {
               return #{component_name};
             }
             listener() {
-              var next_state = Opal.Isomorfeus.store.native.getState();
-              if (typeof next_state.component_state[this.__object_id] !== "undefined") {
-                var current_ruby_state = Opal.Hash.$new(this.state.component_state[this.__object_id]);
-                var next_ruby_state = Opal.Hash.$new(next_state.component_state[this.__object_id]);
-                if (#{`next_ruby_state` != `current_ruby_state`}) {
-                  var new_state = { component_state: {}};
-                  new_state.component_state[this.__object_id] = current_ruby_state.$merge(next_ruby_state).$to_n();
-                  this.setState(new_state);
-                }
-              }
-              if (typeof next_state.component_class_state[#{component_name}] !== "undefined") {
-                var current_ruby_state = Opal.Hash.$new(this.state.component_class_state[#{component_name}]);
-                var next_ruby_state = Opal.Hash.$new(next_state.component_class_state[#{component_name}]);
-                if (#{`next_ruby_state` != `current_ruby_state`}) {
-                  var new_state = { component_class_state: {}};
-                  new_state.component_class_state[#{component_name}] = current_ruby_state.$merge(next_ruby_state).$to_n();
-                  this.setState(new_state);
-                }
-              }
+              var next_state = Object.assign({}, this.state, { isomorfeus_store: Opal.Isomorfeus.store.native.getState() });
+              if (this.shouldComponentUpdate(this.props, next_state)) { this.setState(next_state); }
             }
             componentWillUnmount() {
               if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
+            }
+            shouldComponentUpdate = function(next_props, next_state) {
+              var next_props_keys = Object.keys(next_props);
+              var this_props_keys = Object.keys(this.props);
+              if (next_props_keys.length !== this_props_keys.length) { return true; }
+
+              var next_state_keys = Object.keys(next_state);
+              var this_state_keys = Object.keys(this.state);
+              if (next_state_keys.length !== this_state_keys.length) { return true; }
+
+              for (var property in next_props) {
+                if (next_props.hasOwnProperty(property)) {
+                  if (!this.props.hasOwnProperty(property)) { return true; };
+                  if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
+                  else if (typeof next_props[property] !== "undefined" && typeof next_props[property]['$!='] !== "undefined" && typeof this.props[property] !== "undefined" && typeof this.props[property]['$!='] !== "undefined") {
+                    if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; };
+                  } else if (next_props[property] !== this.props[property]) { return true; };
+                }
+              }
+              for (var property in next_state) {
+                if (property === "isomorfeus_store") {
+                  var res = this.scu_for_used_store_keys(this.state.isomorfeus_store, next_state.isomorfeus_store);
+                  if (res) { return true; }
+                }
+                if (next_state.hasOwnProperty(property)) {
+                  if (!this.state.hasOwnProperty(property)) { return true; };
+                  if (typeof next_state[property]['$!='] !== "undefined" && typeof this.state[property]['$!='] !== "undefined") {
+                    if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
+                  } else if (next_state[property] !== this.state[property]) { return true };
+                }
+              }
+              return false;
+            }
+            scu_for_used_store_keys(current_state, next_state) {
+              var unique_used_store_keys = this.used_store_keys.filter(function(elem, pos) {
+                return (this.used_store_keys.indexOf(elem) === pos);
+              });
+              var used_length = unique_used_store_keys.length;
+              var store_key;
+              var current_value;
+              var next_value;
+              for (var i = 0; i < used_length; i++) {
+                store_key = unique_used_store_keys[i];
+                current_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, current_state);
+                next_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, next_state);
+                if (current_value !== next_value) { return true; };
+              }
+              return false;
             }
           }
         }

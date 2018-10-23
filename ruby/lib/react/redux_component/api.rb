@@ -3,6 +3,7 @@ module React
     module API
       def self.included(base)
         base.instance_exec do
+          attr_accessor :app_store
           attr_accessor :class_store
           attr_accessor :store
 
@@ -89,7 +90,8 @@ module React
             %x{
               var fun = function() {
                 Opal.React.render_buffer.push([]);
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
+                this.used_store_keys = [];
                 #{`this.__ruby_instance`.instance_exec(&block)};
                 Opal.React.active_redux_components.pop();
                 return Opal.React.render_buffer.pop();
@@ -98,47 +100,12 @@ module React
               else { self.react_component.prototype.render = fun; }
             }
           end
-
-          def unsafe_component_will_mount(&block)
-            %x{
-              var fun = function() {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(&block)};
-                Opal.React.active_redux_components.pop();
-              }
-              if (self.lucid_react_component) { self.lucid_react_component.prototype.UNSAFE_componentWillMount = fun; }
-              else { self.react_component.prototype.UNSAFE_componentWillMount = fun; }
-            }
-          end
-
-          def unsafe_component_will_receive_props(&block)
-            %x{
-              var fun = function(next_props) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`next_props`), &block)};
-                Opal.React.active_redux_components.pop();
-              }
-              if (self.lucid_react_component) { self.lucid_react_component.prototype.UNSAFE_componentWillReceiveProps = fun; }
-              else { self.react_component.prototype.UNSAFE_componentWillReceiveProps = fun; }
-            }
-          end
-
-          def unsafe_component_will_update(&block)
-            %x{
-              var fun = function(next_props, next_state) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`next_props`), `Opal.Hash.$new(next_state)`, &block)};
-                Opal.React.active_redux_components.pop();
-              }
-              if (self.lucid_react_component) { self.lucid_react_component.prototype.UNSAFE_componentWillUpdate = fun; }
-              else { self.react_component.prototype.UNSAFE_componentWillUpdate = fun; }
-            }
-          end
         end
       end
 
       def initialize(native_component)
         @native = native_component
+        @app_store = ::React::ReduxComponent::AppStoreProxy.new(self)
         @class_store = ::React::ReduxComponent::ClassStoreProxy.new(self)
         @props = ::React::Component::Props.new(@native)
         @state = ::React::Component::State.new(@native)

@@ -51,6 +51,7 @@ module React
 
     self.active_redux_component = function() {
       var length = Opal.React.active_redux_components.length;
+      if (length === 0) { return null; };
       return Opal.React.active_redux_components[length-1];
     };
   }

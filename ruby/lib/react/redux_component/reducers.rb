@@ -32,7 +32,21 @@ module React
           end
         end
 
-        Redux::Store.add_reducers(component_state: component_reducer, component_class_state: component_class_reducer)
+        app_reducer = Redux.create_reducer do |prev_state, action|
+          case action[:type]
+          when 'APPLICATION_STATE'
+            new_state = {}.merge!(prev_state) # make a copy of state
+            new_state.merge!(action[:name] => action[:value])
+            new_state
+          when 'INIT'
+            new_state = {}
+            new_state
+          else
+            prev_state
+          end
+        end
+
+        Redux::Store.add_reducers(component_state: component_reducer, component_class_state: component_class_reducer, application_state: app_reducer)
       end
     end
   end

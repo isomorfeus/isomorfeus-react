@@ -19,16 +19,9 @@ module React
           # get instance state
 
           # check if we have a component local state value
-          if @native_component_instance.JS[@access_key].JS[:component_state].JS[@component_object_id] &&
-            @native_component_instance.JS[@access_key].JS[:component_state].JS[@component_object_id].JS[key]
-            return @native_component_instance.JS[@access_key].JS[:component_state].JS[@component_object_id].JS[key]
-          end
-
-          # check if we have a value in the store
-          store_state = Isomorfeus.store.get_state
-          if store_state[:component_state].has_key?(@component_object_id) &&
-            store_state[:component_state][@component_object_id].has_key?(key)
-            return store_state[:component_state][@component_object_id][key]
+          if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id] &&
+            @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS[key]
+            return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS[key]
           end
 
           # otherwise return nil

@@ -9,7 +9,7 @@ module LucidComponent
       %x{
         base.react_component = function(props) {
           return React.createElement(LucidApplicationContext.Consumer, null, function(store) {
-            var store_props = Object.assign({}, props, store);
+            var store_props = Object.assign({}, props, { isomorfeus_store: store });
             return React.createElement(base.lucid_react_component, store_props);
           });
         }
@@ -43,42 +43,62 @@ module LucidComponent
               }
             }
           }
+          data_access() {
+            return this.props.isomorfeus_store
+          }
           static get displayName() {
             return #{component_name};
           }
           shouldComponentUpdate(next_props, next_state) {
-            if (base.has_custom_should_component_update) {
-              return this.__ruby_instance["$should_component_update"](#{self.React::Component::Props.new(Hash.new(next_props))}, #{Hash.new(next_state)});
-            } else {
-              var next_props_keys = Object.keys(next_props);
-              var this_props_keys = Object.keys(this.props);
-              if (next_props_keys.length !== this_props_keys.length) { return true; }
+            var next_props_keys = Object.keys(next_props);
+            var this_props_keys = Object.keys(this.props);
+            if (next_props_keys.length !== this_props_keys.length) { return true; }
 
-              var next_state_keys = Object.keys(next_state);
-              var this_state_keys = Object.keys(this.state);
-              if (next_state_keys.length !== this_state_keys.length) { return true; }
+            var next_state_keys = Object.keys(next_state);
+            var this_state_keys = Object.keys(this.state);
+            if (next_state_keys.length !== this_state_keys.length) { return true; }
 
-              for (var property in next_props) {
-                if (next_props.hasOwnProperty(property)) {
-                  if (!this.props.hasOwnProperty(property)) { return true; };
-                  if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
-                  else if (typeof next_props[property] !== "undefined" && typeof next_props[property]['$!='] !== "undefined" && typeof this.props[property] !== "undefined" && typeof this.props[property]['$!='] !== "undefined") {
-                    if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; };
-                  } else if (next_props[property] !== this.props[property]) { return true; };
-                }
+            for (var property in next_props) {
+              if (property === "isomorfeus_store") {
+                var res = this.scu_for_used_store_keys(this.state.isomorfeus_store, next_state.isomorfeus_store);
+                if (res) { return true; }
               }
-              for (var property in next_state) {
-                if (next_state.hasOwnProperty(property)) {
-                  if (!this.state.hasOwnProperty(property)) { return true; };
-                  if (typeof next_state[property]['$!='] !== "undefined" && typeof this.state[property]['$!='] !== "undefined") {
-                    if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
-                  } else if (next_state[property] !== this.state[property]) { return true };
-                }
+              if (next_props.hasOwnProperty(property)) {
+                if (!this.props.hasOwnProperty(property)) { return true; };
+                if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
+                else if (typeof next_props[property] !== "undefined" && typeof next_props[property]['$!='] !== "undefined" && typeof this.props[property] !== "undefined" && typeof this.props[property]['$!='] !== "undefined") {
+                  if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; };
+                } else if (next_props[property] !== this.props[property]) { return true; };
               }
-              return false;
             }
+            for (var property in next_state) {
+              if (next_state.hasOwnProperty(property)) {
+                if (!this.state.hasOwnProperty(property)) { return true; };
+                if (typeof next_state[property]['$!='] !== "undefined" && typeof this.state[property]['$!='] !== "undefined") {
+                  if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
+                } else if (next_state[property] !== this.state[property]) { return true };
+              }
+            }
+            return false;
+          }
+          scu_for_used_store_keys(current_state, next_state) {
+            var unique_used_store_keys = this.used_store_keys.filter(function(elem, pos) {
+              return (this.used_store_keys.indexOf(elem) === pos);
+            });
+            var used_length = unique_used_store_keys.length;
+            var store_key;
+            var current_value;
+            var next_value;
+            for (var i = 0; i < used_length; i++) {
+              store_key = unique_used_store_keys[i];
+              current_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, current_state);
+              next_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, next_state);
+              if (current_value !== next_value) { return true; };
+            }
+            return false;
           }
           validateProp(props, propName, componentName) {
+            if (propName === "isomorfeus_store") { return null };
             var prop_data = base.lucid_react_component.propValidations[propName];
             if (!prop_data) { return true; };
             var value = props[propName];

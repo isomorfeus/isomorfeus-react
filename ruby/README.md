@@ -1,6 +1,6 @@
 # isomorfeus-react
 
-React components for Opal Ruby.
+React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
 ## Versioning
 isomorfeus-react version follows the React version which features and API it implements.
@@ -13,28 +13,32 @@ yarn add react@16.5
 ```
 then add to the Gemfile:
 ```ruby
-gem 'isomorfeus-react'
+gem 'isomorfeus-react' # this will also include isomorfeus-redux 
 ```
 then `bundle install`
 and to your client code add:
 ```ruby
-require 'isomorfeus-react'
+require 'isomorfeus-react' # this will also require isomorfeus-redux
 ```
 ## Usage
 Because isomorfeus-react follows closely the React principles/implementation/API and Documentation, most things of the official React documentation
 apply, but in the Ruby way, see:
 - https://reactjs.org/docs/getting-started.html
 
-React and accompanying libraries must be imported and available in the global namespace in the application javascript entry file,
+Redux is also required, for the more advanced components to function properly.
+
+React, Redux and accompanying libraries must be imported and made available in the global namespace in the application javascript entry file,
 with webpack this can be ensured by assigning them to the global namespace:
 ```javascript
+import * as Redux from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+global.Redux = Redux;
 global.React = React;
 global.ReactDOM = ReactDOM;
 ```
 
-Following features are presented with its differences to the Javascript React implementation.
+Following features are presented with its differences to the Javascript React implementation, along with enhancements and the advanced components.
 
 ### Class Components
 Class Components can be created in two ways, either by inheritance or by including a module.
@@ -504,22 +508,28 @@ Otherwise the React Router documentation applies: https://reacttraining.com/reac
 This component is like a React::Component and in addition to it, allows do manage its state conveniently over redux using a simple DSL:
 - `store` - works similar like the components state, but manages the components state with redux
 - `class_store` - allows to have a class state, when changing this state, all instances of the component class change the state and render
+- `app_store` - allows to access application state, when changing this state. All instances that have requested the same key, will render.
 ```ruby
 class MyComponent < React::PureComponent::Base
   store.a_var = 100 # set a initial value for the instance
   class_store.another_var = 200 # set a initial value for the class
   render do
-    # in a React::ReduxComponent state can be used, for local state managed by react:
+    # in a React::ReduxComponent state can be used for local state managed by react:
     state.some_var
-    # in addition to that, store can be used, for local state managed by redux
+    # in addition to that, store can be used for local state managed by redux:
     store.a_var
-    # and for managing class state with
+    # and for managing class state:
     class_store.another_var
+    # and for managing application wide state:
+    app_store.yet_another_var
   end
 end
 ```
 Provided some middleware is used for redux, state changes using `store` or `class_store` can be watched, debugged and otherwise handled by redux
 middleware.
+
+The lifecycle callbacks starting with `unsafe_` are not supported.
+Overwriting should_component_update is also not supported.
 
 ### LucidApp and LucidComponent
 A LucidComponent works very similar like a React::ReduxComponent, the same `store` and `class_store` is available. The difference is, that the
@@ -536,15 +546,21 @@ class MyComponent < LucidComponent::Base # is a React::Context Consumer
   store.a_var = 100 # set a initial value for the instance
   class_store.another_var = 200 # set a initial value for the class
   render do
-    # in a React::ReduxComponent state can be used, for local state managed by react:
+    # in a LucidComponent state can be used for local state managed by react:
     state.some_var
-    # in addition to that, store can be used, for local state managed by redux
+    # in addition to that, store can be used for local state managed by redux:
     store.a_var
-    # and for managing class state with
+    # and for managing class state:
     class_store.another_var
+    # and for managing application wide state:
+    app_store.yet_another_var
   end
 end
 ```
+
+The lifecycle callbacks starting with `unsafe_` are not supported.
+Overwriting should_component_update is also not supported.
+
 
 ### Development Tools
 The React Developer Tools allow for analyzing, debugging and profiling components. A very helpful toolset and working very nice with isomorfeus-react:

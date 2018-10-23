@@ -1,10 +1,9 @@
 module React
   module ReduxComponent
-    class ClassStoreProxy
+    class AppStoreProxy
 
       def initialize(component_instance, access_key = 'state')
         @native_component_instance = component_instance.to_n
-        @component_name = component_instance.class.to_s
         @access_key = access_key
       end
 
@@ -12,18 +11,14 @@ module React
         if args.any?
           # set class state, simply a dispatch
 
-          action = { type: 'COMPONENT_CLASS_STATE', class: @component_name, name: (`key.endsWith('=')` ? key.chop : key), value: args[0] }
+          action = { type: 'APPLICATION_STATE', name: (`key.endsWith('=')` ? key.chop : key), value: args[0] }
           Isomorfeus.store.dispatch(action)
 
         else
-          # get class state
-
           # check if we have a component local state value
-          if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name] &&
-            @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
-            return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
+          if `typeof this.native_component_instance[this.access_key]["isomorfeus_store"]["application_state"][key] !== "undefined"`
+            return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:application_state].JS[key]
           end
-
           # otherwise return nil
           return nil
         end
