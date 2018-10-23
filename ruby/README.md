@@ -1,6 +1,6 @@
 # isomorfeus-react
 
-React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
+Develop React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
 ## Versioning
 isomorfeus-react version follows the React version which features and API it implements.
