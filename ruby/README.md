@@ -519,7 +519,7 @@ Otherwise the React Router documentation applies: https://reacttraining.com/reac
 This component is like a React::Component and in addition to it, allows do manage its state conveniently over redux using a simple DSL:
 - `store` - works similar like the components state, but manages the components state with redux
 - `class_store` - allows to have a class state, when changing this state, all instances of the component class change the state and render
-- `app_store` - allows to access application state, when changing this state. All instances that have requested the same key, will render.
+- `app_store` - allows to access application state, when changing this state, all instances that have requested the same keys, will render.
 ```ruby
 class MyComponent < React::PureComponent::Base
   store.a_var = 100 # set a initial value for the instance
