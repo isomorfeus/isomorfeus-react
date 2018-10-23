@@ -80,6 +80,10 @@ end
 A default should_component_update? implementation is supplied. The default should_component_update? implementation for Class Components is most
 efficient if complex props or state are used.
 
+**Data flow of a React::Component:**
+![React::Component Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_component.png)
+
+
 ### Pure Components
 Pure Components can be created in two ways, either by inheritance or by including a module.
 Inheritance:
@@ -108,6 +112,9 @@ end
 A Pure Component does not allow for the definition of a custom should_component_update? block. Its using the default React implementation instead.
 Its recommended to use them only if no props or state are used or if props and state have simple values only, like strings or numbers.
 
+**Data flow of a React::PureComponent:**
+![React::PureComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_component.png)
+
 ### Functional Components
 Functional Components are created using a Ruby DSL that is used within the creator class, like so:
 ```ruby
@@ -129,6 +136,10 @@ class MyComponent < React::PureComponent::Base
   end
 end
 ```
+
+**Data flow of a React::FunctionalComponent:**
+![React::FunctionalComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_functional_component.png)
+
 ### Props
 In ruby props are underscored: `className -> class_name`. The conversion for React is done automatically.
 Within a component props can be accessed using `props`:
@@ -531,6 +542,9 @@ middleware.
 The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
 
+**Data flow of a React::ReduxComponent:**
+![React::ReduxComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_redux_component.png)
+
 ### LucidApp and LucidComponent
 A LucidComponent works very similar like a React::ReduxComponent, the same `store` and `class_store` is available. The difference is, that the
 data changes are passed using props instead of setting component state. Therefore, a LucidComponent needs a LucidApp as outer component.
@@ -561,6 +575,8 @@ end
 The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
 
+**Data flow of a LucidComponent within a LucidApp:**
+![LucidComponent within a LucidApp Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_lucid_component.png)
 
 ### Development Tools
 The React Developer Tools allow for analyzing, debugging and profiling components. A very helpful toolset and working very nice with isomorfeus-react:
