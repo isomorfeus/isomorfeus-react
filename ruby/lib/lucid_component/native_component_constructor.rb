@@ -49,6 +49,9 @@ module LucidComponent
           static get displayName() {
             return #{component_name};
           }
+          register_used_store_key(key_path) {
+            this.used_store_keys.push(key_path);
+          }
           shouldComponentUpdate(next_props, next_state) {
             var next_props_keys = Object.keys(next_props);
             var this_props_keys = Object.keys(this.props);

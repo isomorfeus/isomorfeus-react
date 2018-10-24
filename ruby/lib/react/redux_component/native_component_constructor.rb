@@ -53,6 +53,9 @@ module React
               var next_state = Object.assign({}, this.state, { isomorfeus_store: Opal.Isomorfeus.store.native.getState() });
               if (this.shouldComponentUpdate(this.props, next_state)) { this.setState(next_state); }
             }
+            register_used_store_key(key_path) {
+              this.used_store_keys.push(key_path);
+            }
             componentWillUnmount() {
               if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
             }

@@ -8,6 +8,8 @@ module React
       end
 
       def method_missing(key, *args, &block)
+        @native_component_instance.JS.register_used_store_key(["application_state", key])
+
         if args.any?
           # set class state, simply a dispatch
 
