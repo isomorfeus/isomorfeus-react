@@ -109,7 +109,7 @@ class MyComponent < React::PureComponent::Base
 end
 ```
 
-A Pure Component does not allow for the definition of a custom should_component_update? block. Its using the default React implementation instead.
+A PureComponent does not allow for the definition of a custom should_component_update? block. Its using the default React implementation instead.
 Its recommended to use them only if no props or state are used or if props and state have simple values only, like strings or numbers.
 
 **Data flow of a React::PureComponent:**
