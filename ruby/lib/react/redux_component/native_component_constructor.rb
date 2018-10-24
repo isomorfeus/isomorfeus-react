@@ -96,13 +96,13 @@ module React
                 return (this.used_store_paths.indexOf(elem) === pos);
               });
               var used_length = unique_used_store_paths.length;
-              var store_key;
+              var store_path;
               var current_value;
               var next_value;
               for (var i = 0; i < used_length; i++) {
-                store_key = unique_used_store_paths[i];
-                current_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, current_state);
-                next_value = store_key.reduce(function(prev, curr) { prev && prev[curr] }, next_state);
+                store_path = unique_used_store_paths[i];
+                current_value = store_path.reduce(function(prev, curr) { prev && prev[curr] }, current_state);
+                next_value = store_path.reduce(function(prev, curr) { prev && prev[curr] }, next_state);
                 if (current_value !== next_value) { return true; };
               }
               return false;
