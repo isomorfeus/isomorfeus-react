@@ -91,7 +91,7 @@ module React
               var fun = function() {
                 Opal.React.render_buffer.push([]);
                 Opal.React.active_redux_components.push(this);
-                this.used_store_keys = [];
+                this.used_store_paths = [];
                 #{`this.__ruby_instance`.instance_exec(&block)};
                 Opal.React.active_redux_components.pop();
                 return Opal.React.render_buffer.pop();
