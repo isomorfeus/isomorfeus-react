@@ -39,10 +39,12 @@ if RUBY_ENGINE == 'opal'
   require 'react/pure_component/mixin'
   require 'react/pure_component/base'
   # Functional Component
-  require 'react/functional_component/creator'
+  require 'react/functional_component/resolution'
   require 'react/functional_component/runner'
+  require 'react/functional_component/creator'
   # Redux::Component
-  require 'react/redux_component/store_defaults'
+  require 'react/redux_component/component_class_store_defaults'
+  require 'react/redux_component/app_store_defaults'
   require 'react/redux_component/api'
   require 'react/redux_component/app_store_proxy'
   require 'react/redux_component/class_store_proxy'
@@ -76,6 +78,9 @@ if RUBY_ENGINE == 'opal'
 
   # allow mounting of components
   require 'isomorfeus/top_level'
+
+  # initalize Store, options, etc.
+  Isomorfeus.init
 else
   require 'opal'
   require 'opal-activesupport'

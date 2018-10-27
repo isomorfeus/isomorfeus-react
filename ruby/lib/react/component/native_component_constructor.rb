@@ -11,7 +11,7 @@ module React
           base.react_component = class extends React.Component {
             constructor(props) {
               super(props);
-              if (base.$state().$size() > 0) {
+              if (base.$default_state_defined()) {
                 this.state = base.$state().$to_n();
               } else {
                 this.state = {};
@@ -36,9 +36,9 @@ module React
             static get displayName() {
               return #{component_name};
             }
-            shouldComponentUpdate = function(next_props, next_state) {
+            shouldComponentUpdate(next_props, next_state) {
               if (base.has_custom_should_component_update) {
-                return this.__ruby_instance["$should_component_update"](#{self.React::Component::Props.new(Hash.new(next_props))}, #{Hash.new(next_state)});
+                return this.__ruby_instance["$should_component_update"](#{(Hash.new(next_props))}, #{Hash.new(next_state)});
               } else {
                 var next_props_keys = Object.keys(next_props);
                 var this_props_keys = Object.keys(this.props);

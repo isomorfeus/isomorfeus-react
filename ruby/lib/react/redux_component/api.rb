@@ -7,8 +7,31 @@ module React
           attr_accessor :class_store
           attr_accessor :store
 
+          def default_app_store_defined
+            @default_app_store_defined
+          end
+
+          def default_class_store_defined
+            @default_class_store_defined
+          end
+
+          def default_instance_store_defined
+            @default_instance_store_defined
+          end
+
+          def app_store
+            @default_app_store_defined = true
+            @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(state)
+          end
+
           def class_store
-            @default_class_store ||= ::React::ReduxComponent::StoreDefaults.new(state, self.to_s)
+            @default_class_store_defined = true
+            @default_class_store ||= ::React::ReduxComponent::ComponentClassStoreDefaults.new(state, self.to_s)
+          end
+
+          def store
+            @default_instance_store_defined = true
+            @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new
           end
 
           def component_did_catch(&block)
@@ -107,7 +130,7 @@ module React
         @native = native_component
         @app_store = ::React::ReduxComponent::AppStoreProxy.new(self)
         @class_store = ::React::ReduxComponent::ClassStoreProxy.new(self)
-        @props = ::React::Component::Props.new(@native)
+        @props = ::React::Component::Props.new(@native.JS[:props])
         @state = ::React::Component::State.new(@native)
         @store = ::React::ReduxComponent::InstanceStoreProxy.new(self)
       end

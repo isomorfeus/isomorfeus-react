@@ -10,17 +10,17 @@ module LucidApp
         base.react_component = class extends React.Component {
           constructor(props) {
             super(props);
-            if (base.$state().$size() > 0) {
+            if (base.$default_state_defined()) {
               this.state = base.$state().$to_n();
             } else {
               this.state = {};
             };
             this.state.isomorfeus_store_state = Opal.Isomorfeus.store.native.getState();
             var current_store_state = this.state.isomorfeus_store_state;
-            if (typeof current_store_state.component_class_state !== "undefined" && typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
+            if (typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
               this.state.component_class_state = {};
               this.state.component_class_state[#{component_name}] = current_store_state.component_class_state[#{component_name}];
-            } else if (typeof this.state.component_class_state === "undefined") {
+            } else {
               this.state.component_class_state = {};
               this.state.component_class_state[#{component_name}] = {};
             };

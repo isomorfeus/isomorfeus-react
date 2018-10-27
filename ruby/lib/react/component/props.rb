@@ -4,41 +4,45 @@ module React
       include ::Native::Wrapper
 
       def method_missing(prop, *args, &block)
-        @native.JS[:props].JS[`Opal.React.lower_camelize(prop)`]
+        @native.JS[`Opal.React.lower_camelize(prop)`]
+      end
+
+      def isomorfeus_store
+        @native.JS[:isomorfeus_store]
       end
 
       def history
         return @history if @history
-        return nil unless @native.JS[:props].JS[:history]
-        if @native.JS[:props].JS[:history].JS[:pathname]
-          @history = React::Component::History.new(@native.JS[:props].JS[:history])
+        return nil unless @native.JS[:history]
+        if @native.JS[:history].JS[:pathname]
+          @history = React::Component::History.new(@native.JS[:history])
         else
-          @native.JS[:props].JS[:history]
+          @native.JS[:history]
         end
       end
 
       def location
         return @location if @location
-        return nil unless @native.JS[:props].JS[:location]
-        if @native.JS[:props].JS[:location].JS[:pathname]
-          @location = React::Component::Location.new(@native.JS[:props].JS[:location])
+        return nil unless @native.JS[:location]
+        if @native.JS[:location].JS[:pathname]
+          @location = React::Component::Location.new(@native.JS[:location])
         else
-          @native.JS[:props].JS[:location]
+          @native.JS[:location]
         end
       end
 
       def match
         return @match if @match
-        return nil unless @native.JS[:props].JS[:match]
-        if @native.JS[:props].JS[:match].JS[:path]
-          @match = React::Component::Match.new(@native.JS[:props].JS[:match])
+        return nil unless @native.JS[:match]
+        if @native.JS[:match].JS[:path]
+          @match = React::Component::Match.new(@native.JS[:match])
         else
-          @native.JS[:props].JS[:match]
+          @native.JS[:match]
         end
       end
 
       def to_n
-        @native.JS[:props]
+        @native
       end
     end
   end

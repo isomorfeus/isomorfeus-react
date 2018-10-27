@@ -8,8 +8,8 @@ if RUBY_ENGINE == 'opal'
       def init
         return if initialized
         @initialized = true
-        # at least one reducer must have be added at this stage
-        # this happened in isomorfeus-react.rb, where the component reducer was added
+        # at least one reducer must have been added at this stage
+        # this happened in isomorfeus-react.rb, where the component reducers were added
         @store = Redux::Store.init!
         `Opal.Isomorfeus.store = #@store`
         init_options

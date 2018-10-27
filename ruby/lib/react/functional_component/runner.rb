@@ -3,12 +3,17 @@ module React
     class Runner
       include ::React::Component::Elements
       include ::React::Component::Features
-      include ::React::Component::Resolution
+      include ::React::FunctionalComponent::Resolution
 
       attr_accessor :props
 
+      %x{
+        self.event_handlers = {};
+      }
+
       def initialize(props)
-        @props = ::React::Component::Props.new(`{ props: props }`)
+        @props = ::React::Component::Props.new(props)
+        @native = `Opal.React.FunctionalComponent.Runner.event_handlers`
       end
     end
   end

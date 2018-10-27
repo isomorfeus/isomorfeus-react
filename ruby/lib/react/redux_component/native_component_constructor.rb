@@ -11,19 +11,23 @@ module React
           base.react_component = class extends React.Component {
             constructor(props) {
               super(props);
-              if (base.$state().$size() > 0) {
+              if (base.$default_state_defined()) {
                 this.state = Object.assign({}, base.$state().$to_n(), { isomorfeus_store: Opal.Isomorfeus.store.native.getState() });
               } else {
                 this.state = { isomorfeus_store: Opal.Isomorfeus.store.native.getState() };
               };
-              if (typeof this.state.component_class_state[#{component_name}] === "undefined") {
-                this.state.component_class_state[#{component_name}] = {};
+              if (typeof this.state.isomorfeus_store.component_class_state[#{component_name}] === "undefined") {
+                this.state.isomorfeus_store.component_class_state[#{component_name}] = {};
               };
               this.__ruby_instance = base.$new(this);
               this.__object_id = this.__ruby_instance.$object_id().$to_s();
-              if (!this.state.component_state) {
-                this.state.component_state = {};
-                this.state.component_state[this.__object_id] = {};
+              if (!this.state.isomorfeus_store.component_state) {
+                this.state.isomorfeus_store.component_state = {};
+                if (base.$default_instance_store_defined()) {
+                  this.state.isomorfeus_store.component_state[this.__object_id] = base.$store.$to_n();
+                } else {
+                  this.state.isomorfeus_store.component_state[this.__object_id] = {};
+                }
               };
               var event_handlers = #{base.event_handlers};
               for (var i = 0; i < event_handlers.length; i++) {
@@ -59,7 +63,7 @@ module React
             componentWillUnmount() {
               if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
             }
-            shouldComponentUpdate = function(next_props, next_state) {
+            shouldComponentUpdate(next_props, next_state) {
               var next_props_keys = Object.keys(next_props);
               var this_props_keys = Object.keys(this.props);
               if (next_props_keys.length !== this_props_keys.length) { return true; }

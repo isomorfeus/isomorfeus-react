@@ -2,8 +2,19 @@ module LucidComponent
   module API
     def self.included(base)
       base.instance_exec do
+        def app_store
+          @default_app_store_defined = true
+          @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(default_props)
+        end
+
         def class_store
-          @default_class_store ||= ::React::ReduxComponent::StoreDefaults.new(state, self.to_s)
+          @default_class_store_defined = true
+          @default_class_store ||= ::React::ReduxComponent::ComponentClassStoreDefaults.new(default_props, self.to_s)
+        end
+
+        def store
+          @default_instance_store_defined = true
+          @default_class_store ||= ::LucidComponent::ComponentInstanceStoreDefaults.new
         end
 
         def prop(name, options = `null`)
@@ -12,7 +23,7 @@ module LucidComponent
             if options.has_key?(:default)
               %x{
                 if (typeof self.lucid_react_component.defaultProps == "undefined") {
-                  self.lucid_react_component.defaultProps = {};
+                  self.lucid_react_component.defaultProps = { isomorfeus_store: Opal.Hash.$new() };
                 }
                 self.lucid_react_component.defaultProps[name] = options.$fetch("default");
               }
@@ -72,7 +83,13 @@ module LucidComponent
         end
 
         def default_props
-          React::Component::Props.new(`self.lucid_react_component.prototype.defaultProps`)
+          return @default_props if @default_props
+          %x{
+            if (typeof self.lucid_react_component.defaultProps == "undefined") {
+              self.lucid_react_component.defaultProps = { isomorfeus_store: Opal.Hash.$new() };
+            }
+          }
+          @default_props = React::Component::Props.new(`self.lucid_react_component.defaultProps`)
         end
       end
     end

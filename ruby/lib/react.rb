@@ -1,4 +1,7 @@
 module React
+  # to_native_react_props: the native_component params is used for event handlers, it keeps the event handlers
+  # it does not need to be component, can be a object with the event handlers
+  # language=JS
   %x{
     self.render_buffer = [];
 
@@ -18,7 +21,12 @@ module React
         var keys_length = keys.length;
         for (var i = 0; i < keys_length; i++) {
           if (keys[i].startsWith("on_") && native_component) {
-            result[Opal.React.lower_camelize(keys[i])] = native_component[ruby_style_props['$[]'](keys[i])];
+            var handler = ruby_style_props['$[]'](keys[i]);
+            if (typeof handler === "function") {
+              result[Opal.React.lower_camelize(keys[i])] = handler;
+            } else {
+              result[Opal.React.lower_camelize(keys[i])] = native_component[handler];
+            }
           } else if (keys[i].startsWith("aria_")) {
             result[keys[i].replace("_", "-")] = ruby_style_props['$[]'](keys[i]);
           } else {
@@ -36,7 +44,9 @@ module React
       if (block !== nil) {
         Opal.React.render_buffer.push([]);
         block_result = block.$call();
-        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol"))) {
+        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+          (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
+          ))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
         children = Opal.React.render_buffer.pop();
@@ -94,7 +104,9 @@ module React
       }
       if (block !== nil) {
         block_result = block.$call()
-        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol"))) {
+        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+          (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
+          ))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
         children = Opal.React.render_buffer.pop()

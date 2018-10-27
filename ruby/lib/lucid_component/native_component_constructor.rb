@@ -16,7 +16,7 @@ module LucidComponent
         base.lucid_react_component = class extends React.Component {
           constructor(props) {
             super(props);
-            if (base.$state().$size() > 0) {
+            if (base.$default_state_defined()) {
               this.state = base.$state().$to_n();
             } else {
               this.state = {};

@@ -1,5 +1,5 @@
 module React
-  module Component
+  module FunctionalComponent
     module Resolution
       def self.included(base)
         base.instance_exec do
@@ -8,7 +8,7 @@ module React
           def const_missing(const_name)
             %x{
               if (typeof Opal.global[const_name] == "object") {
-                var new_const = #{React::NativeConstantWrapper.new(`Opal.global[const_name]`, const_name, base.JS[:react_component])};
+                var new_const = #{React::NativeConstantWrapper.new(`Opal.global[const_name]`, const_name, `Opal.React.FunctionalComponent.Runner.event_handlers`)};
                 #{Object.const_set(const_name, `new_const`)};
                 return new_const;
               } else {
@@ -18,7 +18,6 @@ module React
           end
         end
       end
-
 
       alias _react_component_resolution_original_method_missing method_missing
 
@@ -48,7 +47,7 @@ module React
             var props = null;
 
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(#@native, args[0]);
+              props = Opal.React.to_native_react_props(Opal.React.FunctionalComponent.Runner.event_handlers, args[0]);
             }
             Opal.React.internal_render(component, props, block);
           } else {

@@ -18,8 +18,13 @@ module React
             @defined_ref ||= `{}`
           end
 
+          def default_state_defined
+            @default_state_defined
+          end
+
           def state
             return @default_state if @default_state
+            @default_state_defined = true
             %x{
               var native_state = {state: {}};
               native_state.setState = function(new_state, callback) {
@@ -98,7 +103,13 @@ module React
           end
 
           def default_props
-            React::Component::Props.new(`self.react_component.prototype.defaultProps`)
+            return @default_props if @default_props
+            %x{
+              if (typeof self.react_component.defaultProps == "undefined") {
+                self.lucid_react_component.defaultProps = {};
+              }
+            }
+            @default_props = React::Component::Props.new(`self.react_component.defaultProps`)
           end
 
           def component_did_catch(&block)
@@ -164,7 +175,7 @@ module React
 
       def initialize(native_component)
         @native = native_component
-        @props = ::React::Component::Props.new(@native)
+        @props = ::React::Component::Props.new(@native.JS[:props])
         @state = ::React::Component::State.new(@native)
       end
 

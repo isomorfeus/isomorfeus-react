@@ -4,6 +4,7 @@ module React
 
       def initialize(component_instance, access_key = 'state')
         @native_component_instance = component_instance.to_n
+        @component_instance = component_instance
         @component_object_id = component_instance.object_id.to_s
         @access_key = access_key
       end
@@ -18,10 +19,13 @@ module React
         else
           # get instance state
 
-          # check if we have a component local state value
           if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id] &&
             @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS[key]
+            # check if we have a component local state value
             return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS[key]
+          elsif @component_instance.default_instance_store_defined && @component_instance.class.store.to_h.has_key?(key)
+            # check if a default value was given
+            return @component_instance.class.store.to_h[key]
           end
 
           # otherwise return nil

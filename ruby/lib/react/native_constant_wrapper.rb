@@ -2,7 +2,11 @@ module React
   class NativeConstantWrapper
     include ::Native::Wrapper
 
-    alias _react_native_constant_wrapper_original_method_missing method_missing
+    def initialize(native, const_name, outer_native)
+      @native = native
+      @const_name = const_name
+      @outer_native = outer_native
+    end
 
     def method_missing(name, *args, &block)
       %x{
@@ -18,13 +22,14 @@ module React
           var react_element;
 
           if (args.length > 0) {
-            props = Opal.React.to_native_react_props(#@native, args[0]);
+            props = Opal.React.to_native_react_props(#@outer_native, args[0]);
           }
           Opal.React.internal_render(component, props, block);
         } else {
-          return #{_react_native_constant_wrapper_original_method_missing(component_name, *args, block)};
+          #{raise NameError, "No such native Component #@const_name.#{name}"};
         }
       }
     end
+
   end
 end

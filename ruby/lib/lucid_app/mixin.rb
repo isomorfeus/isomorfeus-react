@@ -3,7 +3,6 @@ module LucidApp
     def self.included(base)
       base.include(::Native::Wrapper)
       base.extend(::LucidApp::NativeComponentConstructor)
-      base.extend(::React::Component::NativeComponentShouldUpdate)
       base.extend(::React::Component::NativeComponentValidateProp)
       base.extend(::React::Component::ShouldComponentUpdate)
       base.extend(::React::Component::EventHandler)

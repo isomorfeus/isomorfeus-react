@@ -4,6 +4,7 @@ module React
 
       def initialize(component_instance, access_key = 'state')
         @native_component_instance = component_instance.to_n
+        @component_instance = component_instance
         @component_name = component_instance.class.to_s
         @access_key = access_key
       end
@@ -22,6 +23,9 @@ module React
           if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name] &&
             @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
             return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
+          elsif @component_instance.default_class_store_defined && @component_instance.class.class_store.to_h.has_key?(key)
+            # check if a default value was given
+            return @component_instance.class.class_store.to_h[key]
           end
 
           # otherwise return nil
