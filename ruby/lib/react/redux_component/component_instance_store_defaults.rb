@@ -1,15 +1,16 @@
 module React
   module ReduxComponent
     class ComponentInstanceStoreDefaults
-      def initialize(state)
+      def initialize(state, component_name)
         @state = {}
+        @component_name = component_name
       end
 
       def method_missing(key, *args, &block)
         if args.any?
           # set initial class state
-
-          @state[(`key.endsWith('=')` ? key.chop : key)] = args[0]
+          key = key.chop if `key.endsWith('=')`
+          @state[key] = args[0]
           current_state = Isomorfeus.store.get_state
           if !(current_state[:component_class_state].has_key?(@component_name) &&
             current_state[:component_class_state][@component_name].has_key?(:instance_defaults) &&

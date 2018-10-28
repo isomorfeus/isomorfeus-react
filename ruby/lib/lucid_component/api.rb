@@ -14,7 +14,7 @@ module LucidComponent
 
         def store
           @default_instance_store_defined = true
-          @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new
+          @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new(default_props, self.to_s)
         end
 
         def prop(name, options = `null`)

@@ -31,7 +31,7 @@ module React
 
           def store
             @default_instance_store_defined = true
-            @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new
+            @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new(state, self.to_s)
           end
 
           def component_did_catch(&block)
