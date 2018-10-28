@@ -57,7 +57,7 @@ module React
             var props = null;
 
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(#@native, args[0]);
+              props = Opal.React.to_native_react_props(args[0]);
             }
             Opal.React.internal_render(element, props, block);
           }
@@ -67,7 +67,7 @@ module React
             var props = null;
 
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(#@native, args[0]);
+              props = Opal.React.to_native_react_props(args[0]);
             }
             Opal.React.internal_render(element, props, block);
           }

@@ -6,7 +6,7 @@ module React
           var native_props = null;
 
           if (props) {
-            native_props = Opal.React.to_native_react_props(#@native, args[0]);
+            native_props = Opal.React.to_native_react_props(args[0]);
           }
           Opal.React.internal_render(React.Fragment, native_props, block);
         }
@@ -37,7 +37,7 @@ module React
           var native_props = null;
 
           if (props) {
-            native_props = Opal.React.to_native_react_props(#@native, args[0]);
+            native_props = Opal.React.to_native_react_props(args[0]);
           }
           Opal.React.internal_render(React.StrictMode, native_props, block);
         }

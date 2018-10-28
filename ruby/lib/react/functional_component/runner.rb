@@ -13,7 +13,6 @@ module React
 
       def initialize(props)
         @props = ::React::Component::Props.new(props)
-        @native = `Opal.React.FunctionalComponent.Runner.event_handlers`
       end
     end
   end

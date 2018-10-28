@@ -10,7 +10,7 @@ module React
                 var props = null;
 
                 if (args.length > 0) {
-                  props = Opal.React.to_native_react_props(#{base}.react_component, args[0]);
+                  props = Opal.React.to_native_react_props(args[0]);
                 }
                 Opal.React.internal_render(#{base}.react_component, props, block);
               }
@@ -21,7 +21,7 @@ module React
                 var props = null;
 
                 if (args.length > 0) {
-                  props = Opal.React.to_native_react_props(#{base}.react_component, args[0]);
+                  props = Opal.React.to_native_react_props(args[0]);
                 }
                 Opal.React.internal_render(#{base}.react_component, props, block);
               }
@@ -191,7 +191,9 @@ module React
             %x{
               self.react_component.prototype.render = function() {
                 Opal.React.render_buffer.push([]);
+                Opal.React.active_components.push(this);
                 #{`this.__ruby_instance`.instance_exec(&block)};
+                Opal.React.active_components.pop();
                 return Opal.React.render_buffer.pop();
               }
             }

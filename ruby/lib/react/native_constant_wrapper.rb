@@ -2,10 +2,9 @@ module React
   class NativeConstantWrapper
     include ::Native::Wrapper
 
-    def initialize(native, const_name, outer_native)
+    def initialize(native, const_name)
       @native = native
       @const_name = const_name
-      @outer_native = outer_native
     end
 
     def method_missing(name, *args, &block)
@@ -22,7 +21,7 @@ module React
           var react_element;
 
           if (args.length > 0) {
-            props = Opal.React.to_native_react_props(#@outer_native, args[0]);
+            props = Opal.React.to_native_react_props(args[0]);
           }
           Opal.React.internal_render(component, props, block);
         } else {

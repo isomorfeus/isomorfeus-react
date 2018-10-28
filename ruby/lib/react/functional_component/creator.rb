@@ -15,7 +15,9 @@ module React
         %x{
           var fun = function(props) {
             Opal.React.render_buffer.push([]);
+            Opal.React.active_components.push(Opal.React.FunctionalComponent.Runner.event_handlers);
             #{React::FunctionalComponent::Runner.new(`props`).instance_exec(&block)};
+            Opal.React.active_components.pop();
             return Opal.React.render_buffer.pop();
           }
           var const_names;

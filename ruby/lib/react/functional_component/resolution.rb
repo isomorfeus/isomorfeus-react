@@ -8,7 +8,7 @@ module React
           def const_missing(const_name)
             %x{
               if (typeof Opal.global[const_name] == "object") {
-                var new_const = #{React::NativeConstantWrapper.new(`Opal.global[const_name]`, const_name, `Opal.React.FunctionalComponent.Runner.event_handlers`)};
+                var new_const = #{React::NativeConstantWrapper.new(`Opal.global[const_name]`, const_name)};
                 #{Object.const_set(const_name, `new_const`)};
                 return new_const;
               } else {
@@ -47,7 +47,7 @@ module React
             var props = null;
 
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(Opal.React.FunctionalComponent.Runner.event_handlers, args[0]);
+              props = Opal.React.to_native_react_props(args[0]);
             }
             Opal.React.internal_render(component, props, block);
           } else {

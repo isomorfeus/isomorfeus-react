@@ -15,7 +15,7 @@ module React
       return res;
     }
 
-    self.to_native_react_props = function(native_component, ruby_style_props) {
+    self.to_native_react_props = function(ruby_style_props) {
         var result = {};
         var keys = ruby_style_props.$keys();
         var keys_length = keys.length;
@@ -24,8 +24,9 @@ module React
             var handler = ruby_style_props['$[]'](keys[i]);
             if (typeof handler === "function") {
               result[Opal.React.lower_camelize(keys[i])] = handler;
-            } else if (native_component && native_component !== nil) {
-              result[Opal.React.lower_camelize(keys[i])] = native_component[handler];
+            } else {
+              var active_component = Opal.React.active_component();
+              result[Opal.React.lower_camelize(keys[i])] = active_component[handler];
             }
           } else if (keys[i].startsWith("aria_")) {
             result[keys[i].replace("_", "-")] = ruby_style_props['$[]'](keys[i]);
@@ -57,6 +58,14 @@ module React
       Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
     };
 
+    self.active_components = [];
+
+    self.active_component = function() {
+      var length = Opal.React.active_components.length;
+      if (length === 0) { return null; };
+      return Opal.React.active_components[length-1];
+    };
+
     self.active_redux_components = [];
 
     self.active_redux_component = function() {
@@ -72,7 +81,7 @@ module React
       block_result = block.call
       block_result = `null` unless block_result
     end
-    native_props = props ? `Opal.React.to_native_react_props(null, props)` : `null`
+    native_props = props ? `Opal.React.to_native_react_props(props)` : `null`
     `React.cloneElement(ruby_react_element.$to_n(), native_props, block_result)`
   end
 
@@ -100,7 +109,7 @@ module React
 
       Opal.React.render_buffer.push([]);
       #{
-        native_props = `Opal.React.to_native_react_props(null, props)` if props;
+        native_props = `Opal.React.to_native_react_props(props)` if props;
       }
       if (block !== nil) {
         block_result = block.$call()
