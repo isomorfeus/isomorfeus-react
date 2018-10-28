@@ -9,6 +9,7 @@ module LucidComponent
       base.include(::React::Component::API)
       base.include(::React::ReduxComponent::API)
       base.include(::LucidComponent::API)
+      base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)
       base.include(::React::Component::Resolution)
     end

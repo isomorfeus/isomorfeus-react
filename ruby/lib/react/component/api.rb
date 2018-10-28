@@ -199,12 +199,6 @@ module React
         end
       end
 
-      def initialize(native_component)
-        @native = native_component
-        @props = ::React::Component::Props.new(@native.JS[:props])
-        @state = ::React::Component::State.new(@native)
-      end
-
       def force_update(&block)
         if block_given?
           # this maybe needs instance_exec too

@@ -9,6 +9,7 @@ module React
         base.include(::React::Component::Elements)
         base.include(::React::Component::API)
         base.include(::React::ReduxComponent::API)
+        base.include(::React::ReduxComponent::Initializer)
         base.include(::React::Component::Features)
         base.include(::React::Component::Resolution)
       end
