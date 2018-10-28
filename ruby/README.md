@@ -282,7 +282,7 @@ Event handlers must be declared using the `event_handler` DSL. This is to make s
 compared by reference by shouldComponentUpdate(). Use the DSL like so:
 ```ruby
 class MyComponent < React::Component::Base
-  event_handler :handle_click do |event, info|
+  event_handler :handle_click do |event|
     state.toggler = !state.toggler
   end
   
@@ -297,7 +297,7 @@ To the event handler the event is passed as argument. The event is a ruby object
 and events as the React.Synthetic event. Methods are underscored. Example:
 ```ruby
 class MyComponent < React::Component::Base
-  event_handler :handle_click do |event, info|
+  event_handler :handle_click do |event|
     event.prevent_default 
     event.current_target
   end
@@ -314,11 +314,11 @@ The event_handler DSL can be used within the React::FunctionalComponent::Creator
 the event handler must be applied to a element.
 ```ruby
 class React::FunctionalComponent::Creator
-  event_handler :show_red_alert do |event, info|
+  event_handler :show_red_alert do |event|
     `alert("RED ALERT!")`
   end
 
-  event_handler :show_orange_alert do |event, info|
+  event_handler :show_orange_alert do |event|
     `alert("ORANGE ALERT!")`
   end
 

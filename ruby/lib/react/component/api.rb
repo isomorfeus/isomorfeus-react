@@ -3,6 +3,32 @@ module React
     module API
       def self.included(base)
         base.instance_exec do
+          base_module = base.to_s.deconstantize
+          if base_module != ''
+            base_module.constantize.define_singleton_method(base.to_s.demodulize) do |*args, &block|
+              %x{
+                var props = null;
+
+                if (args.length > 0) {
+                  props = Opal.React.to_native_react_props(#{base}.react_component, args[0]);
+                }
+                Opal.React.internal_render(#{base}.react_component, props, block);
+              }
+            end
+          else
+            Object.define_method(base.to_s) do |*args, &block|
+              %x{
+                var props = null;
+
+                if (args.length > 0) {
+                  props = Opal.React.to_native_react_props(#{base}.react_component, args[0]);
+                }
+                Opal.React.internal_render(#{base}.react_component, props, block);
+              }
+            end
+          end
+
+
           attr_accessor :props
           attr_accessor :state
 

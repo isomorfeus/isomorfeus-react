@@ -26,8 +26,10 @@ module React
         # html tags are defined as methods, so they will not end up here.
         # first check for native component and render it, we want to be fast for native components
         # second check for ruby component and render it, they are a bit slower anyway
+        # 2.1 check current context
+        # 2.2 check context of module (TODO This can be improved to walk all modules up)
         # third pass on method missing
-
+        # language=JS
         %x{
           var component = null;
           if (typeof Opal.global[component_name] == "function") {
@@ -42,6 +44,25 @@ module React
             }
             catch(err) {
               component = null;
+            }
+            if (!component) {
+              var modules = self.$class().$to_s().split("::");
+              var modules_length = modules.length - 1;
+              var module;
+              var constant;
+              for (var i = modules_length; i > 0; i--) {
+                try {
+                  module = modules.slice(0, i).join('::')
+                  constant = module.$constantize().$const_get(component_name, true);
+                  if (typeof constant.react_component == "function") {
+                    component = constant.react_component;
+                    break;
+                  }
+                }
+                catch(err) {
+                  component = null;
+                }
+              }
             }
           }
           if (component) {

@@ -13,8 +13,8 @@ module React
       def method_missing(key, *args, &block)
         if args.any?
           # set initial class state
-
-          @state.isomorfeus_store[:application_state][(`key.endsWith('=')` ? key.chop : key)] = args[0]
+          key = key.chop if `key.endsWith('=')`
+          @state.isomorfeus_store[:application_state][key] = args[0]
           current_state = Isomorfeus.store.get_state
           if !(current_state[:application_state].has_key?(key))
             Isomorfeus.store.dispatch(type: 'APPLICATION_STATE', name: key, value: args[0])

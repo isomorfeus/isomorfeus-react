@@ -20,11 +20,11 @@ module React
         var keys = ruby_style_props.$keys();
         var keys_length = keys.length;
         for (var i = 0; i < keys_length; i++) {
-          if (keys[i].startsWith("on_") && native_component) {
+          if (keys[i].startsWith("on_")) {
             var handler = ruby_style_props['$[]'](keys[i]);
             if (typeof handler === "function") {
               result[Opal.React.lower_camelize(keys[i])] = handler;
-            } else {
+            } else if (native_component && native_component !== nil) {
               result[Opal.React.lower_camelize(keys[i])] = native_component[handler];
             }
           } else if (keys[i].startsWith("aria_")) {

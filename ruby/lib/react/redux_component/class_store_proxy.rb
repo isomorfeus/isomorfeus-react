@@ -23,7 +23,7 @@ module React
           if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name] &&
             @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
             return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_class_state].JS[@component_name].JS[key]
-          elsif @component_instance.default_class_store_defined && @component_instance.class.class_store.to_h.has_key?(key)
+          elsif @component_instance.class.default_class_store_defined && @component_instance.class.class_store.to_h.has_key?(key)
             # check if a default value was given
             return @component_instance.class.class_store.to_h[key]
           end
