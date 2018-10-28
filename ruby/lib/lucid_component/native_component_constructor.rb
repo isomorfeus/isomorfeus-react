@@ -63,7 +63,7 @@ module LucidComponent
 
             for (var property in next_props) {
               if (property === "isomorfeus_store") {
-                var res = this.scu_for_used_store_paths(this.state.isomorfeus_store, next_state.isomorfeus_store);
+                var res = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
                 if (res) { return true; }
               }
               if (next_props.hasOwnProperty(property)) {
@@ -84,9 +84,9 @@ module LucidComponent
             }
             return false;
           }
-          scu_for_used_store_paths(current_state, next_state) {
-            var unique_used_store_paths = this.used_store_paths.filter(function(elem, pos) {
-              return (this.used_store_paths.indexOf(elem) === pos);
+          scu_for_used_store_paths(self, current_state, next_state) {
+            var unique_used_store_paths = self.used_store_paths.filter(function(elem, pos) {
+              return (self.used_store_paths.indexOf(elem) === pos);
             });
             var used_length = unique_used_store_paths.length;
             var store_path;
@@ -94,8 +94,8 @@ module LucidComponent
             var next_value;
             for (var i = 0; i < used_length; i++) {
               store_path = unique_used_store_paths[i];
-              current_value = store_path.reduce(function(prev, curr) { prev && prev[curr] }, current_state);
-              next_value = store_path.reduce(function(prev, curr) { prev && prev[curr] }, next_state);
+              current_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
+              next_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, next_state);
               if (current_value !== next_value) { return true; };
             }
             return false;

@@ -11,7 +11,7 @@ module React
       end
 
       def method_missing(key, *args, &block)
-        if args.any?
+        if `args.length > 0`
           # set initial class state
           key = key.chop if `key.endsWith('=')`
           @state.isomorfeus_store[:application_state][key] = args[0]
