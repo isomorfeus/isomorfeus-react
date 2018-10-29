@@ -1,9 +1,9 @@
 module React
-  module FunctionalComponent
+  module FunctionComponent
     class Runner
       include ::React::Component::Elements
       include ::React::Component::Features
-      include ::React::FunctionalComponent::Resolution
+      include ::React::FunctionComponent::Resolution
 
       attr_accessor :props
 

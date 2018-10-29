@@ -40,10 +40,10 @@ if RUBY_ENGINE == 'opal'
   # React::PureComponent
   require 'react/pure_component/mixin'
   require 'react/pure_component/base'
-  # Functional Component
-  require 'react/functional_component/resolution'
-  require 'react/functional_component/runner'
-  require 'react/functional_component/creator'
+  # Function Component
+  require 'react/function_component/resolution'
+  require 'react/function_component/runner'
+  require 'react/function_component/creator'
   # Redux::Component
   require 'react/redux_component/component_class_store_defaults'
   require 'react/redux_component/component_instance_store_defaults'

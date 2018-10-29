@@ -144,4 +144,8 @@ module React
   def self.isValidElement(react_element)
     `React.isValidElement(react_element)`
   end
+
+  def memo(function_component)
+    `React.memo(function_component)`
+  end
 end
