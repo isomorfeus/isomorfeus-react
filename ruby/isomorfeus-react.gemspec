@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description   = 'Write React Components in Ruby.'
 
   s.files         = `git ls-files`.split("\n").reject { |f| f.match(%r{^(gemfiles|s)/}) }
-  s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
+  #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
   s.add_dependency 'opal', '>= 0.11.0', '< 0.12.0'

@@ -18,16 +18,26 @@ module Isomorfeus
       }
     end
 
-    def self.mount(component, params = nil, element_query = nil)
+    def self.mount(component, params = nil, element_or_query = nil)
       # TODO: server rendering
-      if element_query.nil?
+      if element_or_query.nil?
         if params.nil?
-          element_query = 'div'
+          element = `document.body.querySelector('div')`
         elsif params.class == String
-          element_query = params
+          element = `document.body.querySelector(params)`
+          params = nil
+        elsif params.is_a?(Browser::DOM::Node)
+          element = params.to_n
+          params = nil
+        end
+      else
+        if element_or_query.class == String
+          element = `document.body.querySelector(params)`
+        elsif element_or_query.is_a?(Browser::DOM::Node)
+          element = params.to_n
         end
       end
-      element = `document.body.querySelector(element_query)`
+
       ReactDOM.render(React.create_element(component, params), element)
     end
 
