@@ -171,6 +171,14 @@ module React
             }
           end
 
+          def get_derived_state_from_error(&block)
+            %x{
+              self.react_component.prototype.getDerivedStateFromError = function(error) {
+                return #{`this.__ruby_instance`.instance_exec(error, &block)};
+              }
+            }
+          end
+
           def get_derived_state_from_props(&block)
             %x{
               self.react_component.prototype.getDerivedStateFromProps = function(props, state) {
