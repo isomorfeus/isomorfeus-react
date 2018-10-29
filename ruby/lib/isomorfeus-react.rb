@@ -18,7 +18,6 @@ if RUBY_ENGINE == 'opal'
   require 'react/synthetic_event'
   require 'react_dom'
   # React::Component
-  require 'react/resolution'
   require 'react/component/api'
   require 'react/component/unsafe_api'
   require 'react/component/initializer'
