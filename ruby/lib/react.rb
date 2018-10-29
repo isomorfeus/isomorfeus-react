@@ -145,11 +145,11 @@ module React
     `React.isValidElement(react_element)`
   end
 
-  def memo(function_component)
-    `React.memo(function_component)`
-  end
-
   def self.lazy(import_statement_function)
     `React.lazy(import_statement_function)`
+  end
+
+  def self.memo(function_component)
+    `React.memo(function_component)`
   end
 end
