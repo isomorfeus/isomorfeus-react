@@ -48,7 +48,6 @@ module LucidApp
             this.listener = this.listener.bind(this);
             this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
           }
-          static contextType = Opal.global.LucidApplicationContext;
           static get displayName() {
             return #{component_name};
           }

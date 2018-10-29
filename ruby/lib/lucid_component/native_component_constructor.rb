@@ -125,6 +125,7 @@ module LucidComponent
             return null;
           }
         }
+        base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
       }
     end
   end
