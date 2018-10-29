@@ -42,6 +42,17 @@ module React
           Opal.React.internal_render(React.StrictMode, native_props, block);
         }
       end
+
+      def Suspense(props = `null`, &block)
+        %x{
+          var native_props = null;
+
+          if (props) {
+            native_props = Opal.React.to_native_react_props(args[0]);
+          }
+          Opal.React.internal_render(React.Suspense, native_props, block);
+        }
+      end
     end
   end
 end
