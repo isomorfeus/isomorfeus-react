@@ -2,6 +2,9 @@
 
 Develop React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
+## Chat
+At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
+
 ## Versioning
 isomorfeus-react version follows the React version which features and API it implements.
 Isomorfeus-react 16.5.x implements features and the API of React 16.6 and should be used with React 16.6
@@ -619,6 +622,17 @@ Overwriting should_component_update is also not supported.
 
 **Data flow of a LucidComponent within a LucidApp:**
 ![LucidComponent within a LucidApp Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_lucid_component.png)
+
+### Code Splitting with Suspense (doc is wip)
+
+React.lazy is availalable and so is the Suspense Component, in a render block:
+```ruby
+render do
+  Suspense do
+    MyComponent()
+  end
+end
+```
 
 ### Development Tools
 The React Developer Tools allow for analyzing, debugging and profiling components. A very helpful toolset and working very nice with isomorfeus-react:
