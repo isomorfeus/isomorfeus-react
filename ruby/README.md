@@ -154,7 +154,14 @@ end
 This creates a native javascript components. 
 The file containing the creator must be explicitly required, because the automatic resolution of Javascript constant names
 is not done by opal-autoloader.
- 
+
+A custom memo props function can be utilized when using React.memo directly with a function component and a block for checking the props:
+```ruby
+React.memo(`MyComponent`) do |prev_props, next_props|
+  prev_props.var != next_props.var
+end
+```
+
 A Function Component can then be used in other Components:
 ```ruby
 class MyComponent < React::PureComponent::Base

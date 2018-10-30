@@ -149,7 +149,16 @@ module React
     `React.lazy(import_statement_function)`
   end
 
-  def self.memo(function_component)
-    `React.memo(function_component)`
+  def self.memo(function_component, &block)
+    if block_given?
+      %x{
+        var fun = function(prev_props, next_props) {
+          return #{block.call(::React::Component::Props.new(prev_props), ::React::Component::Props.new(next_props))};
+        }
+        return React.memo(function_component, fun);
+      }
+    else
+      `React.memo(function_component)`
+    end
   end
 end
