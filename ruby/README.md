@@ -23,6 +23,21 @@ and to your client code add:
 ```ruby
 require 'isomorfeus-react' # this will also require isomorfeus-redux
 ```
+
+### Dependencies
+
+For full functionality the following are required:
+- [Opal ES6 import export](https://github.com/opal/opal/pull/1832)
+- [Opal Webpack Loader](https://github.com/janbiedermann/opal-webpack-loader)
+- [Opal Autoloader](https://github.com/janbiedermann/opal-autoloader)
+
+For the Gemfile:
+```ruby
+gem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'
+gem 'opal-webpack-loader', '~> 0.3.7'
+gem 'opal-autoloader', '~> 0.0.3'
+```
+
 ## Usage
 Because isomorfeus-react follows closely the React principles/implementation/API and Documentation, most things of the official React documentation
 apply, but in the Ruby way, see:
