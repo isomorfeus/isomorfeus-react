@@ -1,21 +1,5 @@
 module Isomorfeus
   module ViewHelpers
-    def isomorfeus_script_tag(options = {})
-      # client side used options:
-      # current_user_id
-      # session_id
-      # form_authenticity_token
-      options_hash = Isomorfeus.options_hash_for_client
-      options_hash.merge!(options)
-      tag = <<~SCRIPT
-        <script type="text/javascript">
-          Opal.IsomorfeusOptions = #{options_hash.to_json};
-          Opal.Isomorfeus.$init();
-        </script>
-      SCRIPT
-      tag.respond_to?(:html_safe) ? tag.html_safe : tag
-    end
-
     def react_component(component_name, params)
       component_name_id = component_id_name(component_name)
       tag = <<~SCRIPT

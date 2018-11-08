@@ -62,6 +62,19 @@ module React
             Opal.React.internal_render(element, props, block);
           }
         end
+        # its actually nice, when reading code, to visually distinguish between tags like DIV and other things
+        # a Div would make that a bit harder.
+        #
+        # define_method(`element[0].toUpperCase() + element.substr(1)`) do |*args, &block|
+        #   %x{
+        #     var props = null;
+        #
+        #     if (args.length > 0) {
+        #       props = Opal.React.to_native_react_props(args[0]);
+        #     }
+        #     Opal.React.internal_render(element, props, block);
+        #   }
+        # end
         define_method(`element.toUpperCase()`) do |*args, &block|
           %x{
             var props = null;
