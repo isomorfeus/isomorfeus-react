@@ -65,8 +65,7 @@ module LucidComponent
               if (property === "isomorfeus_store") {
                 var res = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
                 if (res) { return true; }
-              }
-              if (next_props.hasOwnProperty(property)) {
+              } else if (next_props.hasOwnProperty(property)) {
                 if (!this.props.hasOwnProperty(property)) { return true; };
                 if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
                 else if (typeof next_props[property] !== "undefined" && typeof next_props[property]['$!='] !== "undefined" && typeof this.props[property] !== "undefined" && typeof this.props[property]['$!='] !== "undefined") {
@@ -85,15 +84,20 @@ module LucidComponent
             return false;
           }
           scu_for_used_store_paths(self, current_state, next_state) {
-            var unique_used_store_paths = self.used_store_paths.filter(function(elem, pos) {
-              return (self.used_store_paths.indexOf(elem) === pos);
+            var unique_used_store_paths = self.used_store_paths.filter(function(elem, pos, paths) {
+              return (paths.indexOf(elem) === pos);
             });
             var used_length = unique_used_store_paths.length;
             var store_path;
             var current_value;
             var next_value;
+            var store_path_last;
             for (var i = 0; i < used_length; i++) {
               store_path = unique_used_store_paths[i];
+              store_path_last = store_path.length - 1;
+              if (store_path[store_path_last].constructor === Array) {
+                store_path[store_path_last] = JSON.stringify(store_path[store_path_last]);
+              }
               current_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
               next_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, next_state);
               if (current_value !== next_value) { return true; };

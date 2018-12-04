@@ -55,7 +55,10 @@ module React
             }
             listener() {
               var next_state = Object.assign({}, this.state, { isomorfeus_store: Opal.Isomorfeus.store.native.getState() });
-              if (this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store)) { this.setState(next_state); }
+              if (this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store)) {
+                var self = this;
+                /* setTimeout(function() { */  self.setState(next_state); /* }, 0); */
+              }
             }
             register_used_store_path(path) {
               this.used_store_paths.push(path);
@@ -83,10 +86,9 @@ module React
               }
               for (var property in next_state) {
                 if (property === "isomorfeus_store") {
-                  var res = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
+                  return this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
                   if (res) { return true; }
-                }
-                if (next_state.hasOwnProperty(property)) {
+                } else if (next_state.hasOwnProperty(property)) {
                   if (!this.state.hasOwnProperty(property)) { return true; };
                   if (typeof next_state[property]['$!='] !== "undefined" && typeof this.state[property]['$!='] !== "undefined") {
                     if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
@@ -96,15 +98,20 @@ module React
               return false;
             }
             scu_for_used_store_paths(self, current_state, next_state) {
-              var unique_used_store_paths = self.used_store_paths.filter(function(elem, pos) {
-                return (self.used_store_paths.indexOf(elem) === pos);
+              var unique_used_store_paths = self.used_store_paths.filter(function(elem, pos, paths) {
+                return (paths.indexOf(elem) === pos);
               });
               var used_length = unique_used_store_paths.length;
               var store_path;
               var current_value;
               var next_value;
+              var store_path_last;
               for (var i = 0; i < used_length; i++) {
                 store_path = unique_used_store_paths[i];
+                store_path_last = store_path.length - 1;
+                if (store_path[store_path_last].constructor === Array) {
+                  store_path[store_path_last] = JSON.stringify(store_path[store_path_last]);
+                }
                 current_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
                 next_value = store_path.reduce(function(prev, curr) { return prev && prev[curr]; }, next_state);
                 if (current_value !== next_value) { return true; };

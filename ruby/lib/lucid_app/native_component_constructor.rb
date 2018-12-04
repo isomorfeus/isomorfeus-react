@@ -56,7 +56,8 @@ module LucidApp
             var current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);
             var next_ruby_state = Opal.Hash.$new(next_state);
             if (#{`next_ruby_state` != `current_ruby_state`}) {
-              this.setState({isomorfeus_store_state: next_state});
+              var self = this;
+              /* setTimeout(function() { */ self.setState({ isomorfeus_store_state: next_state }); /*}, 0 ); */
             }
           }
           componentWillUnmount() {
