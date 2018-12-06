@@ -9,9 +9,7 @@ module React
         var props = null;
         var react_element;
 
-        if (args.length > 0) {
-          props = Opal.React.to_native_react_props(args[0]);
-        }
+        if (args.length > 0) { props = args[0]; }
 
         var react_element = React.createElement(this.native.Consumer, props, function(value) {
           if (block !== nil) {
@@ -36,11 +34,8 @@ module React
     def Provider(*args, &block)
       %x{
         var props = null;
-
-        if (args.length > 0) {
-          props = Opal.React.to_native_react_props(args[0]);
-        }
-        Opal.React.internal_render(this.native.Provider, props, block);
+        if (args.length > 0) { props = args[0]; }
+        Opal.React.internal_render(this.native.Provider, props, null, block);
       }
     end
   end

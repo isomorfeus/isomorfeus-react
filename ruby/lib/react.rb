@@ -37,12 +37,15 @@ module React
         return result;
     }
 
-    self.internal_render = function(component, props, block) {
+    self.internal_render = function(component, props, string_child, block) {
       var children;
       var block_result;
       var react_element;
+      var native_props = null;
 
-      if (block !== nil) {
+      if (string_child) {
+        children = string_child;
+      } else if (block !== nil) {
         Opal.React.render_buffer.push([]);
         block_result = block.$call();
         if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
@@ -54,7 +57,8 @@ module React
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       }
-      react_element = React.createElement(component, props, children);
+      if (props) { native_props = Opal.React.to_native_react_props(props); }
+      react_element = React.createElement(component, native_props, children);
       Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
     };
 

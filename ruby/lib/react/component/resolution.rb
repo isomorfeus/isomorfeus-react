@@ -54,12 +54,13 @@ module React
             }
           }
           if (component) {
-            var props = null;
-
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(args[0]);
-            }
-            Opal.React.internal_render(component, props, block);
+              var last_arg = args[args.length - 1];
+              if (typeof last_arg === 'string' || last_arg instanceof String) {
+                if (args.length === 1) { Opal.React.internal_render(component, null, last_arg, null); }
+                else { Opal.React.internal_render(component, args[0], last_arg, null); }
+              } else { Opal.React.internal_render(component, args[0], null, block); }
+            } else { Opal.React.internal_render(component, null, null, block); }
           } else {
             return #{_react_component_resolution_original_method_missing(component_name, *args, block)};
           }

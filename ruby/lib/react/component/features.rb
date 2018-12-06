@@ -1,14 +1,15 @@
 module React
   module Component
     module Features
-      def Fragment(props = `null`, &block)
+      def Fragment(*args, &block)
         %x{
-          var native_props = null;
-
-          if (props) {
-            native_props = Opal.React.to_native_react_props(args[0]);
-          }
-          Opal.React.internal_render(React.Fragment, native_props, block);
+          if (args.length > 0) {
+            var last_arg = args[args.length - 1];
+            if (typeof last_arg === 'string' || last_arg instanceof String) {
+              if (args.length === 1) { Opal.React.internal_render(React.Fragment, null, last_arg, null); }
+              else { Opal.React.internal_render(React.Fragment, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(React.Fragment, args[0], null, block); }
+          } else { Opal.React.internal_render(React.Fragment, null, null, block); }
         }
       end
 
@@ -32,25 +33,27 @@ module React
         }
       end
 
-      def StrictMode(props = `null`, &block)
+      def StrictMode(*args, &block)
         %x{
-          var native_props = null;
-
-          if (props) {
-            native_props = Opal.React.to_native_react_props(args[0]);
-          }
-          Opal.React.internal_render(React.StrictMode, native_props, block);
+          if (args.length > 0) {
+            var last_arg = args[args.length - 1];
+            if (typeof last_arg === 'string' || last_arg instanceof String) {
+              if (args.length === 1) { Opal.React.internal_render(React.StrictMode, null, last_arg, null); }
+              else { Opal.React.internal_render(React.StrictMode, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(React.StrictMode, args[0], null, block); }
+          } else { Opal.React.internal_render(React.StrictMode, null, null, block); }
         }
       end
 
-      def Suspense(props = `null`, &block)
+      def Suspense(*args, &block)
         %x{
-          var native_props = null;
-
-          if (props) {
-            native_props = Opal.React.to_native_react_props(args[0]);
-          }
-          Opal.React.internal_render(React.Suspense, native_props, block);
+          if (args.length > 0) {
+            var last_arg = args[args.length - 1];
+            if (typeof last_arg === 'string' || last_arg instanceof String) {
+              if (args.length === 1) { Opal.React.internal_render(React.Suspense, null, last_arg, null); }
+              else { Opal.React.internal_render(React.Suspense, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(React.Suspense, args[0], null, block); }
+          } else { Opal.React.internal_render(React.Suspense, null, null, block); }
         }
       end
     end

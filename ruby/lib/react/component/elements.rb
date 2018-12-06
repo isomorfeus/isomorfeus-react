@@ -54,35 +54,24 @@ module React
       SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
         define_method(element) do |*args, &block|
           %x{
-            var props = null;
-
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(args[0]);
-            }
-            Opal.React.internal_render(element, props, block);
+              var last_arg = args[args.length - 1];
+              if (typeof last_arg === 'string' || last_arg instanceof String) {
+                if (args.length === 1) { Opal.React.internal_render(element, null, last_arg, null); }
+                else { Opal.React.internal_render(element, args[0], last_arg, null); }
+              } else { Opal.React.internal_render(element, args[0], null, block); }
+            } else { Opal.React.internal_render(element, null, null, block); }
           }
         end
-        # its actually nice, when reading code, to visually distinguish between tags like DIV and other things
-        # a Div would make that a bit harder.
-        #
-        # define_method(`element[0].toUpperCase() + element.substr(1)`) do |*args, &block|
-        #   %x{
-        #     var props = null;
-        #
-        #     if (args.length > 0) {
-        #       props = Opal.React.to_native_react_props(args[0]);
-        #     }
-        #     Opal.React.internal_render(element, props, block);
-        #   }
-        # end
         define_method(`element.toUpperCase()`) do |*args, &block|
           %x{
-            var props = null;
-
             if (args.length > 0) {
-              props = Opal.React.to_native_react_props(args[0]);
-            }
-            Opal.React.internal_render(element, props, block);
+              var last_arg = args[args.length - 1];
+              if (typeof last_arg === 'string' || last_arg instanceof String) {
+                if (args.length === 1) { Opal.React.internal_render(element, null, last_arg, null); }
+                else { Opal.React.internal_render(element, args[0], last_arg, null); }
+              } else { Opal.React.internal_render(element, args[0], null, block); }
+            } else { Opal.React.internal_render(element, null, null, block); }
           }
         end
       end
