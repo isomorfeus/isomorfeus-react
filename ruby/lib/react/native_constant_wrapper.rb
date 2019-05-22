@@ -21,10 +21,10 @@ module React
           if (args.length > 0) {
             var last_arg = args[args.length - 1];
             if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(element, null, last_arg, null); }
-              else { Opal.React.internal_render(element, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(element, args[0], null, block); }
-          } else { Opal.React.internal_render(element, null, null, block); }
+              if (args.length === 1) { Opal.React.internal_render(react_element, null, last_arg, null); }
+              else { Opal.React.internal_render(react_element, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(react_element, args[0], null, block); }
+          } else { Opal.React.internal_render(react_element, null, null, block); }
         } else {
           #{raise NameError, "No such native Component #@const_name.#{name}"};
         }
