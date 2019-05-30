@@ -46,7 +46,6 @@ module React
               }
               this.listener = this.listener.bind(this);
               this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
-              this.register_used_store_path('application_state', 'render_trigger');
             }
             data_access() {
               return this.state.isomorfeus_store
