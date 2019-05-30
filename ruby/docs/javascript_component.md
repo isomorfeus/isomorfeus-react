@@ -1,0 +1,27 @@
+### React Javascript Components
+
+Native React Javascript Components must be available in the global namespace. When importing them with webpack
+this can be ensured by assigning them to the global namespace:
+```javascript
+import * as Sem from 'semantic-ui-react'
+global.Sem = Sem;
+```
+They can then be used like so:
+```ruby
+class MyComponent < React::Component::Base
+  render do
+    Sem.Button(as: 'a') { 'useful text' }
+  end
+end
+```
+
+Some Javascript components accept another Javascript component as property, like for example React Router. The Ruby class won't work here,
+instead the Javascript React component of the Ruby class must be passed.
+It can be accessed by using Opals JS syntax to get the React Component of the Ruby class:
+```ruby
+Route(path: '/', strict: true, component: MyComponent.JS[:react_component])
+```
+Native Javascript components can be passed using the Javascript inlining of Opal, this also works for function components:
+```ruby
+Route(path: '/a_button', strict: true, component: `Sem.Button`)
+```
