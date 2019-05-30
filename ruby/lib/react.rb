@@ -1,6 +1,6 @@
 module React
   # to_native_react_props: the native_component params is used for event handlers, it keeps the event handlers
-  # it does not need to be component, can be a object with the event handlers
+  # it does not need to be compone nt, can be a object with the event handlers
   # language=JS
   %x{
     self.render_buffer = [];
@@ -13,7 +13,7 @@ module React
             res += parts[i][0].toUpperCase() + parts[i].slice(1);
       }
       return res;
-    }
+    };
 
     self.to_native_react_props = function(ruby_style_props) {
         var result = {};
@@ -35,7 +35,7 @@ module React
           }
         }
         return result;
-    }
+    };
 
     self.internal_render = function(component, props, string_child, block) {
       var children;
@@ -58,7 +58,7 @@ module React
         else if (children.length == 0) { children = null; }
       }
       if (props) { native_props = Opal.React.to_native_react_props(props); }
-      react_element = React.createElement(component, native_props, children);
+      react_element = Opal.global.React.createElement(component, native_props, children);
       Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
     };
 
@@ -86,12 +86,12 @@ module React
       block_result = `null` unless block_result
     end
     native_props = props ? `Opal.React.to_native_react_props(props)` : `null`
-    `React.cloneElement(ruby_react_element.$to_n(), native_props, block_result)`
+    `Opal.global.React.cloneElement(ruby_react_element.$to_n(), native_props, block_result)`
   end
 
   def self.create_context(const_name, default_value)
     %x{
-      Opal.global[const_name] = React.createContext(default_value);
+      Opal.global[const_name] = Opal.global.React.createContext(default_value);
       var new_const = #{React::ContextWrapper.new(`Opal.global[const_name]`)};
       #{Object.const_set(const_name, `new_const`)};
       return new_const;
@@ -126,31 +126,31 @@ module React
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       }
-      return React.createElement(component, native_props, children);
+      return Opal.global.React.createElement(component, native_props, children);
     }
   end
 
   def self.create_factory(type)
-    native_function = `React.createFactory(type)`
+    native_function = `Opal.global.React.createFactory(type)`
     proc { `native_function.call()` }
   end
 
 
   def self.create_ref
-    React::Ref.new(`React.createRef()`)
+    React::Ref.new(`Opal.global.React.createRef()`)
   end
 
   def self.forwardRef(&block)
     # TODO whats the return here? A React:Element?, doc says a React node, whats that?
-    `React.forwardRef( function(props, ref) { return block.$call().$to_n(); })`
+    `Opal.global.React.forwardRef( function(props, ref) { return block.$call().$to_n(); })`
   end
 
   def self.isValidElement(react_element)
-    `React.isValidElement(react_element)`
+    `Opal.global.React.isValidElement(react_element)`
   end
 
   def self.lazy(import_statement_function)
-    `React.lazy(import_statement_function)`
+    `Opal.global.React.lazy(import_statement_function)`
   end
 
   def self.memo(function_component, &block)
@@ -159,10 +159,10 @@ module React
         var fun = function(prev_props, next_props) {
           return #{block.call(::React::Component::Props.new(prev_props), ::React::Component::Props.new(next_props))};
         }
-        return React.memo(function_component, fun);
+        return Opal.global.React.memo(function_component, fun);
       }
     else
-      `React.memo(function_component)`
+      `Opal.global.React.memo(function_component)`
     end
   end
 end
