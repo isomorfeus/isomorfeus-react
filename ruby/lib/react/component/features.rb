@@ -7,9 +7,9 @@ module React
             var last_arg = args[args.length - 1];
             if (typeof last_arg === 'string' || last_arg instanceof String) {
               if (args.length === 1) { Opal.React.internal_render(React.Fragment, null, last_arg, null); }
-              else { Opal.React.internal_render(React.Fragment, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(React.Fragment, args[0], null, block); }
-          } else { Opal.React.internal_render(React.Fragment, null, null, block); }
+              else { Opal.React.internal_render(Opal.global.React.Fragment, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(Opal.global.React.Fragment, args[0], null, block); }
+          } else { Opal.React.internal_render(Opal.global.React.Fragment, null, null, block); }
         }
       end
 
@@ -27,7 +27,7 @@ module React
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
             }
           }
-          var react_element = React.createPortal(Opal.React.render_buffer.pop(), dom_node);
+          var react_element = Opal.global.React.createPortal(Opal.React.render_buffer.pop(), dom_node);
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
           return null;
         }
@@ -38,10 +38,10 @@ module React
           if (args.length > 0) {
             var last_arg = args[args.length - 1];
             if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(React.StrictMode, null, last_arg, null); }
-              else { Opal.React.internal_render(React.StrictMode, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(React.StrictMode, args[0], null, block); }
-          } else { Opal.React.internal_render(React.StrictMode, null, null, block); }
+              if (args.length === 1) { Opal.React.internal_render(Opal.global.React.StrictMode, null, last_arg, null); }
+              else { Opal.React.internal_render(Opal.global.React.StrictMode, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(Opal.global.React.StrictMode, args[0], null, block); }
+          } else { Opal.React.internal_render(Opal.global.React.StrictMode, null, null, block); }
         }
       end
 
@@ -50,10 +50,10 @@ module React
           if (args.length > 0) {
             var last_arg = args[args.length - 1];
             if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(React.Suspense, null, last_arg, null); }
-              else { Opal.React.internal_render(React.Suspense, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(React.Suspense, args[0], null, block); }
-          } else { Opal.React.internal_render(React.Suspense, null, null, block); }
+              if (args.length === 1) { Opal.React.internal_render(Opal.global.React.Suspense, null, last_arg, null); }
+              else { Opal.React.internal_render(Opal.global.React.Suspense, args[0], last_arg, null); }
+            } else { Opal.React.internal_render(Opal.global.React.Suspense, args[0], null, block); }
+          } else { Opal.React.internal_render(Opal.global.React.Suspense, null, null, block); }
         }
       end
     end
