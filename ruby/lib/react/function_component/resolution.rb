@@ -30,13 +30,15 @@ module React
         # language=JS
         %x{
           var component = null;
-          if (typeof Opal.global[component_name] === "function") {
+          var component_type = typeof Opal.global[component_name];
+          if (component_type === "function" || component_type === "object") {
             component = Opal.global[component_name];
           }
           else {
             try {
               var constant = self.$class().$const_get(component_name, true);
-              if (typeof constant.react_component === "function") {
+              component_type = typeof constant.react_component;
+              if (component_type === "function" || component_type === "object") {
                 component = constant.react_component;
               }
             }
