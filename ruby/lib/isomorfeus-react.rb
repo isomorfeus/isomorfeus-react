@@ -109,6 +109,15 @@ else
   require 'isomorfeus-speednode'
   require 'react/version'
   require 'isomorfeus/config'
+
+  Isomorfeus.env = ENV['RACK_ENV']
+
+  if Isomorfeus.env == 'production'
+    Isomorfeus.server_side_rendering = true
+  else
+    Isomorfeus.server_side_rendering = false
+  end
+
   require 'isomorfeus/execution_environment'
   require 'isomorfeus/react_view_helper'
 

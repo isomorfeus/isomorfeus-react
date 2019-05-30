@@ -105,7 +105,5 @@ module Isomorfeus
         Isomorfeus::VERSION
       end
     end
-
-    self.server_side_rendering = true
   end
 end
