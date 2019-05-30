@@ -8,7 +8,7 @@ module React
         component_name = base.to_s
         # language=JS
         %x{
-          base.react_component = class extends React.Component {
+          base.react_component = class extends Opal.global.React.Component {
             constructor(props) {
               super(props);
               if (base.$default_state_defined()) {
@@ -41,11 +41,12 @@ module React
                   }
                   this[ref] = this[ref].bind(this);
                 } else {
-                  this[ref] = React.createRef();
+                  this[ref] = Opal.global.React.createRef();
                 }
               }
               this.listener = this.listener.bind(this);
               this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
+              this.register_used_store_path('application_state', 'render_trigger');
             }
             data_access() {
               return this.state.isomorfeus_store
@@ -84,10 +85,13 @@ module React
                   } else if (next_props[property] !== this.props[property]) { return true; };
                 }
               }
+              var used_store_result;
               for (var property in next_state) {
                 if (property === "isomorfeus_store") {
-                  return this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
-                  if (res) { return true; }
+                  used_store_result = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
+                  if (used_store_result) {
+                    return true;
+                  }
                 } else if (next_state.hasOwnProperty(property)) {
                   if (!this.state.hasOwnProperty(property)) { return true; };
                   if (typeof next_state[property]['$!='] !== "undefined" && typeof this.state[property]['$!='] !== "undefined") {
