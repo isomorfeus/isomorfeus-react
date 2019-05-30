@@ -8,12 +8,12 @@ module LucidComponent
       # language=JS
       %x{
         base.react_component = function(props) {
-          return React.createElement(LucidApplicationContext.Consumer, null, function(store) {
+          return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
             var store_props = Object.assign({}, props, { isomorfeus_store: store });
-            return React.createElement(base.lucid_react_component, store_props);
+            return Opal.global.React.createElement(base.lucid_react_component, store_props);
           });
         }
-        base.lucid_react_component = class extends React.Component {
+        base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
             if (base.$default_state_defined()) {
@@ -39,7 +39,7 @@ module LucidComponent
                 }
                 this[ref] = this[ref].bind(this);
               } else {
-                this[ref] = React.createRef();
+                this[ref] = Opal.global.React.createRef();
               }
             }
           }
@@ -61,10 +61,13 @@ module LucidComponent
             var this_state_keys = Object.keys(this.state);
             if (next_state_keys.length !== this_state_keys.length) { return true; }
 
+            var used_store_result;
             for (var property in next_props) {
               if (property === "isomorfeus_store") {
-                var res = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
-                if (res) { return true; }
+                used_store_result = this.scu_for_used_store_paths(this, this.state.isomorfeus_store, next_state.isomorfeus_store);
+                if (used_store_result) {
+                  return true;
+                }
               } else if (next_props.hasOwnProperty(property)) {
                 if (!this.props.hasOwnProperty(property)) { return true; };
                 if (property == "children") { if (next_props.children !== this.props.children) { return true; }}

@@ -3,20 +3,27 @@ if RUBY_ENGINE == 'opal'
   require 'native'
   require 'active_support/core_ext/string'
   require 'react/active_support_support'
-  require 'browser/support'
-  require 'browser/event'
-  require 'browser/event_source'
-  require 'browser/screen'
-  require 'browser/socket'
-  require 'browser/window'
-  require 'browser/dom/node'
-  require 'browser/dom/element'
+  require 'isomorfeus/execution_environment'
+  if Isomorfeus.on_browser?
+    require 'browser/support'
+    require 'browser/event'
+    require 'browser/event_source'
+    require 'browser/screen'
+    require 'browser/socket'
+    require 'browser/window'
+    require 'browser/dom/node'
+    require 'browser/dom/element'
+  end
   require 'isomorfeus-redux'
   require 'react/version'
   require 'react'
   # require 'react/element' # usually not needed
   require 'react/synthetic_event'
-  require 'react_dom'
+  if Isomorfeus.on_browser?
+    require 'react_dom'
+  else
+    require 'react_dom_server'
+  end
   # React::Component
   require 'react/component/api'
   require 'react/component/unsafe_api'
@@ -81,51 +88,33 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_app/mixin'
   require 'lucid_app/base'
 
+  # LucidRouter
+  require 'lucid_router'
+
   # allow mounting of components
-  require 'isomorfeus/top_level'
+  if Isomorfeus.on_browser?
+    require 'isomorfeus/top_level_browser'
+  else
+    require 'isomorfeus/top_level_ssr'
+  end
 
   # initalize Store, options, etc.
   Isomorfeus.init
 else
+  require 'oj'
   require 'opal'
   require 'opal-activesupport'
   require 'opal-browser'
   require 'isomorfeus-redux'
+  require 'isomorfeus-speednode'
   require 'react/version'
   require 'isomorfeus/config'
-  require 'isomorfeus/view_helpers'
+  require 'isomorfeus/execution_environment'
+  require 'isomorfeus/react_view_helper'
 
   Opal.append_path(__dir__.untaint)
 
-  if defined?(Rails)
-    module Isomorfeus
-      module Model
-        class Railtie < Rails::Railtie
-          def delete_first(a, e)
-            a.delete_at(a.index(e) || a.length)
-          end
-
-          config.before_configuration do |_|
-            Rails.configuration.tap do |config|
-              # rails will add everything immediately below app to eager and auto load, so we need to remove it
-              delete_first config.eager_load_paths, "#{config.root}/app/isomorfeus"
-
-              unless Rails.env.production?
-                # rails will add everything immediately below app to eager and auto load, so we need to remove it
-                delete_first config.autoload_paths, "#{config.root}/app/isomorfeus"
-              end
-            end
-          end
-        end
-      end
-    end
-  end
-
-  if Dir.exist?(File.join('app', 'isomorfeus'))
-    # Opal.append_path(File.expand_path(File.join('app', 'isomorfeus', 'components')))
-    Opal.append_path(File.expand_path(File.join('app', 'isomorfeus'))) unless Opal.paths.include?(File.expand_path(File.join('app', 'isomorfeus')))
-  elsif Dir.exist?('isomorfeus')
-    # Opal.append_path(File.expand_path(File.join('isomorfeus', 'components')))
+  if Dir.exist?('isomorfeus')
     Opal.append_path(File.expand_path('isomorfeus')) unless Opal.paths.include?(File.expand_path('isomorfeus'))
   end
 end

@@ -12,7 +12,7 @@ module LucidApp
               Opal.React.active_redux_components.pop();
               Opal.React.active_components.pop();
               var children = Opal.React.render_buffer.pop();
-              return React.createElement(LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
+              return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
             }
           }
         end

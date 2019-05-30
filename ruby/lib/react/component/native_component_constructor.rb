@@ -8,7 +8,7 @@ module React
         component_name = base.to_s
         # language=JS
         %x{
-          base.react_component = class extends React.Component {
+          base.react_component = class extends Opal.global.React.Component {
             constructor(props) {
               super(props);
               if (base.$default_state_defined()) {
@@ -29,7 +29,7 @@ module React
                   }
                   this[ref] = this[ref].bind(this);
                 } else {
-                  this[ref] = React.createRef();
+                  this[ref] = Opal.global.React.createRef();
                 }
               }
             }

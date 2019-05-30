@@ -2,8 +2,8 @@
 
 Develop React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
-## Chat
-At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
+### Community and Support
+At the [Isomorfeus Framework Project](http://isomorfeus.com) 
 
 ## Versioning
 isomorfeus-react version follows the React version which features and API it implements.

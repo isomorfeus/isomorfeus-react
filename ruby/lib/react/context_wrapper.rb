@@ -11,7 +11,7 @@ module React
 
         if (args.length > 0) { props = args[0]; }
 
-        var react_element = React.createElement(this.native.Consumer, props, function(value) {
+        var react_element = Opal.global.React.createElement(this.native.Consumer, props, function(value) {
           if (block !== nil) {
             Opal.React.render_buffer.push([]);
             block_result = block.$call();

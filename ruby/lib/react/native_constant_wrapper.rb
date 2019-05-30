@@ -8,9 +8,11 @@ module React
     end
 
     def method_missing(name, *args, &block)
+      # language=JS
       %x{
         var component = null;
-        if (typeof #@native[name] === "function") {
+        var component_type = typeof #@native[name];
+        if (component_type === "function" || component_type === "object") {
           component = #@native[name];
         }
 

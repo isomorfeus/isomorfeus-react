@@ -44,7 +44,7 @@ module React
 
       def self.memo_component(component_name, &block)
         %x{
-          var fun = React.memo(function(props) {
+          var fun = Opal.global.React.memo(function(props) {
             Opal.React.render_buffer.push([]);
             Opal.React.active_components.push(Opal.React.FunctionComponent.Runner.event_handlers);
             #{React::FunctionComponent::Runner.new(`props`).instance_exec(&block)};
