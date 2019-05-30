@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   s.description   = 'Write React Components in Ruby.'
 
-  s.files         = `git ls-files -- {lib,LICENSE,readme.md}`.split("\n")
+  s.files         = `git ls-files -- {lib,LICENSE,README.md}`.split("\n")
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
