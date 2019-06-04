@@ -2,6 +2,10 @@ module React
   class ContextWrapper
     include ::Native::Wrapper
 
+    def is_wrapped_context
+      true
+    end
+
     def Consumer(*args, &block)
       %x{
         var children = null;
