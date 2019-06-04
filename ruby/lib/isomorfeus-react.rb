@@ -51,8 +51,12 @@ if RUBY_ENGINE == 'opal'
   require 'react/pure_component/base'
   # Function Component
   require 'react/function_component/resolution'
-  require 'react/function_component/runner'
   require 'react/function_component/creator'
+  require 'react/function_component/mixin'
+  require 'react/function_component/base'
+  require 'react/memo_component/creator'
+  require 'react/memo_component/mixin'
+  require 'react/memo_component/base'
   # Redux::Component
   require 'react/redux_component/component_class_store_defaults'
   require 'react/redux_component/component_instance_store_defaults'

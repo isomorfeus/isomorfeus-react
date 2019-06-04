@@ -1,31 +1,14 @@
 ### Function Components
-Function Components are created using a Ruby DSL that is used within the creator class. To create a function component that renders only
-when props change, use the memo_component, which uses React.memo:
+Function Components are created using a Ruby DSL that is used within the creator class. 
 ```ruby
-class React::FunctionComponent::Creator
-  function_component 'MyComponent' do |props|
-    SPAN { props.text }
-  end
-  # Javascript .-notation can be used for the component name:
-  function_component 'MyObject.MyComponent' do |props|
-    SPAN { props.text }
-  end
-  # a React.memo function component:
-  memo_component 'MyObject.MyComponent' do |props|
+class MyFunctionComponent < React::FunctionComponent::Base
+  create_component do |props|
     SPAN { props.text }
   end
 end
 ```
-This creates a native javascript components. 
-The file containing the creator must be explicitly required, because the automatic resolution of Javascript constant names
-is not done by opal-autoloader.
+This creates a native javascript component 'MyFunctionComponent'. 
 
-A custom memo props function can be utilized when using React.memo directly with a function component and a block for checking the props:
-```ruby
-React.memo(`MyComponent`) do |prev_props, next_props|
-  prev_props.var != next_props.var
-end
-```
 
 A Function Component can then be used in other Components:
 ```ruby
@@ -44,14 +27,41 @@ Route(path: '/fun_fun/:count', exact: true, component: `MyObject.MyComponent`)
 **Data flow of a React::FunctionComponent:**
 ![React::FunctionComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_function_component.png)
 
+#### Memo
+To create a function component that renders only when props change, use the memo_component, which uses React.memo:
+```ruby
+class MyFunctionComponent < React::MemoComponent::Base
+  create_component do |props|
+    SPAN { props.text }
+  end
+  
+  # A custom memo function can be utilized to check if a render should happen
+  # must appear AFTER create component, because it requires the native component to already exist.  
+  memo do |prev_props, next_props|
+    prev_props != next_props
+  end
+end
+```
+
+A custom memo props function can also be utilized when using React.memo directly with a function component and a block for checking the props:
+```ruby
+React.memo(`MyComponent`) do |prev_props, next_props|
+  prev_props.var != next_props.var
+end
+```
+
+
 #### Hooks
 ##### useState -> use_state
 ```ruby
-class React::FunctionComponent::Creator
+class MyFunctionComponent
+  include React::FunctionComponent::Base
+  
   event_handler :incr_counter do |event|
     set_counter(@counter + 1)
   end
-  function_component 'MyComponent' do |props|
+  
+  create_component do |props|
     @counter = use_state(:counter, 0)
     
     SPAN(on_click: :incr_counter) { props.text }
@@ -62,8 +72,9 @@ end
 
 ##### useEffect -> use_effect
 ```ruby
-class React::FunctionComponent::Creator
-  function_component 'MyComponent' do |props|
+class MyFunctionComponent
+  include React::FunctionComponent::Base
+  create_component do |props|
     use_effect do
       # show effect
     end
@@ -77,8 +88,9 @@ end
 ```ruby
 React.create_context('MyContext', 10)
 
-class React::FunctionComponent::Creator
-  function_component 'MyComponent' do |props|
+class MyFunctionComponent
+  include React::FunctionComponent::Base
+  create_component do |props|
     value = use_context(MyContext) 
    
     SPAN { props.text }

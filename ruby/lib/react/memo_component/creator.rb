@@ -1,5 +1,5 @@
 module React
-  module FunctionComponent
+  module MemoComponent
     class Creator
       def event_handler(name, &block)
         define_method(name) do |event, info|
@@ -9,17 +9,21 @@ module React
         `self[name] = self['$' + name]`
       end
 
+      def memo(&block)
+        component_name = component_name = self.name.gsub('::', '.')
+        React.memo(component_name, &block)
+      end
+
       def create_component(&block)
         component_name = self.name.gsub('::', '.')
         %x{
-          var fun = function(props) {
+          var fun = Opal.global.React.memo(function(props) {
             Opal.React.render_buffer.push([]);
             Opal.React.active_components.push(self);
-            var instance = #{new(`props`)};
-            #{instance.instance_exec(&block)};
+            #{new(`props`).instance_exec(&block)};
             Opal.React.active_components.pop();
             return Opal.React.render_buffer.pop();
-          }
+          });
           var const_names;
           if (component_name.includes('.')) {
             const_names = component_name.split('.');
