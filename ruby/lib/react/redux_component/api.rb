@@ -21,7 +21,7 @@ module React
 
           def app_store
             @default_app_store_defined = true
-            @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(state)
+            @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(state, self.to_s)
           end
 
           def class_store
