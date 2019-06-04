@@ -35,11 +35,7 @@ module React
           attr_accessor :state
 
           def ref(ref_name, &block)
-            defined_refs.JS[ref_name] = if block_given?
-                                          block
-                                        else
-                                          `null`
-                                        end
+            defined_refs.JS[ref_name] = block_given? ? block : `null`
           end
 
           def defined_refs
