@@ -145,7 +145,7 @@ module React
     `Opal.global.React.forwardRef( function(props, ref) { return block.$call().$to_n(); })`
   end
 
-  def self.isValidElement(react_element)
+  def self.is_valid_element(react_element)
     `Opal.global.React.isValidElement(react_element)`
   end
 
