@@ -2,6 +2,7 @@ module React
   module Component
     module Elements
       # https://www.w3.org/TR/html52/fullindex.html#index-elements
+      # https://www.w3.org/TR/SVG11/eltindex.html
       SUPPORTED_HTML_AND_SVG_ELEMENTS = %w[
         a abbr address area article aside audio
         b base bdi bdo blockquote body br button
@@ -24,10 +25,6 @@ module React
         u ul
         var video
         wbr
-      ] +
-      # https://www.w3.org/TR/SVG11/eltindex.html
-      # elements listed above not mentioned a second time
-        %w[
         altGlyph altGlyphDef altGlyphItem animate animateColor animateMotion animateTransform
         circle clipPath color-profile cursor
         defs desc
@@ -49,7 +46,6 @@ module React
         use
         view vkern
       ]
-
 
       SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
         define_method(element) do |*args, &block|
