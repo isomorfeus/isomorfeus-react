@@ -43,3 +43,45 @@ Route(path: '/fun_fun/:count', exact: true, component: `MyObject.MyComponent`)
 
 **Data flow of a React::FunctionComponent:**
 ![React::FunctionComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_function_component.png)
+
+#### Hooks
+##### useState -> use_state
+```ruby
+class React::FunctionComponent::Creator
+  event_handler :incr_counter do |event|
+    set_counter(@counter + 1)
+  end
+  function_component 'MyComponent' do |props|
+    @counter = use_state(:counter, 0)
+    
+    SPAN(on_click: :incr_counter) { props.text }
+  end
+end
+```
+`use_state(name, initial_value)` - creates as setter method for the name given and calls React.useState for setting the initial value.
+
+##### useEffect -> use_effect
+```ruby
+class React::FunctionComponent::Creator
+  function_component 'MyComponent' do |props|
+    use_effect do
+      # show effect
+    end
+   
+    SPAN { props.text }
+  end
+end
+```
+
+##### useContext -> use_context
+```ruby
+React.create_context('MyContext', 10)
+
+class React::FunctionComponent::Creator
+  function_component 'MyComponent' do |props|
+    value = use_context(MyContext) 
+   
+    SPAN { props.text }
+  end
+end
+```

@@ -2,6 +2,7 @@ module React
   module FunctionComponent
     class Creator
       def self.event_handler(name, &block)
+        # TODO check, redesign FunctionComponent
         %x{
           Opal.React.FunctionComponent.Runner.event_handlers[name] = function(event, info) {
             #{ruby_event = ::React::SyntheticEvent.new(`event`)};
