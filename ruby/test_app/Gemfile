@@ -1,0 +1,24 @@
+source 'https://rubygems.org'
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+
+gem 'puma', '~> 3.12.1', require: false
+gem 'foreman', require: false
+
+gem 'roda', '~> 3.19.0'
+
+gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
+gem 'opal-activesupport', github: 'janbiedermann/opal-activesupport', branch: 'relax'
+gem 'opal-webpack-loader', '~> 0.8.8'
+
+gem 'opal-autoloader', '~> 0.0.3'
+gem 'isomorfeus-redux', '~> 4.0.4'
+gem 'isomorfeus-react', path: '..'
+
+group :development do
+  gem 'auto_reloader'
+end
+
+group :test do
+  gem 'rspec', '~> 3.6.0'
+  gem 'isomorfeus-puppetmaster', '~> 0.2.7'
+end

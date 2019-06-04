@@ -21,7 +21,7 @@
 /storage/*
 !/storage/.keep
 
-/node_modules
+node_modules
 /yarn-error.log
 /.owl_cache
 
@@ -39,4 +39,5 @@ yarn-debug.log*
 
 /vendor/bundle
 Gemfile.lock
+yarn.lock
 .idea
