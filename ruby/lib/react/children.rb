@@ -7,17 +7,17 @@ module React
 
       def for_each(children, &block)
         %x{
-          var fun = function(this_arg) {
-            return #{block.call(this_arg)};
+          var fun = function(child) {
+            #{block.call(child)};
           }
-          return Opal.global.React.Children.forEach(children, fun);
+          Opal.global.React.Children.forEach(children, fun);
         }
       end
 
       def map(children, &block)
         %x{
-          var fun = function(this_arg) {
-            return #{block.call(this_arg)};
+          var fun = function(child) {
+            return #{block.call(child)};
           }
           return Opal.global.React.Children.map(children, fun);
         }
