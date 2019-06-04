@@ -19,6 +19,8 @@ if RUBY_ENGINE == 'opal'
   require 'react'
   # require 'react/element' # usually not needed
   require 'react/synthetic_event'
+  require 'react/ref'
+  require 'react/children'
   if Isomorfeus.on_browser?
     require 'react_dom'
   else
