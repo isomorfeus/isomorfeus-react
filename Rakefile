@@ -9,5 +9,6 @@ task :ruby_specs do
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
   system('env -i PATH=$PATH bundle exec rspec')
+  STDERR.puts $?.exitstatus
   Dir.chdir(pwd)
 end
