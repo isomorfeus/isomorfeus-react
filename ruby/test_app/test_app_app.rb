@@ -34,6 +34,19 @@ class TestAppApp < Roda
       r.public
     end
 
+    r.get 'ssr' do
+      <<~HTML
+      <html>
+        <head>
+          <title>Welcome to TestAppApp</title>
+        </head>
+        <body>
+          #{mount_component('TestAppApp', location: env['REQUEST_PATH'])}
+        </body>
+      </html>
+      HTML
+    end
+
     r.get do
       page_content(env['REQUEST_PATH'])
     end
