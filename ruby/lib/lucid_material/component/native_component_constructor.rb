@@ -134,7 +134,7 @@ module LucidMaterial
             }
           };
           base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
-          base.lucid_material_styles = #{styles.to_n};
+          base.lucid_material_styles = #{styles.to_n} ;
           base.lucid_material_component = MuiStyles.styled(base.lucid_react_component)(base.lucid_material_styles);
         }
       end
