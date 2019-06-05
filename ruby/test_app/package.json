@@ -12,7 +12,7 @@
   "scripts": {
     "debug": "webpack-dev-server --config=webpack/debug.js",
     "development": "webpack-dev-server --config=webpack/development.js",
-    "production_build": "webpack --config=webpack/production.js"
+    "production_build": "parallel-webpack --config=webpack/production.js --max-tries=1 --no-stats"
   },
   "devDependencies": {
     "cache-loader": "^3.0.0",
@@ -23,6 +23,7 @@
     "file-loader": "^1.1.11",
     "jsdom": "14.0.0",
     "node-sass": "^4.12.0",
+    "parallel-webpack": "^2.4.0",
     "puppeteer": "1.16.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",

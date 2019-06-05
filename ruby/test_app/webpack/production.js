@@ -23,7 +23,7 @@ const common_config = {
         ]
     },
     plugins: [
-        new WebpackAssetsManifest({ publicPath: true }) // generate manifest
+        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
     ],
     module: {
         rules: [
