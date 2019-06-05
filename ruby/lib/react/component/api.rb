@@ -30,7 +30,6 @@ module React
             end
           end
 
-
           attr_accessor :props
           attr_accessor :state
 

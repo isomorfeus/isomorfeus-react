@@ -4,7 +4,7 @@ module LucidComponent
       base.instance_exec do
         def app_store
           @default_app_store_defined = true
-          @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(default_props)
+          @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(default_props, self.to_s)
         end
 
         def class_store
