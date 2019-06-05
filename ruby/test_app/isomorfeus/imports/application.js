@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 global.ReactDOM = ReactDOM;
 import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
 // global.History = History;
-global.BrowserRouter = BrowserRouter;
+global.Router = BrowserRouter;
 global.Link = Link;
 global.NavLink = NavLink;
 global.Route = Route;

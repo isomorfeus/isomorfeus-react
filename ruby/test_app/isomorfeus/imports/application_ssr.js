@@ -5,7 +5,7 @@ import ReactDOMServer from 'react-dom/server';
 global.ReactDOMServer = ReactDOMServer;
 import { StaticRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
 // global.History = History;
-global.StaticRouter = StaticRouter;
+global.Router = StaticRouter;
 global.Link = Link;
 global.NavLink = NavLink;
 global.Route = Route;
