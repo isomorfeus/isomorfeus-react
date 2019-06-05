@@ -8,7 +8,7 @@ task :ruby_specs do
   Dir.chdir('ruby/test_app')
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
-  system('env -i PATH=$PATH bundle exec rspec')
-  STDERR.puts $?.exitstatus
+  result = system('env -i PATH=$PATH bundle exec rspec')
   Dir.chdir(pwd)
+  raise "Ruby tests failed!" unless result
 end
