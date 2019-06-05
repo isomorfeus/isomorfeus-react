@@ -18,6 +18,7 @@ class TestAppApp < Roda
         </head>
         <body>
           #{mount_component('TestAppApp', location: location)}
+          <div id="test_anchor"></div>
         </body>
       </html>
     HTML
@@ -42,6 +43,7 @@ class TestAppApp < Roda
         </head>
         <body>
           #{mount_component('TestAppApp', location: env['REQUEST_PATH'])}
+          <div id="test_anchor"></div>
         </body>
       </html>
       HTML
