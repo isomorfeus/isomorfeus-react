@@ -94,9 +94,6 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_app/mixin'
   require 'lucid_app/base'
 
-  # LucidRouter
-  require 'lucid_router'
-
   # allow mounting of components
   if Isomorfeus.on_browser?
     require 'isomorfeus/top_level_browser'
