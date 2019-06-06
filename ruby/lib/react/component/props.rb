@@ -4,7 +4,14 @@ module React
       include ::Native::Wrapper
 
       def method_missing(prop, *args, &block)
-        @native.JS[`Opal.React.lower_camelize(prop)`]
+        %x{
+          var prop_name = Opal.React.lower_camelize(prop);
+          if (typeof #@native[prop_name] === 'undefined') {
+            return #{nil};
+          } else {
+            return #@native[prop_name];
+          }
+        }
       end
 
       def isomorfeus_store
