@@ -1,4 +1,4 @@
-class TestAppApp < LucidApp::Base
+class TestAppApp < LucidMaterial::App::Base
   render do
     Router do
       Switch do
