@@ -35,6 +35,7 @@ RSpec.describe 'React::Component' do
       expect(node.all_text).to include('TestComponent rendered')
     end
   end
+
   context 'it has state and can' do
     before do
       @doc = visit('/')
@@ -189,11 +190,7 @@ RSpec.describe 'React::Component' do
             DIV(id: :test_component) { "nothing#{props.a_prop}here" }
           end
         end
-        begin
-          Isomorfeus::TopLevel.mount_component(TestComponent, { }, '#test_anchor')
-        rescue Exception => e
-          e
-        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, { }, '#test_anchor')
       end
       node = @doc.wait_for('#test_component')
       expect(node.all_text).to include('nothinghere')
@@ -230,7 +227,6 @@ RSpec.describe 'React::Component' do
           end
         end
         class TestComponent < React::Component::Base
-
           render do
             DIV(id: :test_component) { ComponentWithError(text_method: state.text_method) }
           end
