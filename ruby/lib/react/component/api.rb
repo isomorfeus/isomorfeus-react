@@ -155,9 +155,10 @@ module React
           end
 
           def get_derived_state_from_error(&block)
+            # TODO convert error
             %x{
               self.react_component.prototype.getDerivedStateFromError = function(error) {
-                var result = #{`this.__ruby_instance`.instance_exec(error, &block)};
+                var result = #{`this.__ruby_instance`.instance_exec(`error`, &block)};
                 if (result === null) { return null; }
                 if (typeof result.$to_n === 'function') { return result.$to_n() }
                 return result;
