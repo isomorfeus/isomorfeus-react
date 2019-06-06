@@ -2,7 +2,6 @@ module React
   module FunctionComponent
     module Creator
       def self.extended(base)
-        # # language=JS
         %x{
           base.react_component = function(props) {
             Opal.React.render_buffer.push([]);
@@ -13,14 +12,6 @@ module React
             return Opal.React.render_buffer.pop();
           }
         }
-
-        def event_handler(name, &block)
-          define_method(name) do |event, info|
-            ruby_event = ::React::SyntheticEvent.new(event)
-            block.call(ruby_event, info)
-          end
-          `self[name] = self['$' + name]`
-        end
 
         def create_function(&block)
           `base.function_block = #{block}`
