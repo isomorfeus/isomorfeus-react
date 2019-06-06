@@ -323,4 +323,256 @@ RSpec.describe 'LucidComponent' do
       expect(node.all_text).to include('true')
     end
   end
+
+  context 'it has a component store and can' do
+    # LucidComponent MUST be used within a LucidApp for things to work
+
+    before do
+      @doc = visit('/')
+    end
+
+    it 'define a default store value and access it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          store.something = 'Something state intialized!'
+          render do
+            DIV(id: :test_component) { store.something }
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('Something state intialized!')
+    end
+
+    it 'define a default store value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            store.something = false
+          end
+          store.something = true
+          render do
+            if store.something
+              DIV(id: :test_component, on_click: :change_state) { "#{store.something}" }
+            else
+              DIV(id: :changed_component, on_click: :change_state) { "#{store.something}" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('true')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('false')
+    end
+
+    it 'use a uninitialized state value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            store.something = true
+          end
+          render do
+            if store.something
+              DIV(id: :changed_component, on_click: :change_state) { "#{store.something}" }
+            else
+              DIV(id: :test_component, on_click: :change_state) { "nothing#{store.something}here" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+  end
+
+  context 'it has a component class_store and can' do
+    # LucidComponent MUST be used within a LucidApp for things to work
+
+    before do
+      @doc = visit('/')
+    end
+
+    it 'define a default class_store value and access it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          class_store.something = 'Something state intialized!'
+          render do
+            DIV(id: :test_component) { class_store.something }
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('Something state intialized!')
+    end
+
+    it 'define a default class_store value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            class_store.something = false
+          end
+          class_store.something = true
+          render do
+            if class_store.something
+              DIV(id: :test_component, on_click: :change_state) { "#{class_store.something}" }
+            else
+              DIV(id: :changed_component, on_click: :change_state) { "#{class_store.something}" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('true')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('false')
+    end
+
+    it 'use a uninitialized state value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            class_store.something = true
+          end
+          render do
+            if class_store.something
+              DIV(id: :changed_component, on_click: :change_state) { "#{class_store.something}" }
+            else
+              DIV(id: :test_component, on_click: :change_state) { "nothing#{class_store.something}here" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+  end
+
+  context 'it has a app_store and can' do
+    # LucidComponent MUST be used within a LucidApp for things to work
+
+    before do
+      @doc = visit('/')
+    end
+
+    it 'define a default app_store value and access it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          app_store.something = 'Something state intialized!'
+          render do
+            DIV(id: :test_component) { app_store.something }
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('Something state intialized!')
+    end
+
+    it 'define a default app_store value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            app_store.something = false
+          end
+          app_store.something = true
+          render do
+            if app_store.something
+              DIV(id: :test_component, on_click: :change_state) { "#{app_store.something}" }
+            else
+              DIV(id: :changed_component, on_click: :change_state) { "#{app_store.something}" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('true')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('false')
+    end
+
+    it 'use a uninitialized state value and change it' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          event_handler :change_state do |event|
+            app_store.something = true
+          end
+          render do
+            if app_store.something
+              DIV(id: :changed_component, on_click: :change_state) { "#{app_store.something}" }
+            else
+              DIV(id: :test_component, on_click: :change_state) { "nothing#{app_store.something}here" }
+            end
+          end
+        end
+        class OuterApp < LucidApp::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+  end
 end
