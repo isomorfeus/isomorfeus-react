@@ -51,6 +51,16 @@ module LucidApp
           static get displayName() {
             return #{component_name};
           }
+          render() {
+            Opal.React.render_buffer.push([]);
+            Opal.React.active_components.push(this);
+            Opal.React.active_redux_components.push(this.__ruby_instance);
+            #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+            Opal.React.active_redux_components.pop();
+            Opal.React.active_components.pop();
+            var children = Opal.React.render_buffer.pop();
+            return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
+          }
           listener() {
             var next_state = Opal.Isomorfeus.store.native.getState();
             var current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);

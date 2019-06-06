@@ -3,18 +3,7 @@ module LucidApp
     def self.included(base)
       base.instance_exec do
         def render(&block)
-          %x{
-            self.react_component.prototype.render = function() {
-              Opal.React.render_buffer.push([]);
-              Opal.React.active_components.push(this);
-              Opal.React.active_redux_components.push(this.__ruby_instance);
-              #{`this.__ruby_instance`.instance_exec(&block)};
-              Opal.React.active_redux_components.pop();
-              Opal.React.active_components.pop();
-              var children = Opal.React.render_buffer.pop();
-              return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
-            }
-          }
+          `base.render_block = block`
         end
       end
 
