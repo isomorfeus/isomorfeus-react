@@ -13,6 +13,17 @@ module React
           }
         }
 
+        base_module = base.to_s.deconstantize
+        if base_module != ''
+          base_module.constantize.define_singleton_method(base.to_s.demodulize) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(#{base}.react_component, args, block)`
+          end
+        else
+          Object.define_method(base.to_s) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(#{base}.react_component, args, block)`
+          end
+        end
+
         def create_function(&block)
           `base.function_block = #{block}`
         end
