@@ -39,7 +39,7 @@ module React
             %x{
               var fun = function(error, info) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(error, info, &block)};
+                #{`this.__ruby_instance`.instance_exec(`error`, `info`, &block)};
                 Opal.React.active_redux_components.pop();
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.componentDidCatch = fun; }
@@ -61,9 +61,11 @@ module React
 
           def component_did_update(&block)
             %x{
-              var fun = function() {
+              var fun = function(prev_props, prev_state, snapshot) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(&block)};
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                                                       `Opal.React.Component.State.$new({state: prev_state})`,
+                                                       `snapshot`, &block)};
                 Opal.React.active_redux_components.pop();
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.componentDidUpdate = fun; }
@@ -72,7 +74,6 @@ module React
           end
 
           def component_will_unmount(&block)
-            # unsubscriber support for ReduxComponent
             %x{
               var fun = function() {
                 if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
@@ -85,11 +86,27 @@ module React
             }
           end
 
+          def get_derived_state_from_error(&block)
+            # TODO convert error
+            %x{
+               var fun = function(error) {
+                var result = #{`this.__ruby_instance`.instance_exec(`error`, &block)};
+                if (result === null) { return null; }
+                if (typeof result.$to_n === 'function') { return result.$to_n() }
+                return result;
+              }
+              if (self.lucid_react_component) { self.lucid_react_component.prototype.getDerivedStateFromError = fun; }
+              else { self.react_component.prototype.getDerivedStateFromError = fun; }
+            }
+          end
+
           def get_derived_state_from_props(&block)
             %x{
               var fun = function(props, state) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`props`), `Opal.Hash.$new(state)`, &block)};
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(props)`,
+                                                       `Opal.React.Component.State.$new({state: state})`,
+                                                       &block)};
                 Opal.React.active_redux_components.pop();
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.getDerivedStateFromProps = fun; }
@@ -101,7 +118,9 @@ module React
             %x{
               var fun = function(prev_props, prev_state) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`prev_props`), `Opal.Hash.$new(prev_state)`, &block)};
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                                                       `Opal.React.Component.State.$new({state: prev_state})`,
+                                                       &block)};
                 Opal.React.active_redux_components.pop();
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.getSnapshotBeforeUpdate = fun; }
