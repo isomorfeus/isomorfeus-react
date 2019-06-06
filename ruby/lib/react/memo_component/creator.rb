@@ -3,7 +3,7 @@ module React
     module Creator
       def self.extended(base)
         %x{
-          base.react_component = Opal.global.React.memo(function(props) {
+          base.memo_component = Opal.global.React.memo(function(props) {
             Opal.React.render_buffer.push([]);
             Opal.React.active_components.push(self);
             var instance = #{base.new(`props`)};
@@ -11,6 +11,9 @@ module React
             Opal.React.active_components.pop();
             return Opal.React.render_buffer.pop();
           });
+          base.react_component = function(props) {
+            return Opal.global.React.createElement(base.memo_component, props);
+          }
         }
 
         def create_memo(&block)
