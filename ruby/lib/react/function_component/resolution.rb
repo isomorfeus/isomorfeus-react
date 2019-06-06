@@ -3,7 +3,7 @@ module React
     module Resolution
       def self.included(base)
         base.instance_exec do
-          alias _react_component_resolution_original_const_missing const_missing
+          alias _react_function_component_resolution_original_const_missing const_missing
 
           def const_missing(const_name)
             # language=JS
@@ -13,14 +13,14 @@ module React
                 #{Object.const_set(const_name, `new_const`)};
                 return new_const;
               } else {
-                return #{_react_component_resolution_original_const_missing(const_name)};
+                return #{_react_function_component_resolution_original_const_missing(const_name)};
               }
             }
           end
         end
       end
 
-      alias _react_component_resolution_original_method_missing method_missing
+      alias _react_function_component_resolution_original_method_missing method_missing
 
       def method_missing(component_name, *args, &block)
         # html tags are defined as methods, so they will not end up here.
@@ -46,6 +46,17 @@ module React
               component = null;
             }
           }
+          if (!component) {
+            try {
+              constant = Opal.Object.$const_get(component_name);
+              component_type = typeof constant.react_component;
+              if (component_type === "function" || component_type === "object") {
+                component = constant.react_component;
+              }
+            } catch(err) {
+              component = null
+            }
+          }
           if (component) {
             if (args.length > 0) {
               var last_arg = args[args.length - 1];
@@ -55,7 +66,7 @@ module React
               } else { Opal.React.internal_render(component, args[0], null, block); }
             } else { Opal.React.internal_render(component, null, null, block); }
           } else {
-            return #{_react_component_resolution_original_method_missing(component_name, *args, block)};
+            return #{_react_function_component_resolution_original_method_missing(component_name, *args, block)};
           }
         }
       end
