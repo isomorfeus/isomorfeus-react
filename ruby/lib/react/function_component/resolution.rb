@@ -59,7 +59,6 @@ module React
           }
         }
       end
-
     end
   end
 end

@@ -51,6 +51,8 @@ if RUBY_ENGINE == 'opal'
   require 'react/pure_component/base'
   # Function Component
   require 'react/function_component/resolution'
+  require 'react/function_component/api'
+  require 'react/function_component/event_handler'
   require 'react/function_component/creator'
   require 'react/function_component/mixin'
   require 'react/function_component/base'

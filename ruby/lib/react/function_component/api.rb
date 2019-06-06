@@ -1,9 +1,9 @@
 module React
   module FunctionComponent
-    class API
+    module API
       include ::React::Component::Elements
       include ::React::Component::Features
-      include ::React::FunctionComponent::Resolution
+      # include ::React::FunctionComponent::Resolution
 
       attr_accessor :props
 
