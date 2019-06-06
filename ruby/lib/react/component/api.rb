@@ -193,15 +193,7 @@ module React
           end
 
           def render(&block)
-            %x{
-              self.react_component.prototype.render = function() {
-                Opal.React.render_buffer.push([]);
-                Opal.React.active_components.push(this);
-                #{`this.__ruby_instance`.instance_exec(&block)};
-                Opal.React.active_components.pop();
-                return Opal.React.render_buffer.pop();
-              }
-            }
+            `base.render_block = block`
           end
         end
       end

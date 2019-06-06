@@ -110,20 +110,7 @@ module React
           end
 
           def render(&block)
-            %x{
-              var fun = function() {
-                Opal.React.render_buffer.push([]);
-                Opal.React.active_components.push(this);
-                Opal.React.active_redux_components.push(this);
-                this.used_store_paths = [];
-                #{`this.__ruby_instance`.instance_exec(&block)};
-                Opal.React.active_redux_components.pop();
-                Opal.React.active_components.pop();
-                return Opal.React.render_buffer.pop();
-              }
-              if (self.lucid_react_component) { self.lucid_react_component.prototype.render = fun; }
-              else { self.react_component.prototype.render = fun; }
-            }
+            `base.render_block = block`
           end
         end
       end

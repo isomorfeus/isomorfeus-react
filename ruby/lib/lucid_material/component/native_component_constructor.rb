@@ -38,11 +38,21 @@ module LucidMaterial
                 }
               }
             }
-            data_access() {
-              return this.props.isomorfeus_store
-            }
             static get displayName() {
               return #{component_name};
+            }
+            render() {
+              Opal.React.render_buffer.push([]);
+              Opal.React.active_components.push(this);
+              Opal.React.active_redux_components.push(this);
+              this.used_store_paths = [];
+              #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+              Opal.React.active_redux_components.pop();
+              Opal.React.active_components.pop();
+              return Opal.React.render_buffer.pop();
+            }
+            data_access() {
+              return this.props.isomorfeus_store
             }
             register_used_store_path(path) {
               this.used_store_paths.push(path);

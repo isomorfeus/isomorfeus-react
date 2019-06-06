@@ -36,6 +36,13 @@ module React
             static get displayName() {
               return #{component_name};
             }
+            render() {
+              Opal.React.render_buffer.push([]);
+              Opal.React.active_components.push(this);
+              #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+              Opal.React.active_components.pop();
+              return Opal.React.render_buffer.pop();
+            }
             shouldComponentUpdate(next_props, next_state) {
               if (base.has_custom_should_component_update) {
                 return this.__ruby_instance["$should_component_update"](#{(Hash.new(next_props))}, #{Hash.new(next_state)});
