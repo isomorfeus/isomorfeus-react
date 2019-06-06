@@ -34,11 +34,9 @@ module React
           var component_type = typeof Opal.global[component_name];
           if (component_type === "function" || component_type === "object") {
             component = Opal.global[component_name];
-          }
-          else {
+          } else {
             var modules = self.$class().$to_s().split("::");
             var modules_length = modules.length - 1;
-            // modules.unshift('');
             var module;
             var constant;
             for (var i = modules_length; i > 0; i--) {
@@ -50,12 +48,23 @@ module React
                   component = constant.react_component;
                   break;
                 }
-              }
-              catch(err) {
+              } catch(err) {
                 component = null;
               }
             }
+            if (!component) {
+              try {
+                constant = Opal.Object.$const_get(component_name);
+                component_type = typeof constant.react_component;
+                if (component_type === "function" || component_type === "object") {
+                  component = constant.react_component;
+                }
+              } catch(err) {
+                component = null
+              }
+            }
           }
+
           if (component) {
             if (args.length > 0) {
               var last_arg = args[args.length - 1];
@@ -69,7 +78,6 @@ module React
           }
         }
       end
-
     end
   end
 end
