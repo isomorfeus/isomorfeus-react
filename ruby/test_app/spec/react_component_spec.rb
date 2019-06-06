@@ -299,5 +299,33 @@ RSpec.describe 'React::Component' do
       expect(result).to be true
     end
   end
-  # event_handlers
+
+  context 'it can handle events like' do
+    before do
+      @doc = visit('/')
+    end
+
+    it 'on_click' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::Component::Base
+          event_handler :change_state do |event|
+            state.something = true
+          end
+          render do
+            if state.something
+              DIV(id: :changed_component, on_click: :change_state) { "#{state.something}" }
+            else
+              DIV(id: :test_component, on_click: :change_state) { "nothing#{state.something}here" }
+            end
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+  end
 end
