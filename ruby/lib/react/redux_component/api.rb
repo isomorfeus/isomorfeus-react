@@ -108,10 +108,6 @@ module React
               else { self.react_component.prototype.getSnapshotBeforeUpdate = fun; }
             }
           end
-
-          def render(&block)
-            `base.render_block = block`
-          end
         end
       end
     end
