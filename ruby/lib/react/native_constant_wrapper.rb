@@ -31,6 +31,5 @@ module React
         }
       }
     end
-
   end
 end
