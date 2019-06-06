@@ -58,13 +58,7 @@ module React
             }
           }
           if (component) {
-            if (args.length > 0) {
-              var last_arg = args[args.length - 1];
-              if (typeof last_arg === 'string' || last_arg instanceof String) {
-                if (args.length === 1) { Opal.React.internal_render(component, null, last_arg, null); }
-                else { Opal.React.internal_render(component, args[0], last_arg, null); }
-              } else { Opal.React.internal_render(component, args[0], null, block); }
-            } else { Opal.React.internal_render(component, null, null, block); }
+            Opal.React.internal_prepare_args_and_render(component, args, block);
           } else {
             return #{_react_function_component_resolution_original_method_missing(component_name, *args, block)};
           }

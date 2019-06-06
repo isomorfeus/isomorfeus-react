@@ -15,17 +15,8 @@ module React
         if (component_type === "function" || component_type === "object") {
           component = #@native[name];
         }
-
         if (component) {
-          var children = null;
-          var block_result = null;
-          if (args.length > 0) {
-            var last_arg = args[args.length - 1];
-            if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(component, null, last_arg, null); }
-              else { Opal.React.internal_render(component, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(component, args[0], null, block); }
-          } else { Opal.React.internal_render(component, null, null, block); }
+          Opal.React.internal_prepare_args_and_render(component, args, block);
         } else {
           #{raise NameError, "No such native Component #@const_name.#{name}"};
         }

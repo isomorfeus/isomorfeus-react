@@ -49,26 +49,10 @@ module React
 
       SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
         define_method(element) do |*args, &block|
-          %x{
-            if (args.length > 0) {
-              var last_arg = args[args.length - 1];
-              if (typeof last_arg === 'string' || last_arg instanceof String) {
-                if (args.length === 1) { Opal.React.internal_render(element, null, last_arg, null); }
-                else { Opal.React.internal_render(element, args[0], last_arg, null); }
-              } else { Opal.React.internal_render(element, args[0], null, block); }
-            } else { Opal.React.internal_render(element, null, null, block); }
-          }
+          `Opal.React.internal_prepare_args_and_render(element, args, block)`
         end
         define_method(`element.toUpperCase()`) do |*args, &block|
-          %x{
-            if (args.length > 0) {
-              var last_arg = args[args.length - 1];
-              if (typeof last_arg === 'string' || last_arg instanceof String) {
-                if (args.length === 1) { Opal.React.internal_render(element, null, last_arg, null); }
-                else { Opal.React.internal_render(element, args[0], last_arg, null); }
-              } else { Opal.React.internal_render(element, args[0], null, block); }
-            } else { Opal.React.internal_render(element, null, null, block); }
-          }
+          `Opal.React.internal_prepare_args_and_render(element, args, block)`
         end
       end
     end

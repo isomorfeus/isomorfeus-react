@@ -2,15 +2,7 @@ module React
   module Component
     module Features
       def Fragment(*args, &block)
-        %x{
-          if (args.length > 0) {
-            var last_arg = args[args.length - 1];
-            if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(React.Fragment, null, last_arg, null); }
-              else { Opal.React.internal_render(Opal.global.React.Fragment, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(Opal.global.React.Fragment, args[0], null, block); }
-          } else { Opal.React.internal_render(Opal.global.React.Fragment, null, null, block); }
-        }
+        `Opal.React.internal_prepare_args_and_render(Opal.global.React.Fragment, args, block)`
       end
 
       def Portal(dom_node, &block)
@@ -34,27 +26,11 @@ module React
       end
 
       def StrictMode(*args, &block)
-        %x{
-          if (args.length > 0) {
-            var last_arg = args[args.length - 1];
-            if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(Opal.global.React.StrictMode, null, last_arg, null); }
-              else { Opal.React.internal_render(Opal.global.React.StrictMode, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(Opal.global.React.StrictMode, args[0], null, block); }
-          } else { Opal.React.internal_render(Opal.global.React.StrictMode, null, null, block); }
-        }
+        `Opal.React.internal_prepare_args_and_render(Opal.global.React.StrictMode, args, block)`
       end
 
       def Suspense(*args, &block)
-        %x{
-          if (args.length > 0) {
-            var last_arg = args[args.length - 1];
-            if (typeof last_arg === 'string' || last_arg instanceof String) {
-              if (args.length === 1) { Opal.React.internal_render(Opal.global.React.Suspense, null, last_arg, null); }
-              else { Opal.React.internal_render(Opal.global.React.Suspense, args[0], last_arg, null); }
-            } else { Opal.React.internal_render(Opal.global.React.Suspense, args[0], null, block); }
-          } else { Opal.React.internal_render(Opal.global.React.Suspense, null, null, block); }
-        }
+        `Opal.React.internal_prepare_args_and_render(Opal.global.React.Suspense, args, block)`
       end
     end
   end

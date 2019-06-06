@@ -6,27 +6,11 @@ module React
           base_module = base.to_s.deconstantize
           if base_module != ''
             base_module.constantize.define_singleton_method(base.to_s.demodulize) do |*args, &block|
-              %x{
-                if (args.length > 0) {
-                  var last_arg = args[args.length - 1];
-                  if (typeof last_arg === 'string' || last_arg instanceof String) {
-                    if (args.length === 1) { Opal.React.internal_render(#{base}.react_component, null, last_arg, null); }
-                    else { Opal.React.internal_render(#{base}.react_component, args[0], last_arg, null); }
-                  } else { Opal.React.internal_render(#{base}.react_component, args[0], null, block); }
-                } else { Opal.React.internal_render(#{base}.react_component, null, null, block); }
-              }
+              `Opal.React.internal_prepare_args_and_render(#{base}.react_component, args, block)`
             end
           else
             Object.define_method(base.to_s) do |*args, &block|
-              %x{
-                if (args.length > 0) {
-                  var last_arg = args[args.length - 1];
-                  if (typeof last_arg === 'string' || last_arg instanceof String) {
-                    if (args.length === 1) { Opal.React.internal_render(#{base}.react_component, null, last_arg, null); }
-                    else { Opal.React.internal_render(#{base}.react_component, args[0], last_arg, null); }
-                  } else { Opal.React.internal_render(#{base}.react_component, args[0], null, block); }
-                } else { Opal.React.internal_render(#{base}.react_component, null, null, block); }
-              }
+              `Opal.React.internal_prepare_args_and_render(#{base}.react_component, args, block)`
             end
           end
 
