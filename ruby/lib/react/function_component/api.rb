@@ -1,10 +1,6 @@
 module React
   module FunctionComponent
     module API
-      include ::React::Component::Elements
-      include ::React::Component::Features
-      # include ::React::FunctionComponent::Resolution
-
       attr_accessor :props
 
       def initialize(props)

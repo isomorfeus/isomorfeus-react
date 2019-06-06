@@ -2,6 +2,8 @@ module React
   module MemoComponent
     module Mixin
       def self.included(base)
+        base.include(::React::Component::Elements)
+        base.include(::React::Component::Features)
         base.include(::React::FunctionComponent::API)
         base.include(::React::FunctionComponent::Resolution)
         base.extend(::React::FunctionComponent::EventHandler)
