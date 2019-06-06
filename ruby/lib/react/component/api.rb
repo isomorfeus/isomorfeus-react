@@ -116,14 +116,14 @@ module React
                 self.lucid_react_component.defaultProps = {};
               }
             }
-            @default_props = React::Component::Props.new(`self.react_component.defaultProps`)
+            @default_props = `Opal.React.Component.Props.$new(self.react_component.defaultProps)`
           end
 
           def component_did_catch(&block)
             # TODO convert error and info
             %x{
               self.react_component.prototype.componentDidCatch = function(error, info) {
-                return #{`this.__ruby_instance`.instance_exec(error, info, &block)};
+                return #{`this.__ruby_instance`.instance_exec(`error`, `info`, &block)};
               }
             }
           end
@@ -138,8 +138,10 @@ module React
 
           def component_did_update(&block)
             %x{
-              self.react_component.prototype.componentDidUpdate = function() {
-                return #{`this.__ruby_instance`.instance_exec(&block)};
+              self.react_component.prototype.componentDidUpdate = function(prev_props, prev_state, snapshot) {
+                return #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                                                              `Opal.React.Component.State.$new({state: prev_state})`,
+                                                              `snapshot`, &block)};
               }
             }
           end
@@ -155,7 +157,10 @@ module React
           def get_derived_state_from_error(&block)
             %x{
               self.react_component.prototype.getDerivedStateFromError = function(error) {
-                return #{`this.__ruby_instance`.instance_exec(error, &block)};
+                var result = #{`this.__ruby_instance`.instance_exec(error, &block)};
+                if (result === null) { return null; }
+                if (typeof result.$to_n === 'function') { return result.$to_n() }
+                return result;
               }
             }
           end
@@ -163,7 +168,12 @@ module React
           def get_derived_state_from_props(&block)
             %x{
               self.react_component.prototype.getDerivedStateFromProps = function(props, state) {
-                return #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`props`), `Opal.Hash.$new(state)`, &block)};
+                var result = #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(props)`,
+                                                              `Opal.React.Component.State.$new({state: state})`,
+                                                              &block)};
+                if (result === null) { return null; }
+                if (typeof result.$to_n === 'function') { return result.$to_n() }
+                return result;
               }
             }
           end
@@ -171,7 +181,9 @@ module React
           def get_snapshot_before_update(&block)
             %x{
               self.react_component.prototype.getSnapshotBeforeUpdate = function(prev_props, prev_state) {
-                return #{`this.__ruby_instance`.instance_exec(React::Component::Props.new(`prev_props`), `Opal.Hash.$new(prev_state)`, &block)};
+                return #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                                                              `Opal.React.Component.State.$new({state: prev_state})`,
+                                                              &block)};
               }
             }
           end
