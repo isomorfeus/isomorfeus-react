@@ -62,7 +62,7 @@ module React
         }
       end
 
-      def use_reducer(dispatcher_name, inital_state, &block)
+      def use_reducer(inital_state, &block)
         state = nil
         dispatcher = nil
         %x{
@@ -71,26 +71,20 @@ module React
           }
           [state, dispatcher] = Opal.global.React.useReducer(fun, initial_state);
         }
-        self.define_singleton_method("#{dispatcher_name}") do |arg|
-          `dispatcher(arg)`
-        end
-        state
+        [state, proc { |arg| `dispatcher(arg)` }]
       end
 
       def use_ref(initial_value)
         React::Ref.new(`Opal.global.React.useRef(initial_value)`)
       end
 
-      def use_state(state_name, initial_value)
+      def use_state(initial_value)
         initial = nil
         setter = nil
         %x{
           [initial, setter] = Opal.global.React.useState(initial_value);
         }
-        self.define_singleton_method("set_#{state_name}") do |arg|
-          `setter(arg)`
-        end
-        return initial
+        [initial, proc { |arg| `setter(arg)` }]
       end
     end
   end
