@@ -575,4 +575,40 @@ RSpec.describe 'LucidMaterial::Component' do
       expect(node.all_text).to include('true')
     end
   end
+
+  context 'it has styles and renders them' do
+    before do
+      @doc = visit('/')
+    end
+
+    it 'with the styles DSL' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidMaterial::Component::Base
+          styles do
+            {
+              master: {
+                width: 100
+              }
+            }
+          end
+          render do
+            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+          end
+        end
+        class OuterApp < LucidMaterial::App::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      # the following should be replaced by node.styles once its working correctly
+      style = @doc.execute_script <<~JAVASCRIPT
+        var styles = window.getComputedStyle(document.querySelector('#test_component'))
+        return styles.width
+      JAVASCRIPT
+      expect(style).to eq('100px')
+    end
+  end
 end
