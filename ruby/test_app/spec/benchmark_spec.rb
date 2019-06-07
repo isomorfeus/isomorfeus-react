@@ -273,7 +273,9 @@ RSpec.describe 'Component benchmarks' do
     doc = visit('/')
     time = doc.evaluate_ruby do
       class Lucy < LucidMaterial::Component::Base
-        styles = { root: { color: 'black' }}
+        styles do
+          {root: { color: 'black' }}
+        end
         render do
           DIV(class_name: classes.root) { 'A' }
         end

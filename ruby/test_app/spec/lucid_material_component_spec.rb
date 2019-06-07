@@ -626,7 +626,6 @@ RSpec.describe 'LucidMaterial::Component' do
         end
         Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
       end
-      # sleep 6000
       node = @doc.wait_for('#test_component')
       # the following should be replaced by node.styles once its working correctly
       style = @doc.execute_script <<~JAVASCRIPT
