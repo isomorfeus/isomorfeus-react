@@ -1,14 +1,23 @@
 module LucidMaterial
   module Component
     module API
-      def styles
-        @component_styles ||= {}
-      end
+      def self.included(base)
+        base.instance_exec do
+          def styles=(styles_hash)
+            styles(styles_hash)
+          end
 
-      def add_styles(style_hash = {}, &block)
-        new_styles = block_given? ? block.call : style_hash
-        # TODO deep_merge
-        styles.merge!(new_styles)
+          def styles(styles_hash = nil, &block)
+            new_styles = block_given? ? block.call : styles_hash
+            if new_styles
+              `base.jss_styles = #{new_styles.to_n}`
+            end
+          end
+        end
+
+        def classes
+          props.classes
+        end
       end
     end
   end

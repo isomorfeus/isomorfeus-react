@@ -14,10 +14,15 @@ module React
         }
       end
 
+      def classes
+        @classes ||= `Opal.React.Component.Styles.$new(#@native.classes)`
+      end
+
       def isomorfeus_store
         @native.JS[:isomorfeus_store]
       end
 
+      # for router convenience
       def history
         return @history if @history
         return nil unless @native.JS[:history]
