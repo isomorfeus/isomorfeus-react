@@ -634,5 +634,37 @@ RSpec.describe 'LucidMaterial::Component' do
       JAVASCRIPT
       expect(style).to eq('100px')
     end
+
+    it 'when they are shared' do
+      @doc.evaluate_ruby do
+        class SuperComponent < LucidMaterial::Component::Base
+          styles(master: { width: 100 })
+          render do
+            DIV(id: :super_component, class_name: classes.master) { "nothinghere" }
+          end
+        end
+        class TestComponent < SuperComponent
+          styles do
+            SuperComponent.styles
+          end
+          render do
+            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+          end
+        end
+        class OuterApp < LucidMaterial::App::Base
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      # the following should be replaced by node.styles once its working correctly
+      style = @doc.execute_script <<~JAVASCRIPT
+        var styles = window.getComputedStyle(document.querySelector('#test_component'))
+        return styles.width
+      JAVASCRIPT
+      expect(style).to eq('100px')
+    end
   end
 end
