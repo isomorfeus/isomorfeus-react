@@ -6,7 +6,7 @@ module React
           ruby_event = ::React::SyntheticEvent.new(event)
           block.call(ruby_event, info)
         end
-        `self[name] = self['$' + name]`
+        `self[name] = self.prototype['$' + name]`
       end
     end
   end

@@ -5,7 +5,7 @@ module React
         %x{
           base.memo_component = Opal.global.React.memo(function(props) {
             Opal.React.render_buffer.push([]);
-            Opal.React.active_components.push(self);
+            Opal.React.active_components.push(base);
             var instance = #{base.new(`props`)};
             #{`instance`.instance_exec(&`base.function_block`)};
             Opal.React.active_components.pop();
