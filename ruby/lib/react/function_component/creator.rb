@@ -6,8 +6,7 @@ module React
           base.react_component = function(props) {
             Opal.React.render_buffer.push([]);
             Opal.React.active_components.push(base);
-            var instance = #{base.new(`props`)};
-            #{`instance`.instance_exec(&`base.function_block`)};
+            #{base.new(`props`).instance_exec(&`base.function_block`)};
             Opal.React.active_components.pop();
             return Opal.React.render_buffer.pop();
           }
