@@ -100,11 +100,14 @@ module LucidMaterial
               return null;
             }
           }
+          base.lucid_material_component = null;
           base.react_component = function(outer_props) {
-            var lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
-              return Opal.global.React.createElement(base.lucid_react_component, props);
-            });
-            return Opal.global.React.createElement(lucid_material_component, outer_props);
+            if (!base.lucid_material_component) {
+              base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
+                return Opal.global.React.createElement(base.lucid_react_component, props);
+              });
+            }
+            return Opal.global.React.createElement(base.lucid_material_component, outer_props);
           }
         }
       end

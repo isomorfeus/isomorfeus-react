@@ -139,13 +139,16 @@ module LucidMaterial
             }
           };
           base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
+          base.lucid_material_component = null;
           base.react_component = function(outer_props) {
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
               var store_props = Object.assign({}, outer_props, { isomorfeus_store: store });
-              var lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
-                return Opal.global.React.createElement(base.lucid_react_component, props);
-              });
-              return Opal.global.React.createElement(lucid_material_component, store_props);
+              if (!base.lucid_material_component) {
+                base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
+                  return Opal.global.React.createElement(base.lucid_react_component, props);
+                });
+              }
+              return Opal.global.React.createElement(base.lucid_material_component, store_props);
             });
           }
         }
