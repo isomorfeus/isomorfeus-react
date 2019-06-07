@@ -94,4 +94,26 @@ RSpec.describe 'React::MemoComponent' do
       expect(result).to be true
     end
   end
+
+  context 'it has hooks like' do
+    before do
+      @doc = visit('/')
+    end
+
+    it 'use_state' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::FunctionComponent::Base
+          create_function do
+            value, set_value = use_state('nothinghere')
+            handler = proc { |event| set_value.call('somethinghere') }
+            DIV(id: :test_component, on_click: handler) { value }
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, { }, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      node.click
+      expect(node.all_text).to include('somethinghere')
+    end
+  end
 end
