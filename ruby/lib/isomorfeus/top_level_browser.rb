@@ -33,7 +33,7 @@ module Isomorfeus
     end
 
     def self.mount_component(component, props, element_or_query, hydrated = false)
-      if `(typeof element_or_query.$class === 'function')` && element_or_query.class == String
+      if `(typeof element_or_query === 'string')` || (`(typeof element_or_query.$class === 'function')` && element_or_query.class == String)
         element = `document.body.querySelector(element_or_query)`
       elsif `(typeof element_or_query.$is_a === 'function')` && element_or_query.is_a?(Browser::DOM::Node)
         element = element_or_query.to_n
