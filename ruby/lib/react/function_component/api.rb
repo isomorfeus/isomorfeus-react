@@ -9,10 +9,9 @@ module React
 
       def use_callback(deps, &block)
         %x{
-          var fun = function() {
+          Opal.global.React.useCallback(function() {
             #{block.call}
-          }
-          Opal.global.React.useCallback(fun, deps);
+          }, deps);
         }
       end
 
@@ -27,38 +26,34 @@ module React
 
       def use_effect(&block)
         %x{
-          var fun = function() {
+          Opal.global.React.useEffect(function() {
             #{block.call}
-          }
-          Opal.global.React.useEffect(fun);
+          });
         }
       end
 
-      def use_imperative_handle(ref, deps, &block)
+      def use_imperative_handle(ref, *deps, &block)
         native_ref = `(typeof ref.$is_wrapped_ref !== 'undefined')` ? ref.to_n : ref
         %x{
-          var fun = function() {
+          Opal.global.React.useImperativeHandle(native_ref, function() {
             #{block.call}
-          }
-          Opal.global.React.useImperativeHandle(native_ref, fun, deps);
+          }, deps);
         }
       end
 
       def use_layout_effect(&block)
         %x{
-          var fun = function() {
+          Opal.global.React.useLayoutEffect(function() {
             #{block.call}
-          }
-          Opal.global.React.useLayoutEffect(fun);
+          });
         }
       end
 
-      def use_memo(deps, &block)
+      def use_memo(*deps, &block)
         %x{
-          var fun = function() {
+          Opal.global.React.useMemo(function() {
             #{block.call}
-          }
-          Opal.global.React.useMemo(fun, deps);
+          }, deps);
         }
       end
 
@@ -66,10 +61,9 @@ module React
         state = nil
         dispatcher = nil
         %x{
-          var fun = function(state, action) {
+          [state, dispatcher] = Opal.global.React.useReducer(function(state, action) {
             #{block.call(state, action)}
-          }
-          [state, dispatcher] = Opal.global.React.useReducer(fun, initial_state);
+          }, initial_state);
         }
         [state, proc { |arg| `dispatcher(arg)` }]
       end
@@ -81,9 +75,7 @@ module React
       def use_state(initial_value)
         initial = nil
         setter = nil
-        %x{
-          [initial, setter] = Opal.global.React.useState(initial_value);
-        }
+        `[initial, setter] = Opal.global.React.useState(initial_value);`
         [initial, proc { |arg| `setter(arg)` }]
       end
     end
