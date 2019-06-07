@@ -43,8 +43,7 @@ module React
               try {
                 module = modules.slice(0, i).join('::')
                 constant = self.$class().$const_get(module).$const_get(component_name, false);
-                component_type = typeof constant.react_component;
-                if (component_type === "function" || component_type === "object") {
+                if (typeof constant.react_component !== 'undefined') {
                   component = constant.react_component;
                   break;
                 }
@@ -55,8 +54,7 @@ module React
             if (!component) {
               try {
                 constant = Opal.Object.$const_get(component_name);
-                component_type = typeof constant.react_component;
-                if (component_type === "function" || component_type === "object") {
+                if (typeof constant.react_component !== 'undefined') {
                   component = constant.react_component;
                 }
               } catch(err) {
@@ -64,7 +62,6 @@ module React
               }
             }
           }
-
           if (component) {
             Opal.React.internal_prepare_args_and_render(component, args, block);
           } else {

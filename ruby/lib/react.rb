@@ -113,11 +113,9 @@ module React
       var component = null;
       var block_result = null;
       var native_props = null;
-
-      if (typeof type.react_component == "function") {
+      if (typeof type.react_component !== 'undefined') {
         component = type.react_component;
-      }
-      else {
+      } else {
         component = type;
       }
 

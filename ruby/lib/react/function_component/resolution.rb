@@ -37,8 +37,7 @@ module React
           else {
             try {
               var constant = self.$class().$const_get(component_name, true);
-              component_type = typeof constant.react_component;
-              if (component_type === "function" || component_type === "object") {
+              if (typeof constant.react_component !== 'undefined') {
                 component = constant.react_component;
               }
             }
@@ -49,8 +48,7 @@ module React
           if (!component) {
             try {
               constant = Opal.Object.$const_get(component_name);
-              component_type = typeof constant.react_component;
-              if (component_type === "function" || component_type === "object") {
+              if (typeof constant.react_component !== 'undefined') {
                 component = constant.react_component;
               }
             } catch(err) {
