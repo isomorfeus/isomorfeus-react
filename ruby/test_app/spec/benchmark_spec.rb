@@ -24,7 +24,7 @@ RSpec.describe 'Component benchmarks' do
     expect(time > 0 && time < 1000).to be_truthy
   end
 
-  it 'DIV Element' do
+  it 'DIV Element (String param)' do
     doc = visit('/')
     time = doc.evaluate_ruby do
       class BenchmarkComponent < React::Component::Base
@@ -41,7 +41,28 @@ RSpec.describe 'Component benchmarks' do
       Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
       (Time.now - start) * 1000
     end
-    puts "10000 DIV Elements took: #{time}ms"
+    puts "10000 DIV Elements (String param) took: #{time}ms"
+    expect(time > 0 && time < 1000).to be_truthy
+  end
+
+  it 'DIV Element (String block)' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class BenchmarkComponent < React::Component::Base
+        render do
+          Fragment do
+            10000.times do
+              DIV { "A" }
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 DIV Elements (String block) took: #{time}ms"
     expect(time > 0 && time < 1000).to be_truthy
   end
 
