@@ -8,6 +8,7 @@ module LucidMaterial
         component_name = base.to_s
         # language=JS
         %x{
+          base.jss_styles = {};
           base.lucid_react_component = class extends Opal.global.React.Component {
             constructor(props) {
               super(props);
@@ -99,11 +100,11 @@ module LucidMaterial
               return null;
             }
           }
-          base.lucid_material_component = Opal.global.MuiStyles.styled(base.lucid_react_component)(base.$styles().$to_n());
-          base.react_component = function(props) {
-            var new_props = Object.assign({}, props);
-            delete new_props.children;
-            return Opal.global.React.createElement(base.lucid_material_component, new_props)
+          base.react_component = function(outer_props) {
+            var lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
+              return Opal.global.React.createElement(base.lucid_react_component, props);
+            });
+            return Opal.global.React.createElement(lucid_material_component, outer_props);
           }
         }
       end
