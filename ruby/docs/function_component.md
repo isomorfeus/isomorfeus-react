@@ -25,7 +25,7 @@ end
 To create a function component that renders only when props change, use the memo_component, which uses React.memo:
 ```ruby
 class MyFunctionComponent < React::MemoComponent::Base
-  # A custom memo function can be utilized to check if a render should happen
+  # A custom function can be utilized to check if a render should happen
   props_are_equal? do |prev_props, next_props|
     prev_props != next_props
   end
