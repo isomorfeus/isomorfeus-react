@@ -7,7 +7,7 @@ At the [Isomorfeus Framework Project](http://isomorfeus.com)
 
 ## Versioning
 isomorfeus-react version follows the React version which features and API it implements.
-Isomorfeus-react 16.5.x implements features and the API of React 16.6 and should be used with React 16.6
+Isomorfeus-react 16.8.x implements features and the API of React 16.8 and should be used with React 16.8
 
 ## Installation
 To install React with the matching version:
