@@ -7,7 +7,7 @@ LIB_KEY = 'isomorfeus-react/ruby/lib'
 
 RSpec.describe 'Asset sizes' do
   def nested_hash_object(obj, key, value)
-    if obj.respond_to?(:key?) && obj.key?(key) && obj[key] == value
+    if obj.respond_to?(:key?) && obj.key?(key) && obj[key].end_with?(value)
       obj
     elsif obj.respond_to?(:each)
       r = nil
