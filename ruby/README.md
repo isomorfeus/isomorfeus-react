@@ -2,7 +2,7 @@
 
 Develop React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
-### Community and Support
+## Community and Support
 At the [Isomorfeus Framework Project](http://isomorfeus.com) 
 
 ## Versioning
