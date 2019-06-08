@@ -1,1 +1,2 @@
+gem 'opal-activesupport', github: 'janbiedermann/opal-activesupport', branch: 'relax'
 gemspec
