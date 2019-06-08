@@ -17,7 +17,6 @@ require 'react/redux_component/class_store_proxy'
 require 'react/redux_component/instance_store_proxy'
 require 'react/redux_component/reducers'
 
-require 'react/component/styles'
 # init component reducers
 React::ReduxComponent::Reducers.add_component_reducers_to_store
 
@@ -25,17 +24,16 @@ React::ReduxComponent::Reducers.add_component_reducers_to_store
 require 'lucid_app/context'
 LucidApp::Context.create_application_context
 
+# LucidComponent
 require 'lucid_component/api'
-require 'lucid_component/event_handler'
 require 'lucid_component/initializer'
-require 'lucid_app/api'
+require 'lucid_component/native_component_constructor'
+require 'lucid_component/event_handler'
+require 'lucid_component/mixin'
+require 'lucid_component/base'
 
-# LucidMaterial::Component
-require 'lucid_material/component/api'
-require 'lucid_material/component/native_component_constructor'
-require 'lucid_material/component/mixin'
-require 'lucid_material/component/base'
-# LucidMaterial::App
-require 'lucid_material/app/native_component_constructor'
-require 'lucid_material/app/mixin'
-require 'lucid_material/app/base'
+# LucidApp
+require 'lucid_app/api'
+require 'lucid_app/native_component_constructor'
+require 'lucid_app/mixin'
+require 'lucid_app/base'
