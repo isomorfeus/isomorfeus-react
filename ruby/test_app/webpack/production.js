@@ -1,6 +1,7 @@
 const path = require('path');
 const OwlResolver = require('opal-webpack-loader/resolver');
 const WebpackAssetsManifest = require('webpack-assets-manifest');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const common_config = {
     context: path.resolve(__dirname, '../isomorfeus'),
@@ -22,9 +23,6 @@ const common_config = {
             new OwlResolver('resolve', 'resolved') // resolve ruby files
         ]
     },
-    plugins: [
-        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
-    ],
     module: {
         rules: [
             {
@@ -80,21 +78,33 @@ const browser_config = {
     target: 'web',
     entry: {
         application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')]
-    }
+    },
+    plugins: [
+        new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
+        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportsFilename: 'report.html' })
+    ],
 };
 
 const ssr_config = {
     target: 'node',
     entry: {
         application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')]
-    }
+    },
+    plugins: [
+        new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
+        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportsFilename: 'report_ssr.html' })
+    ],
 };
 
 const web_worker_config = {
     target: 'webworker',
     entry: {
         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
-    }
+    },
+    plugins: [
+        new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
+        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportsFilename: 'report_web_worker.html' })
+    ],
 };
 
 const browser = Object.assign({}, common_config, browser_config);

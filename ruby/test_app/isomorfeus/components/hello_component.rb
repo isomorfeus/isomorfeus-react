@@ -1,5 +1,5 @@
-class HelloComponent < LucidComponent::Base
-  render do
+class HelloComponent < React::FunctionComponent::Base
+  create_function do
     DIV "Hello World!"
     NavigationLinks()
   end
