@@ -2,43 +2,36 @@
 Function Components are created using a Ruby DSL that is used within the creator class. 
 ```ruby
 class MyFunctionComponent < React::FunctionComponent::Base
-  create_component do |props|
+  create_function do |props|
     SPAN { props.text }
   end
 end
 ```
-This creates a native javascript component 'MyFunctionComponent'. 
-
 
 A Function Component can then be used in other Components:
 ```ruby
 class MyComponent < React::PureComponent::Base
   render do
-    MyComponent(text: 'some text')
-    MyObject.MyComponent(text: 'more text')
+    MyOtherComponent(text: 'some text')
+    MyFunctionComponent(text: 'more text')
   end
 end
-```
-To get the native component, for example to pass it in props, javascript inlining can be used:
-```ruby
-Route(path: '/fun_fun/:count', exact: true, component: `MyObject.MyComponent`)
 ```
 
 **Data flow of a React::FunctionComponent:**
 ![React::FunctionComponent Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_function_component.png)
 
-#### Memo
+#### Memo Components
 To create a function component that renders only when props change, use the memo_component, which uses React.memo:
 ```ruby
 class MyFunctionComponent < React::MemoComponent::Base
-  create_component do |props|
-    SPAN { props.text }
+  # A custom memo function can be utilized to check if a render should happen
+  props_are_equal? do |prev_props, next_props|
+    prev_props != next_props
   end
   
-  # A custom memo function can be utilized to check if a render should happen
-  # must appear AFTER create component, because it requires the native component to already exist.  
-  memo do |prev_props, next_props|
-    prev_props != next_props
+  create_memo do |props|
+    SPAN { props.text }
   end
 end
 ```
@@ -53,7 +46,7 @@ end
 The event_handler DSL can be used within the React::FunctionComponent::Creator. However, function component dont react by themselves to events,
 the event handler must be applied to a element.
 ```ruby
-class React::FunctionComponent::Creator
+class MyFunctionComponent < React::FunctionComponent::Base
   event_handler :show_red_alert do |event|
     `alert("RED ALERT!")`
   end
@@ -62,13 +55,9 @@ class React::FunctionComponent::Creator
     `alert("ORANGE ALERT!")`
   end
 
-  function_component 'AFunComponent' do
+  create_function 'AFunComponent' do
     SPAN(on_click: props.on_click) { 'Click for orange alert! ' } # event handler passed in props, applied to a element
     SPAN(on_click: :show_red_alert) { 'Click for red alert! '  } # event handler directly applied to a element
-  end
-
-  function_component 'AnotherFunComponent' do
-    AFunComponent(on_click: :show_orange_alert, text: 'Fun') # event handler passed as prop, but must be applied to element, see above
   end
 end
 ```
@@ -83,7 +72,7 @@ class MyFunctionComponent
     set_counter(@counter + 1)
   end
   
-  create_component do |props|
+  create_function do |props|
     @counter = use_state(:counter, 0)
     
     SPAN(on_click: :incr_counter) { props.text }
@@ -96,7 +85,7 @@ end
 ```ruby
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_component do |props|
+  create_function do |props|
     use_effect do
       # show effect
     end
@@ -112,7 +101,7 @@ React.create_context('MyContext', 10)
 
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_component do |props|
+  create_function do |props|
     value = use_context(MyContext) 
    
     SPAN { props.text }
