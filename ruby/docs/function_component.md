@@ -68,14 +68,10 @@ end
 class MyFunctionComponent
   include React::FunctionComponent::Base
   
-  event_handler :incr_counter do |event|
-    set_counter(@counter + 1)
-  end
-  
-  create_function do |props|
-    @counter = use_state(:counter, 0)
-    
-    SPAN(on_click: :incr_counter) { props.text }
+  create_function do
+    value, set_value = use_state('nothinghere')
+    handler = proc { |event| set_value.call('somethinghere') }
+    DIV(id: :test_component, on_click: handler) { value }
   end
 end
 ```
