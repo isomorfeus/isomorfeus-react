@@ -643,6 +643,8 @@ RSpec.describe 'LucidMaterial::Component' do
             DIV(id: :super_component, class_name: classes.master) { "nothinghere" }
           end
         end
+        # TODO for some reason, when use SuperComponent for inheritance, this fails on travis with 'Cyclic __proto__ value'
+        # so use Base for the moment. Point is to check if the styles accessor is available from the class.
         class TestComponent < LucidMaterial::Component::Base
           styles do
             SuperComponent.styles
