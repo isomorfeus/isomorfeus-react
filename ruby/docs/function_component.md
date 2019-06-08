@@ -49,7 +49,29 @@ React.memo(`MyComponent`) do |prev_props, next_props|
   prev_props.var != next_props.var
 end
 ```
+#### Events
+The event_handler DSL can be used within the React::FunctionComponent::Creator. However, function component dont react by themselves to events,
+the event handler must be applied to a element.
+```ruby
+class React::FunctionComponent::Creator
+  event_handler :show_red_alert do |event|
+    `alert("RED ALERT!")`
+  end
 
+  event_handler :show_orange_alert do |event|
+    `alert("ORANGE ALERT!")`
+  end
+
+  function_component 'AFunComponent' do
+    SPAN(on_click: props.on_click) { 'Click for orange alert! ' } # event handler passed in props, applied to a element
+    SPAN(on_click: :show_red_alert) { 'Click for red alert! '  } # event handler directly applied to a element
+  end
+
+  function_component 'AnotherFunComponent' do
+    AFunComponent(on_click: :show_orange_alert, text: 'Fun') # event handler passed as prop, but must be applied to element, see above
+  end
+end
+```
 
 #### Hooks
 ##### useState -> use_state
