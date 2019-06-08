@@ -643,7 +643,7 @@ RSpec.describe 'LucidMaterial::Component' do
             DIV(id: :super_component, class_name: classes.master) { "nothinghere" }
           end
         end
-        class TestComponent < SuperComponent
+        class TestComponent < LucidMaterial::Component::Base
           styles do
             SuperComponent.styles
           end
