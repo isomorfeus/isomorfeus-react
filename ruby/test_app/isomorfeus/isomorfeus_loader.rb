@@ -1,9 +1,10 @@
 require 'opal'
 require 'opal-autoloader'
 require 'isomorfeus-redux'
+start = Time.now
 require 'isomorfeus-react'
 require 'isomorfeus-react-material-ui'
-
+IR_REQUIRE_TIME = (Time.now - start) * 1000
 %x{
   class NativeComponent extends Opal.global.React.Component {
     constructor(props) {
@@ -40,3 +41,4 @@ require 'isomorfeus-react-material-ui'
 require_tree 'components'
 
 Isomorfeus.start_app!
+IR_LOAD_TIME = (Time.now - start) * 1000

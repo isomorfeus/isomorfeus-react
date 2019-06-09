@@ -1,5 +1,6 @@
 // entry file for the browser environment
 // import stylesheets here
+var start = new Date();
 import '../styles/application.css';
 
 // import npm modules that are valid to use only in the browser
@@ -19,5 +20,6 @@ import './application_common.js';
 import init_app from 'isomorfeus_loader.rb';
 init_app();
 Opal.load('isomorfeus_loader');
+Opal.Object.$const_set('APP_LOAD_TIME', (new Date()) - start);
 
 if (module.hot) { module.hot.accept(); }
