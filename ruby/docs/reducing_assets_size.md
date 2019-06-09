@@ -5,8 +5,8 @@ what is really needed in many cases.
 All sizes below are measured with isomorfeus-react 16.8.0.
 For explanation of the sizes see the documentation of [Bundle Analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer)
 
-require option| stat size | parsed size | gzip size
---------|----------:|------------:|----------:|
+require option | stat size | parsed size | gzip size
+---------------|----------:|------------:|----------:|
 `require 'isomorfeus-react-base'`| ~90kb | ~100kb | ~13kb
 `require 'isomorfeus-react-component'` | ~161kb | ~177kb | ~19kb
 `require 'isomorfeus-react-redux-component'` | ~180kb | ~197kb | ~22kb
