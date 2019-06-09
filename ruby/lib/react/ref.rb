@@ -6,18 +6,8 @@ module React
       true
     end
 
-    def initialize(native_ref)
-      @native = native_ref
-    end
-
     def current
-      %x{
-        if (typeof #@native.current.__ruby_instance != undefined) {
-          return #@native.current.__ruby_instance;
-        } else {
-          #@native.current;
-        }
-      }
+      `Opal.React.native_element_or_component_to_ruby(#@native.current)`
     end
   end
 end

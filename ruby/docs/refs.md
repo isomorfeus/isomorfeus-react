@@ -4,14 +4,22 @@ compared by reference by shouldComponentUpdate(). Use the DSL like so:
 ```ruby
 class MyComponent < React::Component::Base
   ref :my_ref # a simple ref
-  ref :my_other_ref do |ref|  # a ref with block
-    ref.current
+  ref :my_other_ref do |element|  # a ref with block
+    element.type
+  end
+  
+  event_handler :report_ref do |event|
+    my_ref = ruby_ref(:my_ref) # ruby_ref() returns a ruby React::Ref object
+    my_ref.current # is the element or component of this ref
+    # if its a dom element a Browser::DOM::Element will be returned
+    # if its a ruby component, its instance will be returned
+    # if its a native component, its native instance will be returned 
   end
   
   render do
-    SPAN(ref: :my_ref) { 'useful text' } # refs can then be passed as prop
+    # ref() returns the native ref object, or the function/block
+    SPAN(ref: ref(:my_ref)) { 'useful text' } # refs can then be passed as prop
+    SPAN(ref: ref(:my_other_ref)) { 'something' }
   end
 end
 ```
-If the ref declaration supplies a block, the block receives a `React::Ref` ruby instance as argument. `ref.current`may then be the ruby component or
-native DOM node. ()The latter may change to something conveniently provided by opal-browser.)

@@ -38,7 +38,8 @@ module LucidApp
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {
                 this[ref] = function(element) {
-                  #{`this.__ruby_instance`.instance_exec(React::Ref.new(`element`), `defined_refs[ref]`)}
+                  element = Opal.React.native_element_or_component_to_ruby(element);
+                  #{`this.__ruby_instance`.instance_exec(`element`, &`defined_refs[ref]`)}
                 }
                 this[ref] = this[ref].bind(this);
               } else {

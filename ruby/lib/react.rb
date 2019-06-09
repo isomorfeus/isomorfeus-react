@@ -5,6 +5,15 @@ module React
   %x{
     self.render_buffer = [];
 
+    self.set_validate_prop = function(component, prop_name) {
+      if (typeof component.react_component.propTypes == "undefined") {
+        component.react_component.propTypes = {};
+        component.react_component.propValidations = {};
+        component.react_component.propValidations[prop_name] = {};
+      }
+      component.react_component.propTypes[prop_name] = component.react_component.prototype.validateProp;
+    };
+
     self.lower_camelize = function(snake_cased_word) {
       var parts = snake_cased_word.split('_');
       var res = parts[0];
@@ -13,6 +22,13 @@ module React
             res += parts[i][0].toUpperCase() + parts[i].slice(1);
       }
       return res;
+    };
+
+    self.native_element_or_component_to_ruby = function (element) {
+      if (typeof element.__ruby_instance !== 'undefined') { return element.__ruby_instance }
+      if (element instanceof Element) { return #{Browser::DOM::Element.new(`element`)} }
+      if (element instanceof Node) { return #{Browser::DOM::Node.new(`element`)} }
+      return element;
     };
 
     self.to_native_react_props = function(ruby_style_props) {

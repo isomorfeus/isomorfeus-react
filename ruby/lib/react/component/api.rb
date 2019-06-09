@@ -57,53 +57,29 @@ module React
               end
               if options.has_key?(:class)
                 %x{
-                  if (typeof self.react_component.propTypes == "undefined") {
-                    self.react_component.propTypes = {};
-                    self.react_component.propValidations = {};
-                    self.react_component.propValidations[name] = {};
-                  }
-                  self.react_component.propTypes[name] = self.react_component.prototype.validateProp;
+                  Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].ruby_class = options.$fetch("class");
                 }
               elsif options.has_key?(:is_a)
                 %x{
-                  if (typeof self.react_component.propTypes == "undefined") {
-                    self.react_component.propTypes = {};
-                    self.react_component.propValidations = {};
-                    self.react_component.propValidations[name] = {};
-                  }
-                  self.react_component.propTypes[name] = self.react_component.prototype.validateProp;
+                  Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].is_a = options.$fetch("is_a");
                 }
               end
               if options.has_key?(:required)
                 %x{
-                  if (typeof self.react_component.propTypes == "undefined") {
-                    self.react_component.propTypes = {};
-                    self.react_component.propValidations = {};
-                    self.react_component.propValidations[name] = {};
-                  }
-                  self.react_component.propTypes[name] = self.react_component.prototype.validateProp;
+                  Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].required = options.$fetch("required");
                 }
               elsif !options.has_key?(:default)
                 %x{
-                  if (typeof self.react_component.propTypes == "undefined") {
-                    self.react_component.propTypes = {};
-                    self.react_component.propValidations = {};
-                  }
-                  self.react_component.propTypes[name] = self.react_component.prototype.validateProp;
+                  Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].required = true;
                 }
               end
             else
               %x{
-                if (typeof self.react_component.propTypes == "undefined") {
-                  self.react_component.propTypes = {};
-                  self.react_component.propValidations = {};
-                  self.react_component.propValidations[name] = {};
-                }
-                self.react_component.propTypes[name] = self.react_component.prototype.validateProp;
+                Opal.React.set_validate_prop(self, name);
                 self.react_component.propValidations[name].required = options.$fetch("required");
               }
             end
@@ -132,6 +108,15 @@ module React
         else
           @native.JS.forceUpdate
         end
+      end
+
+      def ref(name)
+        `#@native[name]`
+      end
+
+      def ruby_ref(name)
+        return `#@native[name]` if `(typeof #@native[name] === 'function')`
+        React::Ref::new(`#@native[name]`)
       end
 
       def set_state(updater, &callback)
