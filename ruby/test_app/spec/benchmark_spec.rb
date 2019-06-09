@@ -1,6 +1,18 @@
 require 'spec_helper'
 
 RSpec.describe 'Component benchmarks' do
+  it 'Load Time' do
+    doc = visit('/')
+    doc.wait_for('#test_anchor')
+    react_lt, react_rt, app_lt = doc.evaluate_ruby do
+      [IR_LOAD_TIME, IR_REQUIRE_TIME, APP_LOAD_TIME]
+    end
+    puts "isomorfeus-react require time: #{react_rt}ms"
+    puts "isomorfeus-react load time: #{react_lt}ms"
+    puts "application load_time: #{app_lt}ms"
+    expect(app_lt < 500).to be true
+  end
+
   it 'Native DIV Element' do
     doc = visit('/')
     time = doc.evaluate_ruby do
