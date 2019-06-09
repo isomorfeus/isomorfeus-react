@@ -524,4 +524,50 @@ RSpec.describe 'React::ReduxComponent' do
       expect(node.all_text).to include('true')
     end
   end
+
+  context 'it supports refs' do
+    before do
+      @doc = visit('/')
+    end
+
+    it 'when they are blocks' do
+      result = @doc.evaluate_ruby do
+        IT = { ref_received: false }
+        class TestComponent < React::ReduxComponent::Base
+          ref :div_ref do |element|
+            IT[:ref_received] = true if element[:id] == 'test_component'
+          end
+          render do
+            DIV(id: :test_component, ref: ref(:div_ref)) { state.some_text }
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
+        IT[:ref_received]
+      end
+      @doc.wait_for('#test_component')
+      expect(result).to be true
+    end
+
+    it 'when they are simple refs' do
+      @doc.evaluate_ruby do
+        IT = { ref_received: false }
+        class TestComponent < React::ReduxComponent::Base
+          event_handler :report_ref do |event|
+            IT[:ref_received] = true if ruby_ref(:div_ref).current[:id] == 'test_component'
+          end
+          ref :div_ref
+          render do
+            DIV(id: :test_component, ref: ref(:div_ref), on_click: :report_ref) { state.some_text }
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      node.click
+      result = @doc.evaluate_ruby do
+        IT[:ref_received]
+      end
+      expect(result).to be true
+    end
+  end
 end
