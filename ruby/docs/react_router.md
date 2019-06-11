@@ -7,7 +7,7 @@ import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
 
 global.ReactRouter = ReactRouter;
 global.ReactRouterDOM = ReactRouterDOM;
-global.BrowserRouter = BrowserRouter;
+global.Router = BrowserRouter;
 global.Link = Link;
 global.NavLink = NavLink;
 global.Route = Route;
@@ -19,7 +19,10 @@ Then the Router components can be used as an other component:
 class RouterComponent < React::Component::Base
   render do
     DIV do
-      BrowserRouter do
+      # The location prop is for SSR when using StaticRouter:
+      # import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';  
+      # global.Router = StaticRouter
+      Router(location: props.location) do
         Switch do
           Route(path: '/my_path/:id', exact: true, component: MyOtherComponent.JS[:react_component])
           Route(path: '/', strict: true, component: MyCompnent.JS[:react_component])
