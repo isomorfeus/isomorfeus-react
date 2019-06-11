@@ -2,21 +2,6 @@ module LucidComponent
   module API
     def self.included(base)
       base.instance_exec do
-        def app_store
-          @default_app_store_defined = true
-          @default_app_store ||= ::React::ReduxComponent::AppStoreDefaults.new(default_props, self.to_s)
-        end
-
-        def class_store
-          @default_class_store_defined = true
-          @default_class_store ||= ::React::ReduxComponent::ComponentClassStoreDefaults.new(default_props, self.to_s)
-        end
-
-        def store
-          @default_instance_store_defined = true
-          @default_class_store ||= ::React::ReduxComponent::ComponentInstanceStoreDefaults.new(default_props, self.to_s)
-        end
-
         def prop(name, options = `null`)
           name = `Opal.React.lower_camelize(name)`
           if options
