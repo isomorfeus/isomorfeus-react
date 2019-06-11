@@ -47,7 +47,7 @@ module React
           def prop(name, options = `null`)
             name = `Opal.React.lower_camelize(name)`
             if options
-              if options.has_key?(:default)
+              if options.key?(:default)
                 %x{
                   if (typeof self.react_component.defaultProps == "undefined") {
                     self.react_component.defaultProps = {};
@@ -55,23 +55,23 @@ module React
                   self.react_component.defaultProps[name] = options.$fetch("default");
                 }
               end
-              if options.has_key?(:class)
+              if options.key?(:class)
                 %x{
                   Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].ruby_class = options.$fetch("class");
                 }
-              elsif options.has_key?(:is_a)
+              elsif options.key?(:is_a)
                 %x{
                   Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].is_a = options.$fetch("is_a");
                 }
               end
-              if options.has_key?(:required)
+              if options.key?(:required)
                 %x{
                   Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].required = options.$fetch("required");
                 }
-              elsif !options.has_key?(:default)
+              elsif !options.key?(:default)
                 %x{
                   Opal.React.set_validate_prop(self, name);
                   self.react_component.propValidations[name].required = true;
