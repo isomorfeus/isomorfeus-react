@@ -1,6 +1,7 @@
 module Isomorfeus
   if RUBY_ENGINE == 'opal'
     class << self
+      attr_accessor :initial_state_fetched
       attr_reader :initialized
       attr_reader :env
 
