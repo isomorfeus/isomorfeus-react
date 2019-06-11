@@ -5,7 +5,7 @@ module LucidComponent
         def prop(name, options = `null`)
           name = `Opal.React.lower_camelize(name)`
           if options
-            if options.has_key?(:default)
+            if options.key?(:default)
               %x{
                 if (typeof self.lucid_react_component.defaultProps == "undefined") {
                   self.lucid_react_component.defaultProps = { isomorfeus_store: Opal.Hash.$new() };
@@ -13,7 +13,7 @@ module LucidComponent
                 self.lucid_react_component.defaultProps[name] = options.$fetch("default");
               }
             end
-            if options.has_key?(:class)
+            if options.key?(:class)
               %x{
                 if (typeof self.lucid_react_component.propTypes == "undefined") {
                   self.lucid_react_component.propTypes = {};
@@ -23,7 +23,7 @@ module LucidComponent
                 self.lucid_react_component.propTypes[name] = self.lucid_react_component.prototype.validateProp;
                 self.lucid_react_component.propValidations[name].ruby_class = options.$fetch("class");
               }
-            elsif options.has_key?(:is_a)
+            elsif options.key?(:is_a)
               %x{
                 if (typeof self.lucid_react_component.propTypes == "undefined") {
                   self.lucid_react_component.propTypes = {};
@@ -34,7 +34,7 @@ module LucidComponent
                 self.lucid_react_component.propValidations[name].is_a = options.$fetch("is_a");
               }
             end
-            if options.has_key?(:required)
+            if options.key?(:required)
               %x{
                 if (typeof self.lucid_react_component.propTypes == "undefined") {
                   self.lucid_react_component.propTypes = {};
@@ -44,7 +44,7 @@ module LucidComponent
                 self.lucid_react_component.propTypes[name] = self.lucid_react_component.prototype.validateProp;
                 self.lucid_react_component.propValidations[name].required = options.$fetch("required");
               }
-            elsif !options.has_key?(:default)
+            elsif !options.key?(:default)
               %x{
                 if (typeof self.lucid_react_component.propTypes == "undefined") {
                   self.lucid_react_component.propTypes = {};
