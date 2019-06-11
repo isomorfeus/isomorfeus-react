@@ -9,6 +9,13 @@ module Isomorfeus
         props_json = root_element.JS.getAttribute('data-iso-props')
         props = `Opal.Hash.$new(JSON.parse(props_json))`
         hydrated = root_element.JS.getAttribute('data-iso-hydrated')
+        state_json = root_element.JS.getAttribute('data-iso-state')
+        if state_json
+          state = `JSON.parse(state_json)`
+          Isomorfeus.store.JS[:native].JS.dispatch(`{ type: 'APPLICATION_STATE', set_state: state.application_state }`)
+          Isomorfeus.store.JS[:native].JS.dispatch(`{ type: 'COMPONENT_STATE', set_state: state.component_state }`)
+          Isomorfeus.store.JS[:native].JS.dispatch(`{ type: 'COMPONENT_CLASS_STATE', set_state: state.component_class_state }`)
+        end
         mount_component(component, props, root_element, hydrated)
       end
     end
