@@ -7,11 +7,8 @@ module React
 
       def method_missing(prop, *args, &block)
         %x{
-          if (typeof #@native[prop] === 'undefined') {
-            return #{nil};
-          } else {
-            return #@native[prop];
-          }
+          if (typeof #@native[prop] === 'undefined') { return #{nil}; }
+          return #@native[prop];
         }
       end
 

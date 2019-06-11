@@ -6,11 +6,8 @@ module React
       def method_missing(prop, *args, &block)
         %x{
           var prop_name = Opal.React.lower_camelize(prop);
-          if (typeof #@native[prop_name] === 'undefined') {
-            return #{nil};
-          } else {
-            return #@native[prop_name];
-          }
+          if (typeof #@native[prop_name] === 'undefined') { return #{nil}; }
+          return #@native[prop_name];
         }
       end
 
