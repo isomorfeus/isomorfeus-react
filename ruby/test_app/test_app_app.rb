@@ -1,8 +1,6 @@
 require_relative 'app_loader'
 require_relative 'owl_init'
 
-Isomorfeus.server_side_rendering
-
 class TestAppApp < Roda
   include OpalWebpackLoader::ViewHelper
   include Isomorfeus::ReactViewHelper
