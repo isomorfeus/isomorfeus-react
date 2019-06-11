@@ -1,5 +1,5 @@
-class TestAppApp < React::FunctionComponent::Base
-  create_function do
+class TestAppApp < LucidMaterial::App::Base
+  render do
     Router do
       Switch do
         Route(path: '/', exact: true, component: HelloComponent.JS[:react_component])

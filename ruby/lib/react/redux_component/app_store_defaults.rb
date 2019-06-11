@@ -16,14 +16,14 @@ module React
           key = key.chop if `key.endsWith('=')`
           @state.isomorfeus_store[:application_state][key] = args[0]
           current_state = Isomorfeus.store.get_state
-          if !(current_state[:application_state].has_key?(key))
+          if !(current_state[:application_state].key?(key))
             Isomorfeus.store.dispatch(type: 'APPLICATION_STATE', name: key, value: args[0])
           end
         else
           # get class state
 
           # check if we have a component local state value
-          if @state.isomorfeus_store[:application_state].has_key?(key)
+          if @state.isomorfeus_store[:application_state].key?(key)
             return @state.isomorfeus_store[:application_state][key]
           end
         end
