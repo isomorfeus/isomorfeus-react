@@ -7,20 +7,37 @@ This component is like a React::Component and in addition to it, allows do manag
 class MyComponent < React::PureComponent::Base
   store.a_var = 100 # set a initial value for the instance
   class_store.another_var = 200 # set a initial value for the class
-  render do
+  app_store.yet_another_var = 300
+  
+  event_handler :clicky do
+    # To make component 'pure' as much as possible, it is recommended to set or change values in any of the stores
+    # only outside of render, for example in a event_handler
     # in a React::ReduxComponent state can be used for local state managed by react:
-    state.some_var
+    state.some_var = 10
     # in addition to that, store can be used for local state managed by redux:
-    store.a_var
+    store.a_var = 200
     # and for managing class state:
-    class_store.another_var
+    class_store.another_var = 300
     # and for managing application wide state:
-    app_store.yet_another_var
+    app_store.yet_another_var = 4000
+  end
+  
+  render do
+    DIV(on_click: :clicky) do
+      # in a React::ReduxComponent state can be used for local state managed by react:
+      state.some_var
+      # in addition to that, store can be used for local state managed by redux:
+      store.a_var
+      # and for managing class state:
+      class_store.another_var
+      # and for managing application wide state:
+      app_store.yet_another_var
+    end
   end
 end
 ```
-Provided some middleware is used for redux, state changes using `store` or `class_store` can be watched, debugged and otherwise handled by redux
-middleware.
+Using the ReduxDevTools for chrome or firefox, state changes using `store`, `class_store` or `app_store` can be watched, recorded, replayed,
+debugged and otherwise.
 
 The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
