@@ -11,6 +11,7 @@ module LucidApp
       base.include(::React::Component::Callbacks)
       base.include(::React::ReduxComponent::API)
       base.include(::LucidApp::API)
+      base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)
       base.include(::React::Component::Resolution)
     end
