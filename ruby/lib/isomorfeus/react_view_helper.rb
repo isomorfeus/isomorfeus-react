@@ -20,7 +20,7 @@ module Isomorfeus
           return [rendered_tree, application_state]
         JAVASCRIPT
         rendered_tree, application_state = Isomorfeus.ssr_contexts[asset].exec(javascript)
-        render_result << "data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        render_result << " data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
         render_result << rendered_tree
       else
         render_result << '>'
