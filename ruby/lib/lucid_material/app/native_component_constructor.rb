@@ -102,13 +102,19 @@ module LucidMaterial
             }
           }
           base.lucid_material_component = null;
-          base.react_component = function(outer_props) {
-            if (!base.lucid_material_component) {
-              base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
-                return Opal.global.React.createElement(base.lucid_react_component, props);
-              });
+          base.react_component = class extends Opal.global.React.Component {
+            constructor(props) { super(props) }
+            static get displayName() {
+              return #{component_name} + 'Shell';
             }
-            return Opal.global.React.createElement(base.lucid_material_component, outer_props);
+            render() {
+              if (!base.lucid_material_component) {
+                base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
+                  return Opal.global.React.createElement(base.lucid_react_component, props);
+                });
+              }
+              return Opal.global.React.createElement(base.lucid_material_component, this.props);
+            }
           }
         }
       end

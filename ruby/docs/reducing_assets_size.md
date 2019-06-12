@@ -26,24 +26,20 @@ Supported Components for `require 'isomorfeus-react-component'`:
 - Common Components above
 - React::Component
 - React::PureComponent
-- Hot Module Reloading not supported out of the box
 
 Supported Components for `require 'isomorfeus-react-redux-component'`
 - Common Components above
 - React::ReduxComponent
-- Hot Module Reloading not supported out of the box
 
 Supported Components for `require 'isomorfeus-react-lucid'`
 - Common Components above
 - LucidApp
 - LucidComponent
-- Hot Module Reloading supported
 
 Supported Components for `require 'isomorfeus-react-material-ui'`
 - Common Components above
 - LucidMaterial::App
 - LucidMaterial::Component
-- Hot Module Reloading supported
 
 Supported Components for `require 'isomorfeus-react'`
 - Common Components above
@@ -52,4 +48,3 @@ Supported Components for `require 'isomorfeus-react'`
 - React::ReduxComponent
 - LucidApp
 - LucidComponent
-- Hot Module Reloading supported when using LucidApp

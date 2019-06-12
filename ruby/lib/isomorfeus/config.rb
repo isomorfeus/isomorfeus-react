@@ -2,6 +2,7 @@ module Isomorfeus
   if RUBY_ENGINE == 'opal'
     class << self
       attr_accessor :initial_state_fetched
+      attr_accessor :top_component
       attr_reader :initialized
       attr_reader :env
 
@@ -56,11 +57,7 @@ module Isomorfeus
       end
 
       def force_render
-        @render_trigger ||= 1
-        @render_trigger += 1
-        action = { type: 'APPLICATION_STATE', name: 'render_trigger', value: @render_trigger }
-        Isomorfeus.store.dispatch(action)
-        @render_trigger
+        top_component.JS.forceUpdate()
       end
     end
 
