@@ -58,6 +58,7 @@ module Isomorfeus
 
       def force_render
         top_component.JS.forceUpdate()
+        nil
       end
     end
 
