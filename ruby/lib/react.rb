@@ -185,7 +185,7 @@ module React
     if block_given?
       %x{
         var fun = function(prev_props, next_props) {
-          return #{block.call(::React::Component::Props.new(prev_props), ::React::Component::Props.new(next_props))};
+          return #{block.call(::React::Component::Props.new(`{props: prev_props}`), ::React::Component::Props.new(`{props: next_props}`))};
         }
         return Opal.global.React.memo(function_component, fun);
       }
