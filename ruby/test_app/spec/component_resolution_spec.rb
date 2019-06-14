@@ -216,4 +216,32 @@ RSpec.describe 'Component Resolution' do
     expect(html).to include('TopNativeComponent')
     expect(html).to include('NestedNative.AnotherComponent')
   end
+
+  # not sure if this should work. It works with ExampleFunction::AComponent().
+  #
+  # it 'can resolve function components from within the same module' do
+  #   @doc.evaluate_ruby do
+  #     module ExampleFunction
+  #       class AComponent < React::FunctionComponent::Base
+  #         create_function do
+  #           DIV "AComponent"
+  #         end
+  #       end
+  #     end
+  #
+  #     module ExampleFunction
+  #       class AnotherComponent < React::FunctionComponent::Base
+  #         create_function do
+  #           DIV "AnotherComponent"
+  #           AComponent()
+  #         end
+  #       end
+  #     end
+  #     Isomorfeus::TopLevel.mount_component(ExampleFunction::AnotherComponent, {}, '#test_anchor')
+  #   end
+  #
+  #   html = @test_anchor.html
+  #   expect(html).to include('AnotherComponent')
+  #   expect(html).to include('AComponent')
+  # end
 end
