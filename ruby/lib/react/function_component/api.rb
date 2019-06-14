@@ -4,7 +4,7 @@ module React
       attr_accessor :props
 
       def initialize(props)
-        @props = ::React::Component::Props.new(props)
+        @props = ::React::Component::Props.new(`{props: props}`)
       end
 
       def use_callback(deps, &block)

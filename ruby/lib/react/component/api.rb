@@ -92,7 +92,7 @@ module React
                 self.lucid_react_component.defaultProps = {};
               }
             }
-            @default_props = `Opal.React.Component.Props.$new(self.react_component.defaultProps)`
+            @default_props = `Opal.React.Component.Props.$new({props: self.react_component.defaultProps})`
           end
 
           def render(&block)

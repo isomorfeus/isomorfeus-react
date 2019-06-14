@@ -32,7 +32,7 @@ module React
             %x{
               var fun = function(prev_props, prev_state, snapshot) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
                                                        `Opal.React.Component.State.$new({state: prev_state})`,
                                                        `snapshot`, &block)};
                 Opal.React.active_redux_components.pop();
@@ -73,7 +73,7 @@ module React
             %x{
               var fun = function(props, state) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(props)`,
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: props})`,
                                                        `Opal.React.Component.State.$new({state: state})`,
                                                        &block)};
                 Opal.React.active_redux_components.pop();
@@ -87,7 +87,7 @@ module React
             %x{
               var fun = function(prev_props, prev_state) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new(prev_props)`,
+                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
                                                        `Opal.React.Component.State.$new({state: prev_state})`,
                                                        &block)};
                 Opal.React.active_redux_components.pop();

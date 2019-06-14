@@ -16,8 +16,8 @@ module React
         def props_are_equal?(&block)
           %x{
             base.equality_checker = function (prev_props, next_props) {
-              var prev_ruby_props = Opal.React.Component.Props.$new(prev_props);
-              var next_ruby_props = Opal.React.Component.Props.$new(next_props);
+              var prev_ruby_props = Opal.React.Component.Props.$new({props: prev_props});
+              var next_ruby_props = Opal.React.Component.Props.$new({props: next_props});
               return #{base.new(`{}`).instance_exec(`prev_ruby_props`, `next_ruby_props`, &block)};
             }
           }

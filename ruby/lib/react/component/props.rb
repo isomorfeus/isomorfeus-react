@@ -12,7 +12,7 @@ module React
       end
 
       def classes
-        @classes ||= `Opal.React.Component.Styles.$new(#@native.classes)`
+        @classes ||= `Opal.React.Component.Styles.$new(#@native.props.classes)`
       end
 
       def isomorfeus_store

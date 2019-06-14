@@ -74,7 +74,7 @@ module LucidComponent
               self.lucid_react_component.defaultProps = { isomorfeus_store: Opal.Hash.$new() };
             }
           }
-          @default_props = React::Component::Props.new(`self.lucid_react_component.defaultProps`)
+          @default_props = React::Component::Props.new(`{props: self.lucid_react_component.defaultProps}`)
         end
       end
     end
