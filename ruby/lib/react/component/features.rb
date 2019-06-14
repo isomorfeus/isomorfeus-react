@@ -14,9 +14,7 @@ module React
           element = element_or_query
         end
         %x{
-          var children = null;
           var block_result = null;
-
           Opal.React.render_buffer.push([]);
           if (block !== nil) {
             block_result = block.$call()
