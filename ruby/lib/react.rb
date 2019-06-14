@@ -46,6 +46,10 @@ module React
             }
           } else if (keys[i].startsWith("aria_")) {
             result[keys[i].replace("_", "-")] = ruby_style_props['$[]'](keys[i]);
+          } else if (keys[i] === "style") {
+            var val = ruby_style_props['$[]'](keys[i]);
+            if (typeof val.$$is_hash !== "undefined") { val = val.$to_n() }
+            result["style"] = val;
           } else {
             result[Opal.React.lower_camelize(keys[i])] = ruby_style_props['$[]'](keys[i]);
           }
@@ -71,7 +75,7 @@ module React
 
       if (string_child) {
         children = string_child;
-      } else if (block !== nil) {
+      } else if (block && block !== nil) {
         Opal.React.render_buffer.push([]);
         block_result = block.$call();
         if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
