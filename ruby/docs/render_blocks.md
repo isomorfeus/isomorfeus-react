@@ -49,3 +49,5 @@ class MyComponent < React::Component::Base
   end
 end
 ```
+
+Also &nbsp\; doesn't work in strings, instead "\u00A0" must be used.
