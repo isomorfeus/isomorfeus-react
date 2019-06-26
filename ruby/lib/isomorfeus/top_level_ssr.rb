@@ -2,6 +2,7 @@ module Isomorfeus
   class TopLevel
     class << self
       attr_accessor :ssr_route_path
+      attr_accessor :transport_ws_url
 
       def mount!
         # nothing, but keep it for compatibility with browser
