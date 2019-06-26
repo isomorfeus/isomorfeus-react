@@ -14,9 +14,21 @@ module Isomorfeus
             global.Opal.Isomorfeus.TopLevel["$ssr_route_path="]('#{props[:location]}');
           JAVASCRIPT
         end
+        if props.key?(:location_host) && props.key?(:location_scheme)
+          ws_scheme = props[:location_scheme] == 'https:' ? 'wss:' : 'ws:'
+          javascript << <<~JAVASCRIPT
+            global.Opal.Isomorfeus.TopLevel["$transport_ws_url="]('#{ws_scheme}#{props[:location_host]}#{Isomorfeus.api_websocket_path}');
+            if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { 
+              global.Opal.Isomorfeus.Transport.$connect();
+            }
+          JAVASCRIPT
+        end
         javascript << <<~JAVASCRIPT
           var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
           var application_state = global.Opal.Isomorfeus.store.native.getState();
+          if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { 
+            global.Opal.Isomorfeus.Transport.$disconnect();
+          }
           return [rendered_tree, application_state]
         JAVASCRIPT
         rendered_tree, application_state = Isomorfeus.ssr_contexts[asset].exec(javascript)
