@@ -1,12 +1,13 @@
 module Isomorfeus
   module ReactViewHelper
     def mount_component(component_name, props = {}, asset = 'application_ssr.js')
+      thread_id_asset = "#{Thread.current.object_id}#{asset}"
       render_result = "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
       if Isomorfeus.server_side_rendering
-        unless Isomorfeus.ssr_contexts.key?(asset)
+        unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
           asset_file_name = OpalWebpackLoader::Manifest.lookup_path_for(asset)
           asset_path = File.join('public', asset_file_name)
-          Isomorfeus.ssr_contexts[asset] = ExecJS.permissive_compile(File.read(asset_path))
+          Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(File.read(asset_path))
         end
         javascript = ''
         if props.key?(:location)
@@ -31,7 +32,7 @@ module Isomorfeus
           }
           return [rendered_tree, application_state]
         JAVASCRIPT
-        rendered_tree, application_state = Isomorfeus.ssr_contexts[asset].exec(javascript)
+        rendered_tree, application_state = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
         render_result << " data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
         render_result << rendered_tree
       else
