@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-webpack-loader', '>= 0.9.0'
   s.add_dependency 'isomorfeus-redux', '~> 4.0.7'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.8'
-  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.7'
+  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.8'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.6'
 end
