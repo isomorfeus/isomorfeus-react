@@ -1,6 +1,6 @@
 require 'etc'
-Iodine.threads = ENV['THREADS'] || 1
-Iodine.workers = ENV['WORKERS'] || Etc.nprocessors
+Iodine.threads = ENV['THREADS'] ? ENV['THREADS'].to_i : 4
+Iodine.workers = ENV['WORKERS'] ? ENV['WORKERS'].to_i : Etc.nprocessors
 
 if ENV['REDIS_URL']
   Iodine::PubSub.default = Iodine::PubSub::Redis.new(ENV['REDIS_URL'])

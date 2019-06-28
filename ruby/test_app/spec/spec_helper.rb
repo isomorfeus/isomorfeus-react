@@ -16,10 +16,5 @@ Isomorfeus::Puppetmaster.boot_app
 
 RSpec.configure do |config|
   config.include Isomorfeus::Puppetmaster::DSL
-
-  config.after(:suite) do
-    STDERR.puts "Calling Iodine.stop"
-    Iodine.stop
-  end
 end
 
