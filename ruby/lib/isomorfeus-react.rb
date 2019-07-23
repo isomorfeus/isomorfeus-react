@@ -7,6 +7,7 @@ else
   require 'oj'
   require 'opal'
   require 'opal-activesupport'
+  require 'opal-autoloader'
   require 'opal-browser'
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'

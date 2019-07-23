@@ -1,4 +1,5 @@
 require 'opal'
+require 'opal-autoloader'
 require 'native'
 require 'active_support/core_ext/string'
 require 'react/active_support_support'
@@ -53,3 +54,4 @@ require 'react/memo_component/creator'
 require 'react/memo_component/mixin'
 require 'react/memo_component/base'
 
+Opal::Autoloader.add_load_path('components')
