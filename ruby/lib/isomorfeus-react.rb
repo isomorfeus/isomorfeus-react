@@ -16,7 +16,7 @@ else
 
   Isomorfeus.env = ENV['RACK_ENV']
 
-  if Isomorfeus.env == 'production'
+  if Isomorfeus.production?
     Isomorfeus.server_side_rendering = true
   else
     Isomorfeus.server_side_rendering = false
