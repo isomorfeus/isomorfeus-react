@@ -1,2 +1,2 @@
-web: bundle exec puma
+web: bundle exec iodine
 webpack: bundle exec yarn run debug
