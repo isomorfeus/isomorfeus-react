@@ -41,7 +41,7 @@ class TestAppApp < Roda
           <title>Welcome to TestAppApp</title>
         </head>
         <body>
-          #{mount_component('TestAppApp', location: env['REQUEST_PATH'])}
+          #{mount_component('TestAppApp', location: env['PATH_INFO'])}
           <div id="test_anchor"></div>
         </body>
       </html>
@@ -49,7 +49,7 @@ class TestAppApp < Roda
     end
 
     r.get do
-      page_content(env['REQUEST_PATH'])
+      page_content(env['PATH_INFO'])
     end
   end
 end
