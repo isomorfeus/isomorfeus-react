@@ -16,15 +16,15 @@ Gem::Specification.new do |s|
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  s.add_dependency 'oj', '>= 3.6'
+  s.add_dependency 'oj', '>= 3.8'
   s.add_dependency 'opal', '>= 0.11.0'
   s.add_dependency 'opal-activesupport', '~> 0.3.1'
   s.add_dependency 'opal-autoloader', '~> 0.1.0'
   s.add_dependency 'opal-browser', '~> 0.2.0'
-  s.add_dependency 'opal-webpack-loader', '>= 0.9.0'
+  s.add_dependency 'opal-webpack-loader', '>= 0.9.2'
   s.add_dependency 'isomorfeus-redux', '~> 4.0.8'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.10'
-  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.8'
+  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.9'
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec', '~> 3.6'
+  s.add_development_dependency 'rspec', '~> 3.8'
 end
