@@ -1,4 +1,4 @@
-if ENV['RACK_ENV'] != 'development'
+if ENV['RACK_ENV'] && ENV['RACK_ENV'] != 'development'
   require_relative 'test_app_app'
   run TestAppApp.app
 else
