@@ -35,19 +35,19 @@ module React
     native_boolean_accessors :altKey, :bubbles, :cancelable, :ctrlKey, :defaultPrevented, :isPrimary, :isTrusted, :metaKey, :repeat, :shiftKey
 
     def current_target
-      Browser::Event::Target.convert(@native.JS[:currentTarget])
+      Bowser::Element.new(@native.JS[:currentTarget])
     end
 
     def native_event
-      Browser::Event.new(@native.JS[:nativeEvent])
+      Bowser::Event.new(@native.JS[:nativeEvent])
     end
 
     def related_target
-      Browser::Event::Target.convert(@native.JS[:relatedTarget])
+      Bowser::Element.new(@native.JS[:relatedTarget])
     end
 
     def target
-      Browser::Event::Target.convert(@native.JS[:target])
+      Bowser::Element.new(@native.JS[:target])
     end
   end
 end

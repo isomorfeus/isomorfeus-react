@@ -2,22 +2,20 @@ if RUBY_ENGINE == 'opal'
   require 'opal'
   require 'opal-autoloader'
   require 'native'
+  require 'promise'
   require 'active_support/core_ext/string'
   require 'react/active_support_support'
+  require 'isomorfeus-redux'
+
   require 'isomorfeus/execution_environment'
 
   if Isomorfeus.on_browser?
-    require 'browser/support'
-    require 'browser/event'
-    require 'browser/event_source'
-    require 'browser/screen'
-    require 'browser/socket'
-    require 'browser/window'
-    require 'browser/dom/node'
-    require 'browser/dom/element'
+    require 'bowser/event'
+    require 'bowser/event_target'
+    require 'bowser/delegate_native'
+    require 'bowser/element'
   end
 
-  require 'isomorfeus-redux'
   require 'isomorfeus/config'
 
   # allow mounting of components
@@ -118,7 +116,6 @@ else
   require 'opal'
   require 'opal-activesupport'
   require 'opal-autoloader'
-  require 'opal-browser'
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'
   require 'react/version'
