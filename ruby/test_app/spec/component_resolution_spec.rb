@@ -4,7 +4,7 @@ RSpec.describe 'Component Resolution' do
   before do
     @doc = visit('/')
     # create several kinds components, nested
-    # resolution for React::Component, React::PureComponent, React::ReduxComponent, LucidComponent, LucidMaterial::Component is the same
+    # resolution for React::Component, React::PureComponent, LucidComponent, LucidMaterial::Component is the same
     # but we need to check in addition to one of the above React::FunctionComponent, which has the same resolution as the React::MemoComponent
     # and we need to check Native Components (see test_app, isomorfeus_loader.rb)
     # and we need to check resolution from element blocks

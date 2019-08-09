@@ -203,32 +203,6 @@ RSpec.describe 'Component benchmarks' do
     expect(time > 0 && time < 1000).to be_truthy
   end
 
-  it 'Redux Component' do
-    doc = visit('/')
-    time = doc.evaluate_ruby do
-      class ReduxC < React::ReduxComponent::Base
-        render do
-          DIV 'A'
-        end
-      end
-      class BenchmarkComponent < React::Component::Base
-        render do
-          Fragment do
-            10000.times do
-              ReduxC()
-            end
-          end
-        end
-      end
-
-      start = Time.now
-      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
-      (Time.now - start) * 1000
-    end
-    puts "10000 Redux Components took: #{time}ms"
-    expect(time > 0 && time < 1000).to be_truthy
-  end
-
   it 'Lucid Component' do
     doc = visit('/')
     time = doc.evaluate_ruby do

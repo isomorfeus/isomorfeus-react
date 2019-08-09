@@ -9,7 +9,7 @@ module LucidMaterial
         base.include(::React::Component::Elements)
         base.include(::React::Component::API)
         base.include(::React::Component::Callbacks)
-        base.include(::React::ReduxComponent::API)
+        base.include(::LucidComponent::StoreAPI)
         base.include(::LucidComponent::API)
         base.include(::LucidMaterial::Component::API)
         base.include(::LucidComponent::Initializer)

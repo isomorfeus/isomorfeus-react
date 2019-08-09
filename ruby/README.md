@@ -21,7 +21,6 @@ Component Types:
 - [Class Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/class_component.md)
 - [Pure Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/pure_component.md)
 - [Function and Memo Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/function_component.md)
-- [Redux Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/redux_component.md)
 - [Lucid App, Lucid Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/lucid_component.md)
 - [LucidMaterial App, LucidMaterial Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/lucid_material_component.md) - support for [MaterialUI](https://material-ui.com)
 - [React Javascript Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/javascript_component.md)
