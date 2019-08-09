@@ -88,8 +88,7 @@ const ssr_config = {
         application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')]
     },
     plugins: [
-        new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
-        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportsFilename: 'report_ssr.html' })
+        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
     ],
 };
 
@@ -99,8 +98,7 @@ const web_worker_config = {
         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
     },
     plugins: [
-        new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
-        new BundleAnalyzerPlugin({ analyzerMode: 'static', openAnalyzer: false, reportsFilename: 'report_web_worker.html' })
+        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
     ],
 };
 
