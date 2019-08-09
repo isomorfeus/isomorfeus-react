@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'oj', '>= 3.8'
   s.add_dependency 'opal', '>= 0.11.0'
-  s.add_dependency 'opal-activesupport', '~> 0.3.1'
+  s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'opal-autoloader', '~> 0.1.0'
   s.add_dependency 'opal-browser', '~> 0.2.0'
   s.add_dependency 'opal-webpack-loader', '>= 0.9.2'
