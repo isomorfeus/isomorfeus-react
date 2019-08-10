@@ -1,6 +1,4 @@
-require 'bowser/element'
-
-module Bowser
+module Browser
   class Element
     element :video, :audio do
       def buffered

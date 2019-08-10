@@ -26,7 +26,7 @@ module React
 
     self.native_element_or_component_to_ruby = function (element) {
       if (typeof element.__ruby_instance !== 'undefined') { return element.__ruby_instance }
-      if (element instanceof Element || element instanceof Node) { return #{Bowser::Element.new(`element`)} }
+      if (element instanceof Element || element instanceof Node) { return #{Browser::Element.new(`element`)} }
       return element;
     };
 

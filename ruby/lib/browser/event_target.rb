@@ -1,11 +1,11 @@
-module Bowser
+module Browser
   module EventTarget
     # Add the block as a handler for the specified event name. Will use either
     # `addEventListener` or `addListener` if they exist.
     #
     # @param event_name [String] the name of the event
     # @return [Proc] the block to pass to `off` to remove this handler
-    # @yieldparam event [Bowser::Event] the event object
+    # @yieldparam event [Browser::Event] the event object
     def on event_name, &block
       wrapper = proc { |event| block.call Event.new(event) }
 
@@ -14,7 +14,7 @@ module Bowser
       elsif `#@native.addListener !== undefined`
         `#@native.addListener(event_name, wrapper)`
       else
-        warn "[Bowser] Not entirely sure how to add an event listener to #{self}"
+        warn "[Browser] Not entirely sure how to add an event listener to #{self}"
       end
 
       wrapper
@@ -30,7 +30,7 @@ module Bowser
       elsif `#@native.removeListener !== undefined`
         `#@native.removeListener(event_name, block)`
       else
-        warn "[Bowser] Not entirely sure how to remove an event listener from #{self}"
+        warn "[Browser] Not entirely sure how to remove an event listener from #{self}"
       end
 
       nil

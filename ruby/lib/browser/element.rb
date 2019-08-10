@@ -1,6 +1,6 @@
-module Bowser
-  autoload :FileList, 'bowser/file_list'
-  autoload :Iterable, 'bowser/iterable'
+module Browser
+  autoload :FileList, 'browser/file_list'
+  autoload :Iterable, 'browser/iterable'
 
   # Wrap a native DOM element
   class Element
@@ -30,7 +30,7 @@ module Bowser
 
     # Replace all child elements with the given element
     #
-    # @param element [Bowser::Element] The Bowser element with which to replace
+    # @param element [Browser::Element] The Browser element with which to replace
     #   this element's contents
     def inner_dom= element
       clear
@@ -53,7 +53,7 @@ module Bowser
 
     # This element's direct child elements
     #
-    # @return [Array<Bowser::Element>] list of this element's children
+    # @return [Array<Browser::Element>] list of this element's children
     def children
       elements = []
 
@@ -77,7 +77,7 @@ module Bowser
     # Remove all contents from this element. After this call, `empty?` will
     # return `true`.
     #
-    # @return [Bowser::Element] self
+    # @return [Browser::Element] self
     def clear
       if %w(input textarea).include? type
         `#@native.value = null`
@@ -92,7 +92,7 @@ module Bowser
 
     # Remove the specified child element
     #
-    # @param child [Bowser::Element] the child element to remove
+    # @param child [Browser::Element] the child element to remove
     def remove_child child
       `#@native.removeChild(child['native'] ? child['native'] : child)`
     end
@@ -106,7 +106,7 @@ module Bowser
 
     # Append the specified element as a child element
     #
-    # @param element [Bowser::Element, JS] the element to insert
+    # @param element [Browser::Element, JS] the element to insert
     def append node
       `#@native.appendChild(node['native'] ? node['native'] : node)`
       self
@@ -124,7 +124,7 @@ module Bowser
     # Get the currently selected file for this input. This is only useful for
     # file inputs without the `multiple` property set.
     #
-    # @return [Bowser::File] the file selected by the user
+    # @return [Browser::File] the file selected by the user
     def file
       files.first
     end
@@ -132,7 +132,7 @@ module Bowser
     # Get the currently selected files for this input. This is only useful for
     # file inputs with the `multiple` property set.
     #
-    # @return [Bowser::FileList] the currently selected files for this input
+    # @return [Browser::FileList] the currently selected files for this input
     def files
       FileList.new(`#@native.files`)
     end

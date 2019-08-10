@@ -1,4 +1,4 @@
-module Bowser
+module Browser
   # Wrapper for JS events
   class Event
     # @param [JS] the native event to wrap
@@ -9,7 +9,7 @@ module Bowser
     # Prevent the runtime from executing this event's default behavior. For
     # example, prevent navigation after clicking a link.
     #
-    # @return [Bowser::Event] self
+    # @return [Browser::Event] self
     def prevent
       `#@native.preventDefault()`
       self
@@ -58,7 +58,7 @@ module Bowser
 
     # The target for this event
     #
-    # @return [Bowser::Element] the element on which this event was triggered
+    # @return [Browser::Element] the element on which this event was triggered
     # @todo Handle non-DOM events here
     def target
       Element.new(`#@native.target`)

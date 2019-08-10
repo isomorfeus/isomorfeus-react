@@ -10,10 +10,10 @@ if RUBY_ENGINE == 'opal'
   require 'isomorfeus/execution_environment'
 
   if Isomorfeus.on_browser?
-    require 'bowser/event'
-    require 'bowser/event_target'
-    require 'bowser/delegate_native'
-    require 'bowser/element'
+    require 'browser/event'
+    require 'browser/event_target'
+    require 'browser/delegate_native'
+    require 'browser/element'
   end
 
   require 'isomorfeus/config'

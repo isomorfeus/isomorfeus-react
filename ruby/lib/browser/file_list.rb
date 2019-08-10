@@ -1,4 +1,4 @@
-module Bowser
+module Browser
   class FileList
     include Enumerable
 
@@ -11,7 +11,7 @@ module Bowser
     end
 
     # @param index [Integer] the index of the file in the list
-    # @return [Bowser::FileList::File] the file at the specified index
+    # @return [Browser::FileList::File] the file at the specified index
     def [] index
       @files[index]
     end
@@ -24,7 +24,7 @@ module Bowser
 
     # Call the given block for each file in the list
     #
-    # @yieldparam file [Bowser::FileList::File]
+    # @yieldparam file [Browser::FileList::File]
     def each &block
       @files.each do |file|
         block.call file

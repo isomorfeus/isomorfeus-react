@@ -1,4 +1,4 @@
-module Bowser
+module Browser
   module DelegateNative
     # Provides a default initializer. This should be overridden in all but the
     # simplest cases.

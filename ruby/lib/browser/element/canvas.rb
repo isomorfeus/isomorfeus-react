@@ -1,6 +1,4 @@
-require 'bowser/element'
-
-module Bowser
+module Browser
   class Element
     element :canvas do
       def context(type='2d')

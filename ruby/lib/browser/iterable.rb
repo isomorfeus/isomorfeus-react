@@ -1,4 +1,4 @@
-module Bowser
+module Browser
   class Iterable
     include Enumerable
 

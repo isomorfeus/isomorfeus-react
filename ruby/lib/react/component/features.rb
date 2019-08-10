@@ -8,7 +8,7 @@ module React
       def Portal(element_or_query, &block)
         if `(typeof element_or_query === 'string')` || (`(typeof element_or_query.$class === 'function')` && element_or_query.class == String)
           element = `document.body.querySelector(element_or_query)`
-        elsif `(typeof element_or_query.$is_a === 'function')` && element_or_query.is_a?(Bowser::Element)
+        elsif `(typeof element_or_query.$is_a === 'function')` && element_or_query.is_a?(Browser::Element)
           element = element_or_query.to_n
         else
           element = element_or_query
