@@ -62,7 +62,7 @@ if RUBY_ENGINE == 'opal'
   # React::Component
   require 'react/component/api'
   require 'react/component/callbacks'
-  require 'react/component/unsafe_api'
+  # require 'react/component/unsafe_api'
   require 'react/component/initializer'
   require 'react/component/native_component_constructor'
   require 'react/component/native_component_validate_prop'
