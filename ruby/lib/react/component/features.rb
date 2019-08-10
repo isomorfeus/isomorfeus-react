@@ -30,6 +30,10 @@ module React
         }
       end
 
+      def Profiler(*args, &block)
+        `Opal.React.internal_prepare_args_and_render(Opal.global.React.Profiler, args, block)`
+      end
+
       def StrictMode(*args, &block)
         `Opal.React.internal_prepare_args_and_render(Opal.global.React.StrictMode, args, block)`
       end
