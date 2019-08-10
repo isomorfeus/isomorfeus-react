@@ -101,6 +101,10 @@ module React
         end
       end
 
+      def display_name
+        @native.JS[:displayName]
+      end
+
       def force_update(&block)
         if block_given?
           # this maybe needs instance_exec too
