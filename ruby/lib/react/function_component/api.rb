@@ -8,11 +8,7 @@ module React
       end
 
       def use_callback(deps, &block)
-        %x{
-          Opal.global.React.useCallback(function() {
-            #{block.call}
-          }, deps);
-        }
+        `Opal.global.React.useCallback(function() { #{block.call} }, deps)`
       end
 
       def use_context(context)
@@ -25,36 +21,20 @@ module React
       end
 
       def use_effect(&block)
-        %x{
-          Opal.global.React.useEffect(function() {
-            #{block.call}
-          });
-        }
+        `Opal.global.React.useEffect(function() { #{block.call} })`
       end
 
       def use_imperative_handle(ref, *deps, &block)
         native_ref = `(typeof ref.$is_wrapped_ref !== 'undefined')` ? ref.to_n : ref
-        %x{
-          Opal.global.React.useImperativeHandle(native_ref, function() {
-            #{block.call}
-          }, deps);
-        }
+        `Opal.global.React.useImperativeHandle(native_ref, function() { #{block.call} }, deps)`
       end
 
       def use_layout_effect(&block)
-        %x{
-          Opal.global.React.useLayoutEffect(function() {
-            #{block.call}
-          });
-        }
+        `Opal.global.React.useLayoutEffect(function() { #{block.call} })`
       end
 
       def use_memo(*deps, &block)
-        %x{
-          Opal.global.React.useMemo(function() {
-            #{block.call}
-          }, deps);
-        }
+        `Opal.global.React.useMemo(function() { #{block.call} }, deps)`
       end
 
       def use_reducer(inital_state, &block)
