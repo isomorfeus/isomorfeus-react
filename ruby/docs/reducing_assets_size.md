@@ -7,8 +7,8 @@ For explanation of the sizes see the documentation of [Bundle Analyzer](https://
 
 require option | stat size | parsed size | gzip size
 ---------------|----------:|------------:|----------:|
-`require 'isomorfeus-react'` | ~239kb | ~264kb | ~26kb
-`require 'isomorfeus-react-material-ui'` | ~263kb | ~290kb | ~29kb
+`require 'isomorfeus-react'` | ~264kb | ~289kb | ~29kb
+`require 'isomorfeus-react-material-ui'` | ~288kb | ~315kb | ~32kb
 
 #### Available Components for each require option
 Supported Components for `require 'isomorfeus-react'`
