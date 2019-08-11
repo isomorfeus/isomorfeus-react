@@ -29,7 +29,8 @@ module Isomorfeus
           var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
           var transport_busy = false;
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { 
-            transport_busy = global.Opal.Isomorfeus.Transport['$busy?']();
+            if (typeof global.Opal.Isomorfeus.Transport['$was_busy?'] !== 'undefined') { transport_busy = global.Opal.Isomorfeus.Transport['$was_busy?'](); }
+            else { transport_busy = global.Opal.Isomorfeus.Transport['$busy?'](); }
             if (!transport_busy) { global.Opal.Isomorfeus.Transport.$disconnect(); }
           }
           if (transport_busy) {
