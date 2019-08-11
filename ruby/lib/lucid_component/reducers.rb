@@ -37,7 +37,7 @@ module LucidComponent
               prev_state
             end
           end
-
+          Redux::Store.preloaded_state_merge!(component_state: {}, component_class_state: {})
           Redux::Store.add_reducers(component_state: component_reducer, component_class_state: component_class_reducer)
         end
       end
