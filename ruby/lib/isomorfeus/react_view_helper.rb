@@ -4,6 +4,7 @@ module Isomorfeus
       thread_id_asset = "#{Thread.current.object_id}#{asset}"
       render_result = "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
       if Isomorfeus.server_side_rendering
+
         # initialize speednode context
         unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
           asset_file_name = OpalWebpackLoader::Manifest.lookup_path_for(asset)
@@ -12,59 +13,65 @@ module Isomorfeus
         end
 
         # build javascript for rendering first pass
-        javascript = "global.Opal.Isomorfeus['$force_init!']();\n"
-        if props.key?(:location)
-          javascript << <<~JAVASCRIPT
-            global.Opal.Isomorfeus.TopLevel["$ssr_route_path="]('#{props[:location]}');
-          JAVASCRIPT
-        end
-        if props.key?(:location_host) && props.key?(:location_scheme)
-          ws_scheme = props[:location_scheme] == 'https:' ? 'wss:' : 'ws:'
-          javascript << <<~JAVASCRIPT
-            global.Opal.Isomorfeus.TopLevel["$transport_ws_url="]('#{ws_scheme}#{props[:location_host]}#{Isomorfeus.api_websocket_path}');
-            if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { global.Opal.Isomorfeus.Transport.$connect(); }
-          JAVASCRIPT
-        end
-        javascript << <<~JAVASCRIPT
-          var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
-          var transport_busy = false;
-          if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { 
-            if (typeof global.Opal.Isomorfeus.Transport['$was_busy?'] !== 'undefined') { transport_busy = global.Opal.Isomorfeus.Transport['$was_busy?'](); }
-            else { transport_busy = global.Opal.Isomorfeus.Transport['$busy?'](); }
-            if (!transport_busy) { global.Opal.Isomorfeus.Transport.$disconnect(); }
-          }
-          if (transport_busy) {
-            return ['', '', transport_busy]
-          } else {
-            var application_state = global.Opal.Isomorfeus.store.native.getState();
-            return [rendered_tree, application_state, transport_busy];
-          }
-        JAVASCRIPT
-        # execute first render pass
-        rendered_tree, application_state, transport_busy = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
+        javascript = "global.FirstPassFinished = false;\n"
+        javascript << "global.Opal.Isomorfeus['$force_init!']();\n"
+        javascript << "global.Opal.Isomorfeus.TopLevel['$ssr_route_path=']('#{props[:location]}');\n"
 
-        if transport_busy
-          # wait for transport requests to finish
+        # if location_host and scheme are given and if Transport is loaded, connect and then render, otherwise do not render
+        ws_scheme = props[:location_scheme] == 'https:' ? 'wss:' : 'ws:'
+        api_ws_path = Isomorfeus.respond_to?(:api_websocket_path) ? Isomorfeus.api_websocket_path : ''
+        javascript << <<~JAVASCRIPT
+          var location_host = '#{props[:location_host]}';
+          var ws_scheme = '#{ws_scheme}';
+          var api_ws_path = '#{api_ws_path}';
+          if (typeof global.Opal.Isomorfeus.Transport !== 'undefined' && location_host !== '' && api_ws_path !== '') {
+            global.Opal.Isomorfeus.TopLevel["$transport_ws_url="](ws_scheme + location_host + api_ws_path);
+            global.Opal.send(global.Opal.Isomorfeus.Transport.$promise_connect(), 'then', [], ($$1 = function(){
+              try {
+                global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+                global.FirstPassFinished = 'transport';
+              } catch (e) { global.FirstPassFinished = 'transport'; }
+            }, $$1.$$s = this, $$1.$$arity = 0, $$1))
+          } else { global.FirstPassFinished = true };
+        JAVASCRIPT
+
+        # execute first render pass
+        Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
+
+        # wait for first pass to finish
+        first_pass_finished = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.FirstPassFinished')
+        unless first_pass_finished
           start_time = Time.now
-          while transport_busy
+          while !first_pass_finished
             break if (Time.now - start_time) > 10
             sleep 0.01
-            transport_busy = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.Opal.Isomorfeus.Transport["$busy?"]()')
+            first_pass_finished = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.FirstPassFinished')
           end
-          # build javascript for second render pass
-          javascript = <<~JAVASCRIPT
-            var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
-            var application_state = global.Opal.Isomorfeus.store.native.getState();
-            var transport_busy = false;
-            if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { 
-              transport_busy = global.Opal.Isomorfeus.Transport['$busy?']();
-              global.Opal.Isomorfeus.Transport.$disconnect();
-            }
-            return [rendered_tree, application_state, transport_busy];
-          JAVASCRIPT
-          # execute second render pass
-          rendered_tree, application_state, _transport_busy = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
         end
+
+        # wait for transport requests to finish
+        if first_pass_finished == 'transport'
+          transport_busy = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.Opal.Isomorfeus.Transport["$busy?"]()')
+          if transport_busy
+            start_time = Time.now
+            while transport_busy
+              break if (Time.now - start_time) > 10
+              sleep 0.01
+              transport_busy = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.Opal.Isomorfeus.Transport["$busy?"]()')
+            end
+          end
+        end
+
+        # build javascript for second render pass
+        javascript = <<~JAVASCRIPT
+          var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
+          var application_state = global.Opal.Isomorfeus.store.native.getState();
+          if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { global.Opal.Isomorfeus.Transport.$disconnect(); }
+          return [rendered_tree, application_state];
+        JAVASCRIPT
+
+        # execute second render pass
+        rendered_tree, application_state = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
 
         # build result
         render_result << " data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
