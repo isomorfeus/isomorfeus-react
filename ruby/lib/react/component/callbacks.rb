@@ -60,8 +60,8 @@ module React
             %x{
                var fun = function(error) {
                 var result = #{`this.__ruby_instance`.instance_exec(`error`, &block)};
-                if (result === null) { return null; }
-                if (typeof result.$to_n === 'function') { return result.$to_n() }
+                if (typeof result.$to_n === 'function') { result = result.$to_n() }
+                if (result === Opal.nil) { return null; }
                 return result;
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.getDerivedStateFromError = fun; }
@@ -73,10 +73,12 @@ module React
             %x{
               var fun = function(props, state) {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: props})`,
-                                                       `Opal.React.Component.State.$new({state: state})`,
-                                                       &block)};
+                var result = #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: props})`,
+                                                                     `Opal.React.Component.State.$new({state: state})`, &block)};
                 Opal.React.active_redux_components.pop();
+                if (typeof result.$to_n === 'function') { result = result.$to_n() }
+                if (result === Opal.nil) { return null; }
+                return result;
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.getDerivedStateFromProps = fun; }
               else { self.react_component.prototype.getDerivedStateFromProps = fun; }
@@ -86,11 +88,12 @@ module React
           def get_snapshot_before_update(&block)
             %x{
               var fun = function(prev_props, prev_state) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
-                #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
-                                                       `Opal.React.Component.State.$new({state: prev_state})`,
-                                                       &block)};
+
+                var result = #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
+                                                                    `Opal.React.Component.State.$new({state: prev_state})`, &block)};
                 Opal.React.active_redux_components.pop();
+                if (result === Opal.nil) { return null; }
+                return result;
               }
               if (self.lucid_react_component) { self.lucid_react_component.prototype.getSnapshotBeforeUpdate = fun; }
               else { self.react_component.prototype.getSnapshotBeforeUpdate = fun; }
