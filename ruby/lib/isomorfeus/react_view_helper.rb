@@ -21,12 +21,11 @@ module Isomorfeus
         ws_scheme = props[:location_scheme] == 'https:' ? 'wss:' : 'ws:'
         location_host = props[:location_host] ? props[:location_host] : 'localhost'
         api_ws_path = Isomorfeus.respond_to?(:api_websocket_path) ? Isomorfeus.api_websocket_path : ''
+        transport_ws_url = ws_scheme + location_host + api_ws_path
         javascript << <<~JAVASCRIPT
-          var location_host = '#{location_host}';
-          var ws_scheme = '#{ws_scheme}';
           var api_ws_path = '#{api_ws_path}';
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined' && api_ws_path !== '') {
-            global.Opal.Isomorfeus.TopLevel["$transport_ws_url="](ws_scheme + location_host + api_ws_path);
+            global.Opal.Isomorfeus.TopLevel["$transport_ws_url="]("#{transport_ws_url}");
             global.Opal.send(global.Opal.Isomorfeus.Transport.$promise_connect(), 'then', [], ($$1 = function(){
               try {
                 global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
