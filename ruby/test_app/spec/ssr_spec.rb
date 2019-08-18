@@ -46,4 +46,10 @@ RSpec.describe 'Server Side Rendering' do
     expect(state['component_class_state']['HelloComponent']['instance_defaults']).to have_key('a_value')
     expect(state['component_class_state']['HelloComponent']['instance_defaults']['a_value']).to eq('component store works')
   end
+
+  it 'it returns 404 if page not found' do
+    # just the same as above, just a second time, just to see if the store is initialized correctly
+    @doc = visit('/whatever')
+    expect(@doc.response.status).to eq(404)
+  end
 end

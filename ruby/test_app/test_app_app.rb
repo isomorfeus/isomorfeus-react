@@ -25,7 +25,9 @@ class TestAppApp < Roda
 
   route do |r|
     r.root do
-      page_content(env['HTTP_HOST'], '/')
+      content = page_content(env['HTTP_HOST'], '/')
+      response.status = ssr_response_status
+      content
     end
 
     r.public
@@ -35,7 +37,7 @@ class TestAppApp < Roda
     end
 
     r.get 'ssr' do
-      <<~HTML
+      content = <<~HTML
       <html>
         <head>
           <title>Welcome to TestAppApp</title>
@@ -46,10 +48,14 @@ class TestAppApp < Roda
         </body>
       </html>
       HTML
+      response.status = ssr_response_status
+      content
     end
 
     r.get do
-      page_content(env['HTTP_HOST'], env['PATH_INFO'])
+      content = page_content(env['HTTP_HOST'], env['PATH_INFO'])
+      response.status = ssr_response_status
+      content
     end
   end
 end

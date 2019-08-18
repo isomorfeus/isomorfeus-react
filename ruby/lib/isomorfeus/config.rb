@@ -3,6 +3,7 @@ module Isomorfeus
     class << self
       attr_accessor :initial_state_fetched
       attr_accessor :top_component
+      attr_accessor :ssr_response_status
       attr_reader :initialized
       attr_reader :env
 

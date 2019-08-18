@@ -5,6 +5,7 @@ class TestAppApp < LucidMaterial::App::Base
         Route(path: '/', exact: true, component: HelloComponent.JS[:react_component])
         Route(path: '/ssr', exact: true, component: HelloComponent.JS[:react_component])
         Route(path: '/welcome', exact: true, component: WelcomeComponent.JS[:react_component])
+        Route(component: Page404Component.JS[:react_component])
       end
     end
   end
