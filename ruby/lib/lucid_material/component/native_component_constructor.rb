@@ -148,7 +148,7 @@ module LucidMaterial
           base.react_component = function(outer_props) {
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
               var store_props = Object.assign({}, outer_props, { isomorfeus_store: store });
-              if (!base.lucid_material_component) {
+              if (!base.lucid_material_component || Opal.Isomorfeus["$development?"]()) {
                 base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
                   return Opal.global.React.createElement(base.lucid_react_component, props);
                 });

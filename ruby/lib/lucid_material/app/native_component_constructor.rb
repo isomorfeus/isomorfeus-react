@@ -108,7 +108,7 @@ module LucidMaterial
               return #{component_name} + 'Shell';
             }
             render() {
-              if (!base.lucid_material_component) {
+              if (!base.lucid_material_component || Opal.Isomorfeus["$development?"]()) {
                 base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
                   return Opal.global.React.createElement(base.lucid_react_component, props);
                 });
