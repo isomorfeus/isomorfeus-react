@@ -25,9 +25,7 @@ class TestAppApp < Roda
 
   route do |r|
     r.root do
-      content = page_content(env['HTTP_HOST'], '/')
-      response.status = ssr_response_status
-      content
+      page_content(env['HTTP_HOST'], '/')
     end
 
     r.public

@@ -16,6 +16,7 @@ module Isomorfeus
         # build javascript for rendering first pass
         javascript = <<~JAVASCRIPT
           global.FirstPassFinished = false;
+          global.Opal.Isomorfeus['$env=']('#{Isomorfeus.env}');
           global.Opal.Isomorfeus['$force_init!']();
           global.Opal.Isomorfeus['$ssr_response_status='](200);
           global.Opal.Isomorfeus.TopLevel['$ssr_route_path=']('#{props[:location]}');
