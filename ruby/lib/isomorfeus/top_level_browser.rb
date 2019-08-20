@@ -5,6 +5,7 @@ module Isomorfeus
       on_ready do
         root_element = `document.querySelector('div[data-iso-root]')`
         component_name = root_element.JS.getAttribute('data-iso-root')
+        Isomorfeus.env = root_element.JS.getAttribute('data-iso-env')
         component = component_name.constantize
         props_json = root_element.JS.getAttribute('data-iso-props')
         props = `Opal.Hash.$new(JSON.parse(props_json))`
