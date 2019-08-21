@@ -6,21 +6,26 @@ module Isomorfeus
         root_element = `document.querySelector('div[data-iso-root]')`
         component_name = root_element.JS.getAttribute('data-iso-root')
         Isomorfeus.env = root_element.JS.getAttribute('data-iso-env')
-        component = component_name.constantize
-        props_json = root_element.JS.getAttribute('data-iso-props')
-        props = `Opal.Hash.$new(JSON.parse(props_json))`
-        hydrated = root_element.JS.getAttribute('data-iso-hydrated')
-        state_json = root_element.JS.getAttribute('data-iso-state')
-        if state_json
-          %x{
-            var state = JSON.parse(state_json);
-            var keys = Object.keys(state);
-            for(var i=0; i < keys.length; i++) {
-              global.Opal.Isomorfeus.store.native.dispatch({ type: keys[i].toUpperCase(), set_state: state[keys[i]] });
+        begin
+          component = component_name.constantize
+          props_json = root_element.JS.getAttribute('data-iso-props')
+          props = `Opal.Hash.$new(JSON.parse(props_json))`
+          hydrated = root_element.JS.getAttribute('data-iso-hydrated')
+          state_json = root_element.JS.getAttribute('data-iso-state')
+          if state_json
+            %x{
+              var state = JSON.parse(state_json);
+              var keys = Object.keys(state);
+              for(var i=0; i < keys.length; i++) {
+                global.Opal.Isomorfeus.store.native.dispatch({ type: keys[i].toUpperCase(), set_state: state[keys[i]] });
+              }
             }
-          }
+          end
+          mount_component(component, props, root_element, hydrated)
+        rescue
+          @timeout_start = Time.now unless @timeout_start
+          `setTimeout(#{mount!}, 100)` if (Time.now - @timeout_start) < 10
         end
-        mount_component(component, props, root_element, hydrated)
       end
     end
 
