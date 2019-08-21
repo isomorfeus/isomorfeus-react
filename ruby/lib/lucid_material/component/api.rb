@@ -11,9 +11,14 @@ module LucidMaterial
                   return result.$to_n();
                 }
               }
-            else
+              nil
+            elsif styles_hash
               `base.jss_styles = #{styles_hash.to_n}` if styles_hash
+              styles_hash
+            elsif `typeof base.jss_styles === 'object'`
               `Opal.Hash.$new(base.jss_styles)`
+            else
+              nil
             end
           end
         end
