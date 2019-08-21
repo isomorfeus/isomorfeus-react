@@ -6,7 +6,7 @@ module ReactDOM
     end
 
     def find_dom_node(native_react_component)
-      `Opal.global.ReactDOM.findDomNode(native_react_component)`
+      `Opal.global.ReactDOM.findDOMNode(native_react_component)`
     end
 
     def hydrate(native_react_element, container, &block)
