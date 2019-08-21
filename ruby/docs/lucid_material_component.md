@@ -18,19 +18,26 @@ class MyApp < LucidMaterial::App::Base # is a React::Context provider
 end
 
 class MyComponent < LucidMaterial::Component::Base # is a React::Context Consumer
-  # styles can be set using a block that returns a hash:
-  styles do
+  # styles can be set using a block that returns a hash, the theme gets passed to the block as hash:
+  styles do |theme|
     {
       root: {
-        width: 100,
+        width: theme[:whatever][:width],
         height: 100
       }
     } 
   end
   
-  # or styles can be set using a hash argument:
+  # or styles can be set using a hash:
   styles(root: { width: 100, height: 100 })
-  
+
+  # a component may refer to some other components styles, if those are given as hash.
+  # If the other components styles are given as block, that wont work.
+  styles(OtherComponent.styles.deep_merge({ root: {width: 100 }}))
+  styles do |theme|
+    OtherComponent.styles
+  end
+
   render do
     # during render styles can be accessed with `classes`, just like in the MaterialUI documentation.
     DIV(class_name: classes.root) { 'Some text' }
