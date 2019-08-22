@@ -62,7 +62,7 @@ module LucidComponent
                 self.lucid_react_component.propValidations[name] = {};
               }
               self.lucid_react_component.propTypes[name] = self.lucid_react_component.prototype.validateProp;
-              self.lucid_react_component.propValidations[name].required = options.$fetch("required");
+              self.lucid_react_component.propValidations[name].required = true;
             }
           end
         end

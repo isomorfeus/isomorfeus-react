@@ -80,7 +80,7 @@ module React
             else
               %x{
                 Opal.React.set_validate_prop(self, name);
-                self.react_component.propValidations[name].required = options.$fetch("required");
+                self.react_component.propValidations[name].required = true;
               }
             end
           end

@@ -120,6 +120,25 @@ RSpec.describe 'LucidMaterial::Component' do
       expect(all_text).to include('Passed other prop!')
     end
 
+    it 'access a required prop of any type' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidMaterial::Component::Base
+          prop :any
+          render do
+            DIV(id: :test_component) do
+              SPAN props.any
+              SPAN props.other_text
+            end
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, { any: 'Prop passed!', other_text: 'Passed other prop!' }, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      all_text = node.all_text
+      expect(all_text).to include('Prop passed!')
+      expect(all_text).to include('Passed other prop!')
+    end
+
     it 'access a required, exact type' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base

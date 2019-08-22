@@ -24,6 +24,7 @@ class MyComponent < React::PureComponent::Base
   prop :other, is_a: Enumerable # a required prop, which can be a Array for example, but at least must be a Enumerable
   prop :cool, default: 'yet some more text' # a optional prop with a default value
   prop :even_cooler, class: String, required: false # a optional prop, which when given, must be of class String
+  prop :super # a required prop of any type
   
   render do
     DIV { props.text }
