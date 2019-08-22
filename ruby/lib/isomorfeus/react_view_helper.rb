@@ -17,6 +17,9 @@ module Isomorfeus
         javascript = <<~JAVASCRIPT
           global.FirstPassFinished = false;
           global.Opal.Isomorfeus['$env=']('#{Isomorfeus.env}');
+          if (typeof global.Opal.Isomorfeus.$negotiated_locale === 'function') {
+            global.Opal.Isomorfeus["$negotiated_locale="]('#{props[:locale]}');
+          }
           global.Opal.Isomorfeus['$force_init!']();
           global.Opal.Isomorfeus['$ssr_response_status='](200);
           global.Opal.Isomorfeus.TopLevel['$ssr_route_path=']('#{props[:location]}');
@@ -81,10 +84,10 @@ module Isomorfeus
         rendered_tree, application_state, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
 
         # build result
-        render_result << " data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
         render_result << rendered_tree
       else
-        render_result << '>'
+        render_result << " data-iso-nloc='#{props[:locale]}'>"
       end
       render_result << '</div>'
       render_result
