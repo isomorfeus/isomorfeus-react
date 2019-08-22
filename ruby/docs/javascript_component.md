@@ -21,7 +21,10 @@ It can be accessed by using Opals JS syntax to get the React Component of the Ru
 ```ruby
 Route(path: '/', strict: true, component: MyComponent.JS[:react_component])
 ```
-Native Javascript components can be passed using the Javascript inlining of Opal, this also works for function components:
+Native Javascript components can be passed using the Javascript inlining of Opal, this also works for function components.
+But for Server Side Rendering there is no global `window` Object, to which all javascript constants get added, instead the global context must
+be explicitly referred to:
 ```ruby
-Route(path: '/a_button', strict: true, component: `Sem.Button`)
+Route(path: '/a_button', strict: true, component: `Opal.global.Sem.Button`)
 ```
+Accessing javascript constants via `Opal.global` makes sure they are available in the Browser and Server Side Rendering environment.
