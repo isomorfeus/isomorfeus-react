@@ -38,6 +38,9 @@ if RUBY_ENGINE == 'opal'
   end
 
   # props
+  require 'isomorfeus/props/validate_hash_proxy'
+  require 'isomorfeus/props/validator'
+  require 'lucid_prop_declaration/mixin'
   require 'react/component/props'
 
   # HTML Elements support
@@ -65,7 +68,6 @@ if RUBY_ENGINE == 'opal'
   # require 'react/component/unsafe_api'
   require 'react/component/initializer'
   require 'react/component/native_component_constructor'
-  require 'react/component/native_component_validate_prop'
   require 'react/component/state'
   require 'react/component/match'
   require 'react/component/location'
@@ -97,7 +99,6 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_component/app_store_proxy'
   require 'lucid_component/class_store_proxy'
   require 'lucid_component/instance_store_proxy'
-  require 'lucid_component/api'
   require 'lucid_component/initializer'
   require 'lucid_component/native_component_constructor'
   require 'lucid_component/event_handler'
@@ -120,6 +121,11 @@ else
   require 'isomorfeus-speednode'
   require 'react/version'
   require 'isomorfeus/config'
+
+  # props
+  require 'isomorfeus/props/validate_hash_proxy'
+  require 'isomorfeus/props/validator'
+  require 'lucid_prop_declaration/mixin'
 
   Isomorfeus.env = ENV['RACK_ENV']
 

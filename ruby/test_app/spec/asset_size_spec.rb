@@ -28,8 +28,8 @@ RSpec.describe 'Asset sizes' do
     parsed_size = obj['parsedSize'] / 1024
     gzip_size = obj['gzipSize'] / 1024
     puts "Max asset sizes: stat: #{stat_size}kb, parsed: #{parsed_size}kb, gzip: #{gzip_size}kb"
-    expect(stat_size < 300).to be true
-    expect(parsed_size < 335).to be true
-    expect(gzip_size < 46).to be true # should be 35, but on travis gzip size is reported as 44 for a older node version/node_modules
+    expect(stat_size < 320).to be true
+    expect(parsed_size < 350).to be true
+    expect(gzip_size < 40).to be true
   end
 end

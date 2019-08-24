@@ -3,8 +3,8 @@ module React
     module Mixin
       def self.included(base)
         base.include(::Native::Wrapper)
+        base.extend(::LucidPropDeclaration::Mixin)
         base.extend(::React::Component::NativeComponentConstructor)
-        base.extend(::React::Component::NativeComponentValidateProp)
         base.extend(::React::Component::EventHandler)
         base.include(::React::Component::Elements)
         base.include(::React::Component::API)

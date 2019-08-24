@@ -24,6 +24,16 @@ module LucidApp
               this.state.component_class_state = {};
               this.state.component_class_state[#{component_name}] = {};
             };
+            if (!base.react_props_declared) {
+              let prop_names = base.$declared_props().$keys();
+              if (prop_names.length > 0) {
+                if (!base.react_component.propTypes) { base.react_component.propTypes = {}; }
+                for (let i=0;i<prop_names.length;i++) {
+                  base.react_component.propTypes[prop_names[i]] = this.validateProp;
+                }
+              }
+              base.react_props_declared = true;
+            }
             this.__ruby_instance = base.$new(this);
             this.__object_id = this.__ruby_instance.$object_id().$to_s();
             if (!this.state.component_state) {
@@ -73,6 +83,11 @@ module LucidApp
           }
           componentWillUnmount() {
             if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
+          }
+          validateProp(props, propName, componentName) {
+            try { base.$validate_prop(propName, props[propName]) }
+            catch (e) { return new Error(componentName + ": Error: prop validation failed: " + e.message); }
+            return null;
           }
         }
       }

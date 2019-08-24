@@ -23,6 +23,16 @@ module LucidMaterial
                 this.state.component_state = {};
                 this.state.component_state[this.__object_id] = {};
               };
+              if (!base.react_props_declared) {
+                let prop_names = base.$declared_props().$keys();
+                if (prop_names.length > 0) {
+                  if (!base.lucid_react_component.propTypes) { base.lucid_react_component.propTypes = {}; }
+                  for (let i=0;i<prop_names.length;i++) {
+                    base.lucid_react_component.propTypes[prop_names[i]] = this.validateProp;
+                  }
+                }
+                base.react_props_declared = true;
+              }
               var event_handlers = #{base.event_handlers};
               for (var i = 0; i < event_handlers.length; i++) {
                 this[event_handlers[i]] = this[event_handlers[i]].bind(this);
@@ -119,27 +129,8 @@ module LucidMaterial
               return false;
             }
             validateProp(props, propName, componentName) {
-              if (propName === "isomorfeus_store") { return null };
-              var prop_data = base.lucid_react_component.propValidations[propName];
-              if (!prop_data) { return true; };
-              var value = props[propName];
-              var result;
-              if (typeof prop_data.ruby_class != "undefined") {
-                result = (value.$class() == prop_data.ruby_class);
-                if (!result) {
-                  return new Error('Invalid prop ' + propName + '! Expected ' + prop_data.ruby_class.$to_s() + ' but was ' + value.$class().$to_s() + '!');
-                }
-              } else if (typeof prop_data.is_a != "undefined") {
-                result = value["$is_a?"](prop_data.is_a);
-                if (!result) {
-                  return new Error('Invalid prop ' + propName + '! Expected a child of ' + prop_data.is_a.$to_s() + '!');
-                }
-              }
-              if (typeof prop_data.required != "undefined") {
-                if (prop_data.required && (typeof props[propName] == "undefined")) {
-                  return new Error('Prop ' + propName + ' is required but not given!');
-                }
-              }
+              try { base.$validate_prop(propName, props[propName]) }
+              catch (e) { return new Error(componentName + " Error: prop validation failed: " + e.message); }
               return null;
             }
           };
