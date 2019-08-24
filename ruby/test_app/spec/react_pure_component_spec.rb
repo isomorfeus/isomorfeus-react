@@ -222,6 +222,20 @@ RSpec.describe 'React::PureComponent' do
       node = @doc.wait_for('#test_component')
       expect(node.all_text).to include('Prop not passed!')
     end
+
+    it 'uses a default value for a missing, optional prop, new style' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::PureComponent::Base
+          prop :a_prop, validate.String.default('Prop not passed!')
+          render do
+            DIV(id: :test_component) { props.a_prop }
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, { }, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('Prop not passed!')
+    end
   end
 
   context 'it can use callbacks like' do
