@@ -67,8 +67,10 @@ module Isomorfeus
       # all other checks
 
       def run_checks!
-        @o[:validate].each do |m, l|
-          send('c_' + m, l)
+        if @o.key?(:validate)
+          @o[:validate].each do |m, l|
+            send('c_' + m, l)
+          end
         end
       end
 
