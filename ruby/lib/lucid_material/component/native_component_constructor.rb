@@ -23,16 +23,6 @@ module LucidMaterial
                 this.state.component_state = {};
                 this.state.component_state[this.__object_id] = {};
               };
-              if (!base.react_props_declared) {
-                let prop_names = base.$declared_props().$keys();
-                if (prop_names.length > 0) {
-                  if (!base.lucid_react_component.propTypes) { base.lucid_react_component.propTypes = {}; }
-                  for (let i=0;i<prop_names.length;i++) {
-                    base.lucid_react_component.propTypes[prop_names[i]] = this.validateProp;
-                  }
-                }
-                base.react_props_declared = true;
-              }
               var event_handlers = #{base.event_handlers};
               for (var i = 0; i < event_handlers.length; i++) {
                 this[event_handlers[i]] = this[event_handlers[i]].bind(this);

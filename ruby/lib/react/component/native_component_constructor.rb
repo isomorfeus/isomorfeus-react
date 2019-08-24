@@ -16,16 +16,6 @@ module React
               } else {
                 this.state = {};
               };
-              if (!base.react_props_declared) {
-                let prop_names = base.$declared_props().$keys();
-                if (prop_names.length > 0) {
-                  if (!base.react_component.propTypes) { base.react_component.propTypes = {}; }
-                  for (let i=0;i<prop_names.length;i++) {
-                    base.react_component.propTypes[prop_names[i]] = this.validateProp;
-                  }
-                }
-                base.react_props_declared = true;
-              }
               this.__ruby_instance = base.$new(this);
               var event_handlers = #{base.event_handlers};
               for (var i = 0; i < event_handlers.length; i++) {

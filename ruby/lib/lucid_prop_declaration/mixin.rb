@@ -6,14 +6,21 @@ module LucidPropDeclaration
         def prop(prop_name, validate_hash = { required: true })
           validate_hash = validate_hash.to_h if validate_hash.class == Isomorfeus::Props::ValidateHashProxy
           if validate_hash.key?(:default)
-            value = validate_hash[:default]
             %x{
               if (base.lucid_react_component) {
+                let react_prop_name = Opal.React.lower_camelize(prop_name);
+                #{value = validate_hash[:default]}
                 if (!base.lucid_react_component.defaultProps) { base.lucid_react_component.defaultProps = {}; }
-                base.lucid_react_component.defaultProps[prop_name] = value;
+                base.lucid_react_component.defaultProps[react_prop_name] = value;
+                if (!base.lucid_react_component.propTypes) { base.lucid_react_component.propTypes = {}; }
+                base.lucid_react_component.propTypes[react_prop_name] = base.lucid_react_component.prototype.validateProp;
               } else if (base.react_component) {
+                let react_prop_name = Opal.React.lower_camelize(prop_name);
+                #{value = validate_hash[:default]}
                 if (!base.react_component.defaultProps) { base.react_component.defaultProps = {}; }
-                base.react_component.defaultProps[prop_name] = value;
+                base.react_component.defaultProps[react_prop_name] = value;
+                if (!base.react_component.propTypes) { base.react_component.propTypes = {}; }
+                base.react_component.propTypes[react_prop_name] = base.react_component.prototype.validateProp;
               }
             }
           end
