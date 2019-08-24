@@ -1,7 +1,7 @@
 module Isomorfeus
   module Props
     class Validator
-      def intialize(source_class, prop, value, options)
+      def initialize(source_class, prop, value, options)
         @c = source_class
         @p = prop
         @v = value
