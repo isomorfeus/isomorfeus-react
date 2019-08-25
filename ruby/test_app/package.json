@@ -4,6 +4,7 @@
   "dependencies": {
     "@material-ui/core": "^4.3.1",
     "@material-ui/styles": "^4.3.0",
+    "formik": "^1.5.8",
     "opal-webpack-loader": "^0.9.5",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

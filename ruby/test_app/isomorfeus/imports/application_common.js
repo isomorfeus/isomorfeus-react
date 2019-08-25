@@ -11,5 +11,7 @@ import * as Mui from '@material-ui/core'
 import * as MuiStyles from '@material-ui/styles'
 global.Mui = Mui;
 global.MuiStyles = MuiStyles;
+import * as Formik from 'formik';
+global.Formik = Formik;
 
 if (module.hot) { module.hot.accept(); }
