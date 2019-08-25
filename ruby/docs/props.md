@@ -154,4 +154,32 @@ To validate a single prop for a specific form input:
 ```ruby
 MyClass.validate_prop_function(prop_name)
 ```
-It returns a javscript function, that can called by a form input component. `function(value)` 
+It returns a javascript function, that can called by a form input component. `function(value)`
+
+Example:
+```ruby
+class PropTest # just to show props, could be any LucidNode or LucidOperation or anything else that accepts props
+  extend LucidPropDeclaration::Mixin
+
+  prop :email, validate.String.matches(/.+@.+/).max_length(64)
+  prop :name, validate.String.matches(/T.+/).max_length(12)
+end
+
+class HelloComponent < LucidMaterial::Component::Base
+  render do
+    Formik.Formik(initial_values: { email: 'test@test', name: 'Test Test' }.to_n) do
+      Formik.Form do
+        # here the PropTest.validate_prop_function(:email) returns a function that is used by formik for field level validation
+        Formik.Field(type: :email, name: :email, validate: PropTest.validate_prop_function(:email))
+        Formik.ErrorMessage(name: :email, component: :div)
+        # here the PropTest.validate_prop_function(:name) returns a function that is used by formik for field level validation
+        Formik.Field(type: :text, name: :name, validate: PropTest.validate_prop_function(:name))
+        Formik.ErrorMessage(name: :name, component: :div)
+        BUTTON(type: "submit") { 'Submit' }
+      end
+    end
+  end
+end
+```
+
+
