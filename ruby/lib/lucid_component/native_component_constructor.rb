@@ -7,12 +7,6 @@ module LucidComponent
       component_name = base.to_s
       # language=JS
       %x{
-        base.react_component = function(props) {
-          return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
-            var store_props = Object.assign({}, props, { isomorfeus_store: store });
-            return Opal.global.React.createElement(base.lucid_react_component, store_props);
-          });
-        }
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
@@ -129,6 +123,12 @@ module LucidComponent
           }
         }
         base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
+        base.react_component = function(props) {
+          return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
+            var store_props = Object.assign({}, props, { isomorfeus_store: store });
+            return Opal.global.React.createElement(base.lucid_react_component, store_props);
+          });
+        }
       }
     end
   end
