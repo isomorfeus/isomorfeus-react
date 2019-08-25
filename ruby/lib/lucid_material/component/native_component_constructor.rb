@@ -8,7 +8,7 @@ module LucidMaterial
         component_name = base.to_s
         # language=JS
         %x{
-          base.jss_styles = {};
+          base.jss_styles = null;
           base.lucid_react_component = class extends Opal.global.React.Component {
             constructor(props) {
               super(props);
@@ -129,12 +129,16 @@ module LucidMaterial
           base.react_component = function(outer_props) {
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
               var store_props = Object.assign({}, outer_props, { isomorfeus_store: store });
-              if (!base.lucid_material_component || Opal.Isomorfeus["$development?"]()) {
-                base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
-                  return Opal.global.React.createElement(base.lucid_react_component, props);
-                });
+              if (base.jss_styles) {
+                if (!base.lucid_material_component || Opal.Isomorfeus["$development?"]()) {
+                  base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props) {
+                    return Opal.global.React.createElement(base.lucid_react_component, props);
+                  });
+                }
+                return Opal.global.React.createElement(base.lucid_material_component, store_props);
+              } else {
+                return Opal.global.React.createElement(base.lucid_react_component, store_props);
               }
-              return Opal.global.React.createElement(base.lucid_material_component, store_props);
             });
           }
         }
