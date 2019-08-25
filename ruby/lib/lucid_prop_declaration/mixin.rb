@@ -30,24 +30,26 @@ module LucidPropDeclaration
 
       def validate_function
         %x{
-          if (typeof base.validate_function === 'undefined') {
-            base.validate_function = function(props_object) {
-              return base.$validate_props(`Opal.Hash.new(props_object)`)
+          if (typeof self.validate_function === 'undefined') {
+            self.validate_function = function(props_object) {
+              try { self.$validate_props(Opal.Hash.$new(props_object)) }
+              catch (e) { return e.message; }
             }
           }
-          return base.validate_function;
+          return self.validate_function;
         }
       end
 
       def validate_prop_function(prop)
         function_name = "validate_#{prop}_function"
         %x{
-          if (typeof base[function_name] === 'undefined') {
-            base[function_name] = function(value) {
-              return base.$validate_prop(prop, value);
+          if (typeof self[function_name] === 'undefined') {
+            self[function_name] = function(value) {
+              try { self.$validate_prop(prop, value); }
+              catch (e) { return e.message; }
             }
           }
-          return base[function_name];
+          return self[function_name];
         }
       end
     else
@@ -74,7 +76,7 @@ module LucidPropDeclaration
 
     def validate_props(props)
       declared_props.each_key do |prop|
-        if declared_props[prop].key?(:required) && declared_props[prop][:required] && !props.key?[prop]
+        if declared_props[prop].key?(:required) && declared_props[prop][:required] && !props.key?(prop)
           raise "Required prop #{prop} not given!"
         end
       end

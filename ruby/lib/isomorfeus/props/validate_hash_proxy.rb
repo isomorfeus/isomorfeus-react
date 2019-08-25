@@ -1,10 +1,8 @@
 module Isomorfeus
   module Props
     class ValidateHashProxy
-      DEFAULT_HASH = { required: true, validate: {} }
-
       def initialize
-        @validation_hash = DEFAULT_HASH
+        @validation_hash = { required: true, validate: {} }
       end
 
       def is

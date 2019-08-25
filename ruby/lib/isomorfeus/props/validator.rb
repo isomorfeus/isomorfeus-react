@@ -26,15 +26,15 @@ module Isomorfeus
         if @o.key?(:cast)
           begin
             @v = case @o[:class]
-                 when Integer then value.to_i
-                 when String then value.to_s
-                 when Float then value.to_f
-                 when Array then value.to_a
-                 when Hash then value.to_h
+                 when Integer then @v.to_i
+                 when String then @v.to_s
+                 when Float then @v.to_f
+                 when Array then @v.to_a
+                 when Hash then @v.to_h
                  end
             @v = !!@v if @o[:type] == :boolean
           rescue
-            raise "#{@c}: #{@p} cast failed" unless value.class == @o[:class]
+            raise "#{@c}: #{@p} cast failed" unless @v.class == @o[:class]
           end
         end
       end
@@ -53,13 +53,13 @@ module Isomorfeus
 
       def type!
         if @o.key?(:class)
-          raise "#{@c}: #{@p} class not #{@o[:class]}" unless value.class == @o[:class]
+          raise "#{@c}: #{@p} class not #{@o[:class]}" unless @v.class == @o[:class]
         elsif @o.key?(:is_a)
-          raise "#{@c}: #{@p} is not a #{@o[:is_a]}" unless value.is_a?(@o[:is_a])
+          raise "#{@c}: #{@p} is not a #{@o[:is_a]}" unless @v.is_a?(@o[:is_a])
         elsif @o.key?(:type)
           case @o[:type]
           when :boolean
-            raise "#{@c}: #{@p} is not a boolean" unless value.class == TrueClass || value.class == FalseClass
+            raise "#{@c}: #{@p} is not a boolean" unless @v.class == TrueClass || @v.class == FalseClass
           end
         end
       end
@@ -92,7 +92,7 @@ module Isomorfeus
       end
 
       def c_matches(v)
-        raise "#{@c}: #{@p} does not match #{v}" unless v.matches?(@v)
+        raise "#{@c}: #{@p} does not match #{v}" unless v.match?(@v)
       end
 
       def c_max(v)
