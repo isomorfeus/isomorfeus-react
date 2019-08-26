@@ -1,7 +1,6 @@
 require 'isomorfeus-react'
 
 # LucidMaterial::Component
-require 'lucid_material/component/api'
 require 'lucid_material/component/native_component_constructor'
 require 'lucid_material/component/mixin'
 require 'lucid_material/component/base'

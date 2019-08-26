@@ -9,6 +9,7 @@ module LucidComponent
       base.include(::React::Component::API)
       base.include(::React::Component::Callbacks)
       base.include(::LucidComponent::StoreAPI)
+      base.include(::LucidComponent::StylesSupport)
       base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)
       base.include(::React::Component::Resolution)

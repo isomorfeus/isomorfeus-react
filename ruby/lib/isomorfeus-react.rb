@@ -92,6 +92,7 @@ if RUBY_ENGINE == 'opal'
   LucidApp::Context.create_application_context
 
   # LucidComponent
+  require 'lucid_component/styles_support'
   require 'lucid_component/store_api'
   require 'lucid_component/app_store_defaults'
   require 'lucid_component/component_class_store_defaults'
