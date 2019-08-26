@@ -7,7 +7,8 @@ module LucidApp
       component_name = base.to_s
       # language=JS
       %x{
-        base.react_component = class extends Opal.global.React.Component {
+        base.jss_styles = null;
+        base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
             if (base.$default_state_defined()) {
@@ -78,6 +79,22 @@ module LucidApp
             try { base.$validate_prop(propName, props[propName]) }
             catch (e) { return new Error(componentName + ": Error: prop validation failed: " + e.message); }
             return null;
+          }
+        }
+        base.use_styles = null;
+        base.react_component = function(props) {
+          let classes = null;
+          if (base.jss_styles) {
+            if (!base.use_styles || Opal.Isomorfeus["$development?"]()) {
+              base.use_styles = Opal.global.ReactJSS.createUseStyles(base.jss_styles);
+            }
+            classes = base.use_styles();
+          }
+          if (classes) {
+            let classes_props = Object.assign({}, props, { classes: classes });
+            return Opal.global.React.createElement(base.lucid_react_component, classes_props);
+          } else {
+            return Opal.global.React.createElement(base.lucid_react_component, props);
           }
         }
       }
