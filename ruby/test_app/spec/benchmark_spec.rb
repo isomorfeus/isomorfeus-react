@@ -229,6 +229,35 @@ RSpec.describe 'Component benchmarks' do
     expect(time > 0 && time < 1000).to be_truthy
   end
 
+  it 'Styled Lucid Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidComponent::Base
+        styles do
+          {root: { color: 'black' }}
+        end
+        render do
+          DIV(class_name: classes.root) { 'A' }
+        end
+      end
+      class BenchmarkComponent < LucidApp::Base
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Styled Lucid Components took: #{time}ms"
+    expect(time > 0 && time < 1500).to be_truthy
+  end
+
   it 'Lucid Material Component' do
     doc = visit('/')
     time = doc.evaluate_ruby do

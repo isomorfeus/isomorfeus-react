@@ -701,6 +701,25 @@ RSpec.describe 'LucidMaterial::Component' do
       JAVASCRIPT
       expect(style).to eq('100px')
     end
+
+
+    it 'without the styles accessing classes still renders' do
+      @doc.evaluate_ruby do
+        class TestNoStyleComponent < LucidMaterial::Component::Base
+          render do
+            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+          end
+        end
+        class OuterApp < LucidMaterial::App::Base
+          render do
+            TestNoStyleComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node).to be_truthy
+    end
   end
 
   context 'it supports refs' do
