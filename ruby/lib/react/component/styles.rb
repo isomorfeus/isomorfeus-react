@@ -5,8 +5,6 @@ module React
         @native = native
       end
 
-      # TODO method chain access
-      # we have class.property
       def method_missing(prop, *args, &block)
         %x{
           if (!#@native || typeof #@native[prop] === 'undefined') { return #{nil}; }
@@ -15,6 +13,10 @@ module React
           if (typeof value === 'function') { return #{Proc.new { `value()` }} }
           return Opal.React.Component.Styles.$new(value);
         }
+      end
+
+      def to_h
+        `Opal.Hash.$new(#@native)`
       end
 
       def to_n
