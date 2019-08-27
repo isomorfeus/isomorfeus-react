@@ -8,7 +8,6 @@ module LucidMaterial
         component_name = base.to_s
         # language=JS
         %x{
-          base.jss_styles = null;
           base.lucid_react_component = class extends Opal.global.React.Component {
             constructor(props) {
               super(props);
@@ -82,24 +81,26 @@ module LucidMaterial
               return null;
             }
           }
-          base.lucid_material_component = null;
-          base.react_component = class extends Opal.global.React.Component {
-            constructor(props) { super(props) }
-            static get displayName() {
-              return #{component_name} + 'Shell';
-            }
-            render() {
-              if (base.jss_styles) {
-                if (!base.lucid_material_component || Opal.Isomorfeus["$development?"]()) {
-                  base.lucid_material_component = Opal.global.MuiStyles.withStyles(base.jss_styles)(function(props){
-                    return Opal.global.React.createElement(base.lucid_react_component, props);
-                  });
-                }
-                return Opal.global.React.createElement(base.lucid_material_component, this.props);
-              } else {
-                return Opal.global.React.createElement(base.lucid_react_component, this.props)
+          base.jss_styles = null;
+          base.jss_theme = {};
+          base.use_styles = null;
+          base.themed_react_component = function(props) {
+            let classes = null;
+            let theme = Opal.global.MuiStyles.useTheme();
+            if (base.jss_styles) {
+              if (!base.use_styles || Opal.Isomorfeus["$development?"]()) {
+                let styles = base.jss_styles
+                if (typeof styles === 'function') { styles = styles(theme); }
+                base.use_styles = Opal.global.MuiStyles.makeStyles(styles);
               }
+              classes = base.use_styles();
             }
+            let themed_classes_props = Object.assign({}, props, { classes: classes, theme: theme });
+            return Opal.global.React.createElement(base.lucid_react_component, themed_classes_props);
+          }
+          base.react_component = function(props) {
+            let themed_component = Opal.global.React.createElement(base.themed_react_component, props);
+            return Opal.global.React.createElement(Opal.global.MuiStyles.ThemeProvider, { theme: base.jss_theme }, themed_component);
           }
         }
       end

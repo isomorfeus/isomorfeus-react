@@ -1,9 +1,8 @@
 module LucidComponent
   class AppStoreProxy
-    def initialize(component_instance, access_key = 'state')
+    def initialize(component_instance)
       @native_component_instance = component_instance.to_n
       @component_instance = component_instance
-      @access_key = access_key
     end
 
     def method_missing(key, *args, &block)
@@ -14,8 +13,8 @@ module LucidComponent
         Isomorfeus.store.dispatch(action)
       else
         # check if we have a component local state value
-        if `this.native_component_instance[this.access_key]["isomorfeus_store"]["application_state"].hasOwnProperty(key)`
-          return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:application_state].JS[key]
+        if `this.native_component_instance.context.application_state.hasOwnProperty(key)`
+          return @native_component_instance.JS['context'].JS[:application_state].JS[key]
         elsif @component_instance.class.default_app_store_defined && @component_instance.class.app_store.to_h.key?(key)
           # check if a default value was given
           return @component_instance.class.app_store.to_h[key]

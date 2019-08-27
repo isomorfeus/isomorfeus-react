@@ -237,7 +237,7 @@ RSpec.describe 'Component benchmarks' do
           {root: { color: 'black' }}
         end
         render do
-          DIV(class_name: classes.root) { 'A' }
+          DIV(class_name: styles.root) { 'A' }
         end
       end
       class BenchmarkComponent < LucidApp::Base
@@ -255,6 +255,38 @@ RSpec.describe 'Component benchmarks' do
       (Time.now - start) * 1000
     end
     puts "10000 Styled Lucid Components took: #{time}ms"
+    expect(time > 0 && time < 1500).to be_truthy
+  end
+
+  it 'Themed and Styled Lucid Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidComponent::Base
+        styles do |theme|
+          {root: { color: theme.root.color }}
+        end
+        render do
+          DIV(class_name: styles.root) { 'A' }
+        end
+      end
+      class BenchmarkComponent < LucidApp::Base
+        theme do
+          { root: { color: 'black' }}
+        end
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Themed and Styled Lucid Components took: #{time}ms"
     expect(time > 0 && time < 1500).to be_truthy
   end
 
@@ -292,7 +324,7 @@ RSpec.describe 'Component benchmarks' do
           {root: { color: 'black' }}
         end
         render do
-          DIV(class_name: classes.root) { 'A' }
+          DIV(class_name: styles.root) { 'A' }
         end
       end
       class BenchmarkComponent < LucidMaterial::App::Base
@@ -310,6 +342,38 @@ RSpec.describe 'Component benchmarks' do
       (Time.now - start) * 1000
     end
     puts "10000 Styled Lucid Material Components took: #{time}ms"
+    expect(time > 0 && time < 1500).to be_truthy
+  end
+
+  it 'Themed and Styled Lucid Material Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidMaterial::Component::Base
+        styles do |theme|
+          {root: { color: theme.root.color }}
+        end
+        render do
+          DIV(class_name: styles.root) { 'A' }
+        end
+      end
+      class BenchmarkComponent < LucidMaterial::App::Base
+        theme do
+          { root: { color: 'black' }}
+        end
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Themed and Styled Lucid Material Components took: #{time}ms"
     expect(time > 0 && time < 1500).to be_truthy
   end
 end

@@ -6,6 +6,8 @@ RSpec.describe 'Execution Environment' do
   end
 
   it 'is set to "production"' do
+    node = @doc.wait_for('#test_anchor')
+    expect(node).to be_truthy
     result = @doc.evaluate_ruby do
       Isomorfeus.env
     end
@@ -21,6 +23,8 @@ RSpec.describe 'Execution Environment' do
   end
 
   it 'detects browser' do
+    node = @doc.wait_for('#test_anchor')
+    expect(node).to be_truthy
     result = @doc.evaluate_ruby do
       Isomorfeus.on_browser?
     end

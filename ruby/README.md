@@ -28,7 +28,7 @@ Component Types:
 Which component to use?
 - Usually LucidApp and LucidComponent along with some imported javascript components.
 
-Specific to Class, Pure, Redux, Lucid and LucidMaterial Components:
+Specific to Class, Pure, Lucid and LucidMaterial Components:
 - [Events](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md)
 - [Lifecycle Callbacks](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/lifecycle_callbacks.md)
 - [Props](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/props.md)

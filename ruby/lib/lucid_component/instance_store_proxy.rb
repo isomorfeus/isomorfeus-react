@@ -1,10 +1,9 @@
 module LucidComponent
   class InstanceStoreProxy
-    def initialize(component_instance, access_key = 'state')
+    def initialize(component_instance)
       @native_component_instance = component_instance.to_n
       @component_instance = component_instance
       @component_object_id = component_instance.object_id.to_s
-      @access_key = access_key
     end
 
     def method_missing(key, *args, &block)
@@ -18,10 +17,10 @@ module LucidComponent
       else
         # get instance state
 
-        if @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id] &&
-          @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
+        if @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id] &&
+          @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
           # check if we have a component local state value
-          return @native_component_instance.JS[@access_key].JS[:isomorfeus_store].JS[:component_state].JS[@component_object_id].JS[key]
+          return @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS[key]
         elsif @component_instance.class.default_instance_store_defined && @component_instance.class.store.to_h.key?(key)
           # check if a default value was given
           return @component_instance.class.store.to_h[key]

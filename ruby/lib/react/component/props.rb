@@ -15,6 +15,10 @@ module React
         @classes ||= `Opal.React.Component.Styles.$new(#@native.props.classes)`
       end
 
+      def theme
+        @theme ||= `Opal.React.Component.Styles.$new(#@native.props.theme)`
+      end
+
       def isomorfeus_store
         @native.JS[:props].JS[:isomorfeus_store]
       end

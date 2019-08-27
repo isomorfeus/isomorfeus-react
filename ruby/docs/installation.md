@@ -12,10 +12,9 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.8.4'
-gem 'opal-autoloader', '~> 0.0.3'
-gem 'isomorfeus-redux', '~> 4.0.4'
-gem 'isomorfeus-speednode', '~> 0.2.3'
+gem 'opal-webpack-loader', '~> 0.9.5'
+gem 'opal-autoloader', '~> 0.1.0'
+gem 'isomorfeus-redux', '~> 4.0.11'
 ```
 Required Javascript Npms:
 - opal-webpack-laoder
@@ -24,6 +23,7 @@ Required Javascript Npms:
 - react-router
 - react-router-dom
 - redux
+- react-jss
 
 For the optional MaterialUI support:
 - @material-ui/core
@@ -31,17 +31,18 @@ For the optional MaterialUI support:
 
 for package.json:
 ```json
-    "opal-webpack-loader": "^0.9.1",
-    "react": "^16.8.6",
-    "react-dom": "^16.8.6",
+    "opal-webpack-loader": "^0.9.5",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-jss": "^10.0.0-alpha.24",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.1",
 ```
 for the optional MaterialUI support:
 ```json
-    "@material-ui/core": "^4.0.2",
-    "@material-ui/styles": "^4.0.2",
+    "@material-ui/core": "^4.3.0",
+    "@material-ui/styles": "^4.3.0",
 ```
 
 Then the usual:
@@ -55,9 +56,11 @@ with webpack this can be ensured by assigning them to the global namespace:
 import * as Redux from 'redux';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import * as ReactJSS from 'react-jss';
 global.Redux = Redux;
 global.React = React;
 global.ReactDOM = ReactDOM;
+global.ReactJSS = ReactJSS;
 
 // for routing support
 import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';

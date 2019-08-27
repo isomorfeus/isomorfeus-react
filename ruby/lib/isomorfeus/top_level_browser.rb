@@ -10,7 +10,7 @@ module Isomorfeus
           component = nil
           begin
             component = component_name.constantize
-          rescue
+          rescue LoadError
             @timeout_start = Time.now unless @timeout_start
             if (Time.now - @timeout_start) < 10
               `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 100)`
@@ -32,7 +32,16 @@ module Isomorfeus
                 }
               }
             end
-            mount_component(component, props, root_element, hydrated)
+            begin
+              mount_component(component, props, root_element, hydrated)
+            rescue LoadError
+              @timeout_start = Time.now unless @timeout_start
+              if (Time.now - @timeout_start) < 10
+                `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 100)`
+              else
+                `console.error("Unable to mount '" + #{component_name} + "'!")`
+              end
+            end
           end
         end
       end

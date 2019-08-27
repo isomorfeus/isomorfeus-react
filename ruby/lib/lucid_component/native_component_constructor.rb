@@ -7,7 +7,6 @@ module LucidComponent
       component_name = base.to_s
       # language=JS
       %x{
-        base.jss_styles = null;
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
@@ -124,24 +123,21 @@ module LucidComponent
           }
         }
         base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
+        base.jss_styles = null;
         base.use_styles = null;
         base.react_component = function(props) {
           let classes = null;
+          let theme = Opal.global.ReactJSS.useTheme();
           if (base.jss_styles) {
             if (!base.use_styles || Opal.Isomorfeus["$development?"]()) {
-              base.use_styles = Opal.global.ReactJSS.createUseStyles(base.jss_styles);
+              let styles = base.jss_styles
+              if (typeof styles === 'function') { styles = base.jss_styles(theme); }
+              base.use_styles = Opal.global.ReactJSS.createUseStyles(styles);
             }
             classes = base.use_styles();
           }
-          return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Consumer, null, function(store) {
-            let store_props = Object.assign({}, props, { isomorfeus_store: store });
-            if (classes) {
-              let store_classes_props = Object.assign({}, store_props, { classes: classes });
-              return Opal.global.React.createElement(base.lucid_react_component, store_classes_props);
-            } else {
-              return Opal.global.React.createElement(base.lucid_react_component, store_props);
-            }
-          });
+          let class_theme_props = Object.assign({}, props, { classes: classes, theme: theme });
+          return Opal.global.React.createElement(base.lucid_react_component, class_theme_props);
         }
       }
     end

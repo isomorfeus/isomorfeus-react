@@ -7,7 +7,6 @@ module LucidApp
       component_name = base.to_s
       # language=JS
       %x{
-        base.jss_styles = null;
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
@@ -60,16 +59,15 @@ module LucidApp
             #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
             Opal.React.active_redux_components.pop();
             Opal.React.active_components.pop();
-            var children = Opal.React.render_buffer.pop();
+            let children = Opal.React.render_buffer.pop();
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
           }
           listener() {
-            var next_state = Opal.Isomorfeus.store.native.getState();
-            var current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);
-            var next_ruby_state = Opal.Hash.$new(next_state);
+            let next_state = Opal.Isomorfeus.store.native.getState();
+            let current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);
+            let next_ruby_state = Opal.Hash.$new(next_state);
             if (#{`next_ruby_state` != `current_ruby_state`}) {
-              var self = this;
-              /* setTimeout(function() { */ self.setState({ isomorfeus_store_state: next_state }); /*}, 0 ); */
+              this.setState({ isomorfeus_store_state: next_state });
             }
           }
           componentWillUnmount() {
@@ -81,24 +79,28 @@ module LucidApp
             return null;
           }
         }
+        base.jss_styles = null;
+        base.jss_theme = {};
         base.use_styles = null;
-        base.react_component = function(props) {
+        base.themed_react_component = function(props) {
           let classes = null;
+          let theme = Opal.global.ReactJSS.useTheme();
           if (base.jss_styles) {
             if (!base.use_styles || Opal.Isomorfeus["$development?"]()) {
-              base.use_styles = Opal.global.ReactJSS.createUseStyles(base.jss_styles);
+              let styles = base.jss_styles
+              if (typeof styles === 'function') { styles = styles(theme); }
+              base.use_styles = Opal.global.ReactJSS.createUseStyles(styles);
             }
             classes = base.use_styles();
           }
-          if (classes) {
-            let classes_props = Object.assign({}, props, { classes: classes });
-            return Opal.global.React.createElement(base.lucid_react_component, classes_props);
-          } else {
-            return Opal.global.React.createElement(base.lucid_react_component, props);
-          }
+          let themed_classes_props = Object.assign({}, props, { classes: classes, theme: theme });
+          return Opal.global.React.createElement(base.lucid_react_component, themed_classes_props);
+        }
+        base.react_component = function(props) {
+          let themed_component = Opal.global.React.createElement(base.themed_react_component, props);
+          return Opal.global.React.createElement(Opal.global.ReactJSS.ThemeProvider, { theme: base.jss_theme }, themed_component);
         }
       }
     end
   end
 end
-

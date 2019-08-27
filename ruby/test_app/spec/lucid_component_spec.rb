@@ -618,14 +618,10 @@ RSpec.describe 'LucidComponent' do
       @doc.evaluate_ruby do
         class TestComponent < LucidComponent::Base
           styles do
-            {
-              master: {
-                width: 100
-              }
-            }
+            { master: { width: 100 }}
           end
           render do
-            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+            DIV(id: :test_component, class_name: styles.master) { "nothinghere" }
           end
         end
         class OuterApp < LucidApp::Base
@@ -649,7 +645,7 @@ RSpec.describe 'LucidComponent' do
         class TestComponent < LucidComponent::Base
           styles(master: { width: 100 })
           render do
-            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+            DIV(id: :test_component, class_name: styles.master) { "nothinghere" }
           end
         end
         class OuterApp < LucidApp::Base
@@ -673,7 +669,7 @@ RSpec.describe 'LucidComponent' do
         class SuperComponent < LucidComponent::Base
           styles(master: { width: 100 })
           render do
-            DIV(id: :super_component, class_name: classes.master) { "nothinghere" }
+            DIV(id: :super_component, class_name: styles.master) { "nothinghere" }
           end
         end
         # TODO for some reason, when use SuperComponent for inheritance, this fails on travis with 'Cyclic __proto__ value'
@@ -683,7 +679,7 @@ RSpec.describe 'LucidComponent' do
             SuperComponent.styles
           end
           render do
-            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+            DIV(id: :test_component, class_name: styles.master) { "nothinghere" }
           end
         end
         class OuterApp < LucidApp::Base
@@ -702,12 +698,11 @@ RSpec.describe 'LucidComponent' do
       expect(style).to eq('100px')
     end
 
-
     it 'without the styles accessing classes still renders' do
       @doc.evaluate_ruby do
         class TestNoStyleComponent < LucidComponent::Base
           render do
-            DIV(id: :test_component, class_name: classes.master) { "nothinghere" }
+            DIV(id: :test_component, class_name: styles.master) { "nothinghere" }
           end
         end
         class OuterApp < LucidApp::Base
@@ -719,6 +714,65 @@ RSpec.describe 'LucidComponent' do
       end
       node = @doc.wait_for('#test_component')
       expect(node).to be_truthy
+    end
+  end
+
+  context 'it has a theme and styles and renders them' do
+    before do
+      @doc = visit('/')
+    end
+
+    it 'with the styles block DSL' do
+      @doc.evaluate_ruby do
+        class TestComponent < LucidComponent::Base
+          styles do |theme|
+            { master: { width: theme.root.width }}
+          end
+          render do
+            DIV(id: :test_component, class_name: styles.master) { "nothinghere" }
+          end
+        end
+        class OuterApp < LucidApp::Base
+          theme do
+            { root: { width: 100 }}
+          end
+          render do
+            TestComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      # the following should be replaced by node.styles once its working correctly
+      style = @doc.execute_script <<~JAVASCRIPT
+        var styles = window.getComputedStyle(document.querySelector('#test_component'))
+        return styles.width
+      JAVASCRIPT
+      expect(style).to eq('100px')
+    end
+
+    it 'with the theme accessor' do
+      @doc.evaluate_ruby do
+        class TestNoStyleComponent < LucidComponent::Base
+          render do
+            DIV(id: :test_component, style: { width: theme.root.width }.to_n) { "nothinghere" }
+          end
+        end
+        class OuterApp < LucidApp::Base
+          theme(root: { width: 100 })
+          render do
+            TestNoStyleComponent()
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node).to be_truthy
+      style = @doc.execute_script <<~JAVASCRIPT
+        var styles = window.getComputedStyle(document.querySelector('#test_component'))
+        return styles.width
+      JAVASCRIPT
+      expect(style).to eq('100px')
     end
   end
 

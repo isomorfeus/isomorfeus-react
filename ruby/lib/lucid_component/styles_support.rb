@@ -6,7 +6,8 @@ module LucidComponent
           if block_given?
             %x{
               base.jss_styles = function(theme) {
-                var result = block.$call(Opal.Hash.$new(theme));
+                let wrapped_theme = Opal.React.Component.Styles.$new(theme);
+                var result = block.$call(wrapped_theme);
                 return result.$to_n();
               }
             }
@@ -20,10 +21,15 @@ module LucidComponent
             nil
           end
         end
+        alias_method :styles=, :styles
       end
 
-      def classes
+      def styles
         props.classes
+      end
+
+      def theme
+        props.theme
       end
     end
   end
