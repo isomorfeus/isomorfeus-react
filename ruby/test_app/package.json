@@ -19,7 +19,6 @@
     "production_build": "parallel-webpack --config=webpack/production.js --max-tries=1 --no-stats"
   },
   "devDependencies": {
-    "cache-loader": "^4.1.0",
     "chokidar": "^3.0.2",
     "compression-webpack-plugin": "^3.0.0",
     "css-loader": "^3.2.0",
