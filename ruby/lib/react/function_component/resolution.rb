@@ -40,10 +40,7 @@ module React
               if (typeof constant.react_component !== 'undefined') {
                 component = constant.react_component;
               }
-            }
-            catch(err) {
-              component = null;
-            }
+            } catch(err) { component = null; }
           }
           if (!component) {
             try {
@@ -51,12 +48,10 @@ module React
               if (typeof constant.react_component !== 'undefined') {
                 component = constant.react_component;
               }
-            } catch(err) {
-              component = null
-            }
+            } catch(err) { component = null; }
           }
           if (component) {
-            Opal.React.internal_prepare_args_and_render(component, args, block);
+            return Opal.React.internal_prepare_args_and_render(component, args, block);
           } else {
             return #{_react_function_component_resolution_original_method_missing(component_name, *args, block)};
           }

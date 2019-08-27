@@ -16,7 +16,7 @@ module React
           component = #@native[name];
         }
         if (component) {
-          Opal.React.internal_prepare_args_and_render(component, args, block);
+          return Opal.React.internal_prepare_args_and_render(component, args, block);
         } else {
           #{raise NameError, "No such native Component #@const_name.#{name}"};
         }

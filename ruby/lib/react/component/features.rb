@@ -14,11 +14,12 @@ module React
           element = element_or_query
         end
         %x{
-          var block_result = null;
           Opal.React.render_buffer.push([]);
           if (block !== nil) {
-            block_result = block.$call()
-            if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+            let block_result = block.$call()
+            let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
+            let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+            if (block_result && block_result !== last_buffer_element && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
               (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
               ))) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
@@ -26,7 +27,7 @@ module React
           }
           var react_element = Opal.global.React.createPortal(Opal.React.render_buffer.pop(), element);
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
-          return null;
+          return react_element;
         }
       end
 

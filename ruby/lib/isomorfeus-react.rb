@@ -20,7 +20,7 @@ if RUBY_ENGINE == 'opal'
 
   # allow mounting of components
   if Isomorfeus.on_browser?
-    require 'isomorfeus/top_level_browser'
+    require 'isomorfeus/top_level'
   else
     require 'isomorfeus/top_level_ssr'
   end

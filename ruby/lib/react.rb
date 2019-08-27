@@ -60,24 +60,25 @@ module React
       if (args.length > 0) {
         var last_arg = args[args.length - 1];
         if (typeof last_arg === 'string' || last_arg instanceof String) {
-          if (args.length === 1) { Opal.React.internal_render(component, null, last_arg, null); }
-          else { Opal.React.internal_render(component, args[0], last_arg, null); }
-        } else { Opal.React.internal_render(component, args[0], null, block); }
-      } else { Opal.React.internal_render(component, null, null, block); }
+          if (args.length === 1) { return Opal.React.internal_render(component, null, last_arg, null); }
+          else { return Opal.React.internal_render(component, args[0], last_arg, null); }
+        } else { return Opal.React.internal_render(component, args[0], null, block); }
+      } else { return Opal.React.internal_render(component, null, null, block); }
     };
 
     self.internal_render = function(component, props, string_child, block) {
-      var children;
-      var block_result;
-      var react_element;
-      var native_props = null;
+      let children;
+      let react_element;
+      let native_props = null;
 
       if (string_child) {
         children = string_child;
       } else if (block && block !== nil) {
         Opal.React.render_buffer.push([]);
-        block_result = block.$call();
-        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+        let block_result = block.$call();
+        let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
+        let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+        if (block_result && block_result !== last_buffer_element && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
           (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
           ))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
@@ -86,9 +87,10 @@ module React
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       }
-      if (props) { native_props = Opal.React.to_native_react_props(props); }
+      if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
       react_element = Opal.global.React.createElement(component, native_props, children);
       Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
+      return react_element;
     };
 
     self.active_components = [];
@@ -129,9 +131,8 @@ module React
 
   def self.create_element(type, props = nil, children = nil, &block)
     %x{
-      var component = null;
-      var block_result = null;
-      var native_props = null;
+      let component = null;
+      let native_props = null;
       if (typeof type.react_component !== 'undefined') {
         component = type.react_component;
       } else {
@@ -139,12 +140,11 @@ module React
       }
 
       Opal.React.render_buffer.push([]);
-      #{
-        native_props = `Opal.React.to_native_react_props(props)` if props;
-      }
       if (block !== nil) {
-        block_result = block.$call()
-        if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+        let block_result = block.$call()
+        let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
+        let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+        if (block_result && block_result !== last_buffer_element && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
           (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
           ))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
@@ -153,6 +153,7 @@ module React
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       }
+      if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
       return Opal.global.React.createElement(component, native_props, children);
     }
   end
@@ -161,7 +162,6 @@ module React
     native_function = `Opal.global.React.createFactory(type)`
     proc { `native_function.call()` }
   end
-
 
   def self.create_ref
     React::Ref.new(`Opal.global.React.createRef()`)

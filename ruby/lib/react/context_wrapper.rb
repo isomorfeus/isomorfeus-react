@@ -8,18 +8,18 @@ module React
 
     def Consumer(*args, &block)
       %x{
-        var children = null;
-        var block_result = null;
-        var props = null;
-        var react_element;
+        let children = null;
+        let props = null;
 
-        if (args.length > 0) { props = args[0]; }
+        if (args.length > 0) { props = Opal.React.to_native_react_props(args[0]); }
 
-        var react_element = Opal.global.React.createElement(this.native.Consumer, props, function(value) {
+        let react_element = Opal.global.React.createElement(this.native.Consumer, props, function(value) {
           if (block !== nil) {
             Opal.React.render_buffer.push([]);
-            block_result = block.$call();
-            if (block_result && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+            let block_result = block.$call();
+            let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
+            let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+            if (block_result && block_result !== last_buffer_element && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
               (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
               ))) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
@@ -38,7 +38,7 @@ module React
     def Provider(*args, &block)
       %x{
         var props = null;
-        if (args.length > 0) { props = args[0]; }
+        if (args.length > 0) { props = Opal.React.to_native_react_props(args[0]); }
         Opal.React.internal_render(this.native.Provider, props, null, block);
       }
     end
