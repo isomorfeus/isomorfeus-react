@@ -8,10 +8,20 @@ module Isomorfeus
         # nothing, but keep it for compatibility with browser
       end
 
-      def render_component_to_string(component_name, props_json)
-        # for some reason props_json arrives already decoded
-        component = Isomorfeus.cached_component_class(component_name)
-        ReactDOMServer.render_to_string(React.create_element(component, `Opal.Hash.$new(props_json)`))
+      def render_component_to_string(component_name, props)
+        component = nil
+        %x{
+          if (typeof component_name === 'string' || component_name instanceof String) {
+            component = component_name.split(".").reduce(function(o, x) {
+              return (o !== null && typeof o[x] !== "undefined" && o[x] !== null) ? o[x] : null;
+            }, Opal.global)
+          } else {
+            component = component_name;
+          }
+        }
+        component = Isomorfeus.cached_component_class(component_name) unless component
+
+        ReactDOMServer.render_to_string(React.create_element(component, `Opal.Hash.$new(props)`))
       end
     end
   end
