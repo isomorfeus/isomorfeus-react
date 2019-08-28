@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'opal-autoloader', '~> 0.1.0'
   s.add_dependency 'opal-webpack-loader', '>= 0.9.2'
-  s.add_dependency 'isomorfeus-redux', '~> 4.0.11'
+  s.add_dependency 'isomorfeus-redux', '~> 4.0.12'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.10'
   s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.9'
   s.add_development_dependency 'rake'
