@@ -65,12 +65,7 @@ module LucidMaterial
             }
             listener() {
               var next_state = Opal.Isomorfeus.store.native.getState();
-              var current_ruby_state = Opal.Hash.$new(this.state.isomorfeus_store_state);
-              var next_ruby_state = Opal.Hash.$new(next_state);
-              if (#{`next_ruby_state` != `current_ruby_state`}) {
-                var self = this;
-                /* setTimeout(function() { */ self.setState({ isomorfeus_store_state: next_state }); /*}, 0 ); */
-              }
+              this.setState({ isomorfeus_store_state: next_state });
             }
             componentWillUnmount() {
               if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
@@ -82,13 +77,15 @@ module LucidMaterial
             }
           }
           base.jss_styles = null;
+          base.jss_styles_used = null;
           base.jss_theme = {};
           base.use_styles = null;
           base.themed_react_component = function(props) {
             let classes = null;
             let theme = Opal.global.MuiStyles.useTheme();
             if (base.jss_styles) {
-              if (!base.use_styles || Opal.Isomorfeus["$development?"]()) {
+              if (!base.use_styles || (Opal.Isomorfeus["$development?"]() && !Object.is(base.jss_styles, base.jss_styles_used))) {
+                base.jss_styles_used = base.jss_styles;
                 let styles = base.jss_styles
                 if (typeof styles === 'function') { styles = styles(theme); }
                 base.use_styles = Opal.global.MuiStyles.makeStyles(styles);
