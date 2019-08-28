@@ -2,6 +2,7 @@ module Isomorfeus
   module ReactViewHelper
     def mount_component(component_name, props = {}, asset = 'application_ssr.js')
       @ssr_response_status = nil
+      @ssr_styles = nil
       thread_id_asset = "#{Thread.current.object_id}#{asset}"
       render_result = "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
       if Isomorfeus.server_side_rendering
@@ -74,14 +75,39 @@ module Isomorfeus
 
         # build javascript for second render pass
         javascript = <<~JAVASCRIPT
-          var rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)})
-          var application_state = global.Opal.Isomorfeus.store.native.getState();
+          let rendered_tree;
+          let ssr_styles;
+          let component;
+          if (typeof global.Opal.global.MuiStyles !== 'undefined' && typeof global.Opal.global.MuiStyles.ServerStyleSheets !== 'undefined') {
+            component = '#{component_name}'.split(".").reduce(function(o, x) {
+              return (o !== null && typeof o[x] !== "undefined" && o[x] !== null) ? o[x] : null;
+            }, global.Opal.global)
+            if (!component) { component = global.Opal.Isomorfeus.$cached_component_class('#{component_name}'); }
+            let sheets = new global.Opal.global.MuiStyles.ServerStyleSheets();
+            let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
+            rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app));
+            ssr_styles = sheets.toString();
+          } else if (typeof global.Opal.global.ReactJSS !== 'undefined' && typeof global.Opal.global.ReactJSS.SheetsRegistry !== 'undefined') {
+            component = '#{component_name}'.split(".").reduce(function(o, x) {
+              return (o !== null && typeof o[x] !== "undefined" && o[x] !== null) ? o[x] : null;
+            }, global.Opal.global)
+            if (!component) { component = global.Opal.Isomorfeus.$cached_component_class('#{component_name}'); }
+            let sheets = new global.Opal.global.ReactJSS.SheetsRegistry();
+            let generate_id = global.Opal.global.ReactJSS.createGenerateId();
+            let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
+            let element = global.Opal.global.React.createElement(global.Opal.global.ReactJSS.JssProvider, { registry: sheets, generateId: generate_id }, app);
+            rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element);
+            ssr_styles = sheets.toString();
+          } else {
+            rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+          }
+          let application_state = global.Opal.Isomorfeus.store.native.getState();
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { global.Opal.Isomorfeus.Transport.$disconnect(); }
-          return [rendered_tree, application_state, global.Opal.Isomorfeus['$ssr_response_status']()];
+          return [rendered_tree, application_state, ssr_styles, global.Opal.Isomorfeus['$ssr_response_status']()];
         JAVASCRIPT
 
         # execute second render pass
-        rendered_tree, application_state, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
+        rendered_tree, application_state, @ssr_styles, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
 
         # build result
         render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
@@ -95,6 +121,10 @@ module Isomorfeus
 
     def ssr_response_status
       @ssr_response_status || 200
+    end
+
+    def ssr_styles
+      @ssr_styles || ''
     end
   end
 end
