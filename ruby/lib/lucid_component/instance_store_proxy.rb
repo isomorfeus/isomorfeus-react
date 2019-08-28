@@ -7,7 +7,6 @@ module LucidComponent
     end
 
     def method_missing(key, *args, &block)
-      @native_component_instance.JS.register_used_store_path(['component_state', @component_object_id, key])
       if `args.length > 0`
         # set instance state, simply a dispatch
 
