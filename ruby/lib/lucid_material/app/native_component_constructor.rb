@@ -27,6 +27,7 @@ module LucidMaterial
               };
               this.__ruby_instance = base.$new(this);
               this.__object_id = this.__ruby_instance.$object_id().$to_s();
+              if (Opal.Isomorfeus.$top_component() == nil) { Opal.Isomorfeus['$top_component='](this); }
               if (!this.state.component_state) {
                 this.state.component_state = {};
                 this.state.component_state[this.__object_id] = {};

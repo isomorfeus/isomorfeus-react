@@ -74,11 +74,12 @@ module Isomorfeus
           element = element_or_query
         end
 
-        Isomorfeus.top_component = if hydrated
-                                     ReactDOM.hydrate(React.create_element(component, props), element)
-                                   else
-                                     ReactDOM.render(React.create_element(component, props), element)
-                                   end
+        top = if hydrated
+                ReactDOM.hydrate(React.create_element(component, props), element)
+              else
+                ReactDOM.render(React.create_element(component, props), element)
+              end
+        Isomorfeus.top_component = top if top
       end
     end
   end

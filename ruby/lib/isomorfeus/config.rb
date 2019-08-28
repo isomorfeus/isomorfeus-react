@@ -74,9 +74,11 @@ module Isomorfeus
 
       def force_render
         begin
-          if top_component
-            ReactDOM.find_dom_node(top_component) # if not mounted will raise
+          if Isomorfeus.top_component
+            ReactDOM.find_dom_node(Isomorfeus.top_component) # if not mounted will raise
             top_component.JS.forceUpdate()
+          else
+            `location.reload()` if on_browser?
           end
         rescue
           `location.reload()` if on_browser?
