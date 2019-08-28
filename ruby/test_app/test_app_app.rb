@@ -9,14 +9,16 @@ class TestAppApp < Roda
   plugin :public, root: 'public'
 
   def page_content(host, location)
+    rendered_tree = mount_component('TestAppApp', location_host: host, location: location)
     <<~HTML
       <html>
         <head>
           <title>Welcome to TestAppApp</title>
           #{owl_script_tag 'application.js'}
+          <style id="jss-server-side" type="text/css">#{ssr_styles}</style>
         </head>
         <body>
-          #{mount_component('TestAppApp', location_host: host, location: location)}
+          #{rendered_tree}
           <div id="test_anchor"></div>
         </body>
       </html>
@@ -35,13 +37,15 @@ class TestAppApp < Roda
     end
 
     r.get 'ssr' do
+      rendered_tree = mount_component('TestAppApp', location_host: env['HTTP_HOST'],  location: env['PATH_INFO'])
       content = <<~HTML
       <html>
         <head>
           <title>Welcome to TestAppApp</title>
+          <style id="jss-server-side" type="text/css">#{ssr_styles}</style>
         </head>
         <body>
-          #{mount_component('TestAppApp', location_host: env['HTTP_HOST'],  location: env['PATH_INFO'])}
+          #{rendered_tree}
           <div id="test_anchor"></div>
         </body>
       </html>

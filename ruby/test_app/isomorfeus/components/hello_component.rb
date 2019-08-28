@@ -10,6 +10,10 @@ class HelloComponent < LucidMaterial::Component::Base
   store.a_value = 'component store works'
   app_store.a_value = 'application store works'
 
+  styles do
+    { test: { color: 'red' }}
+  end
+
   ref :form
 
   event_handler :validate_form do
@@ -17,10 +21,10 @@ class HelloComponent < LucidMaterial::Component::Base
   end
 
   render do
-    DIV 'Rendered!'
+    DIV 'Rendered!!'
     DIV "#{class_store.a_value}"
     DIV "#{store.a_value}"
-    DIV "#{app_store.a_value}"
+    DIV(class_name: styles.test){ "#{app_store.a_value}" }
     Formik.Formik(initial_values: { email: 'test@test', name: 'Test Test' }.to_n) do
       Formik.Form do
         Formik.Field(type: :email, name: :email, validate: PropTest.validate_prop_function(:email))
