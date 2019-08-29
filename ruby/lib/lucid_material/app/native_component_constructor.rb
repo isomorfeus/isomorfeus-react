@@ -79,7 +79,7 @@ module LucidMaterial
           }
           base.jss_styles = null;
           base.jss_styles_used = null;
-          base.jss_theme = {};
+          base.jss_theme = Opal.global.Mui.createMuiTheme();
           base.use_styles = null;
           base.themed_react_component = function(props) {
             let classes = null;

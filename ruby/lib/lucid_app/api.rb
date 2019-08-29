@@ -5,7 +5,7 @@ module LucidApp
         def theme(theme_hash = nil, &block)
           if block_given?
             %x{
-              let result = block.$call();
+              let result = block.$call(Opal.Hash.$new(base.jss_theme));
               if (typeof result.$to_n === 'function') { base.jss_theme = result.$to_n(); }
               else { base.jss_theme = result; }
               return result;
