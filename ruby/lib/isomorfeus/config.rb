@@ -76,7 +76,7 @@ module Isomorfeus
         begin
           if Isomorfeus.top_component
             ReactDOM.find_dom_node(Isomorfeus.top_component) # if not mounted will raise
-            if `typeof Opal.global.deepForceUpdate() === 'undefined'`
+            if `typeof Opal.global.deepForceUpdate === 'undefined'`
               Isomorfeus.top_component.JS.forceUpdate()
             else
               `Opal.global.deepForceUpdate(#{Isomorfeus.top_component})`
