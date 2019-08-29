@@ -7,8 +7,6 @@ if RUBY_ENGINE == 'opal'
   require 'react/active_support_support'
   require 'isomorfeus-redux'
 
-  require 'isomorfeus/execution_environment'
-
   if Isomorfeus.on_browser?
     require 'browser/event'
     require 'browser/event_target'
