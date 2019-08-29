@@ -15,6 +15,7 @@ module LucidComponent
                 new_state = {}.merge!(prev_state) # make a copy of state
                 new_state[action[:object_id]] = {} unless new_state.key?(action[:object_id])
                 new_state[action[:object_id]].merge!(action[:name] => action[:value])
+                # new_state == prev_state ? prev_state : new_state
                 new_state
               end
             else
@@ -31,6 +32,7 @@ module LucidComponent
                 new_state = {}.merge!(prev_state) # make a copy of state
                 new_state[action[:class]] = {} unless new_state.key?(action[:class])
                 new_state[action[:class]].merge!(action[:name] => action[:value])
+                # new_state == prev_state ? prev_state : new_state
                 new_state
               end
             else
