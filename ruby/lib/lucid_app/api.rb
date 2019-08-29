@@ -6,7 +6,8 @@ module LucidApp
           if block_given?
             %x{
               let result = block.$call();
-              base.jss_theme = result.$to_n();
+              if (typeof result.$to_n === 'function') { base.jss_theme = result.$to_n(); }
+              else { base.jss_theme = result; }
               return result;
             }
           elsif theme_hash
