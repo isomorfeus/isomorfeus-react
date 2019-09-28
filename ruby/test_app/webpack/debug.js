@@ -1,7 +1,6 @@
 // require requirements used below
 const path = require('path');
 const webpack = require('webpack');
-const chokidar = require('chokidar');
 const OwlResolver = require('opal-webpack-loader/resolver'); // to resolve ruby files
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to watch for added ruby files
 
@@ -97,14 +96,6 @@ const common_config = {
     },
     // configuration for webpack-dev-server
     devServer: {
-        // uncomment to enable page reload for updates within another directory, which may contain just html files,
-// for example the 'views' directory:
-// before: function(app, server) {
-//     chokidar.watch(path.resolve(__dirname, path.join('..', 'views')).on('all', function () {
-//         server.sockWrite(server.sockets, 'content-changed');
-//     })
-// },
-
         open: false,
         lazy: false,
         port: 3035,
