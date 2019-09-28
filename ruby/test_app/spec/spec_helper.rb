@@ -1,5 +1,5 @@
 ENV['NODE_PATH'] = File.join(File.expand_path('..', __dir__), 'node_modules')
-ENV['RACK_ENV'] = 'production'
+ENV['RACK_ENV'] = 'test'
 require 'bundler/setup'
 require 'rspec'
 require 'rspec/expectations'
