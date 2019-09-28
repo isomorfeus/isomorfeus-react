@@ -11,13 +11,17 @@ RSpec.describe 'Execution Environment' do
     result = @doc.evaluate_ruby do
       Isomorfeus.env
     end
-    expect(result).to eq('production')
+    expect(result).to eq('test')
     result = @doc.evaluate_ruby do
-      Isomorfeus.production?
+      Isomorfeus.test?
     end
     expect(result).to be true
     result = @doc.evaluate_ruby do
       Isomorfeus.development?
+    end
+    expect(result).to be false
+    result = @doc.evaluate_ruby do
+      Isomorfeus.production?
     end
     expect(result).to be false
   end
