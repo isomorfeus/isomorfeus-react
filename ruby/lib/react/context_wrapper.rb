@@ -19,9 +19,10 @@ module React
             let block_result = block.$call();
             let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
             let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
-            if (block_result && block_result !== last_buffer_element && (block_result !== nil && (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
-              (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result[0] && typeof block_result[0].$$typeof === "symbol")
-              ))) {
+            if (block_result && block_result !== last_buffer_element && block_result !== nil &&
+                (typeof block_result === "string" || typeof block_result.$$typeof === "symbol" ||
+                  (typeof block_result.constructor !== "undefined" && block_result.constructor === Array &&
+                    block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
             }
             children = Opal.React.render_buffer.pop();
