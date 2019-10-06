@@ -8,7 +8,11 @@ module LucidComponent
       event_handlers << name
       %x{
         self.lucid_react_component.prototype[name] = function(event, info) {
-          #{ruby_event = ::React::SyntheticEvent.new(`event`)};
+          if (typeof event === "object") {
+            #{ruby_event = ::React::SyntheticEvent.new(`event`)};
+          } else {
+            #{ruby_event = `event`};
+          }
           #{`this.__ruby_instance`.instance_exec(ruby_event, `info`, &block)};
         }
       }
