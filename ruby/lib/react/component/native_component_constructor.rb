@@ -42,7 +42,7 @@ module React
               // console.log("react component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
               Opal.React.active_components.push(this);
               let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
-              if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
+              if (typeof block_result === "string" || typeof block_result === "number") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
               // console.log("react component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
               Opal.React.active_components.pop();
               return Opal.React.render_buffer.pop();

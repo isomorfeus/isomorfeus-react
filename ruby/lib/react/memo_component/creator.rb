@@ -9,7 +9,7 @@ module React
             // console.log("memo pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             Opal.React.active_components.push(base);
             let block_result = #{base.new(`props`).instance_exec(&`base.function_block`)};
-            if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
+            if (typeof block_result === "string" || typeof block_result === "number") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
             Opal.React.active_components.pop();
             // console.log("memo popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             return Opal.React.render_buffer.pop();
