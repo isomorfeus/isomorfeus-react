@@ -58,6 +58,35 @@ module React
         `[initial, setter] = Opal.global.React.useState(initial_value);`
         [initial, proc { |arg| `setter(arg)` }]
       end
+
+      def get_react_element(arg, &block)
+        if block_given?
+          # execute block, fetch last element from buffer
+          %x{
+            let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
+            let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+            block.$call();
+            // console.log("get_react_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString())
+            let new_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].pop();
+            if (last_buffer_element === new_element) { #{raise "Block did not create any React element!"} }
+            return new_element;
+          }
+        else
+          # element was rendered before being passed as arg
+          # fetch last element from buffer
+          # `console.log("get_react_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString())`
+          `Opal.React.render_buffer[Opal.React.render_buffer.length - 1].pop()`
+        end
+      end
+      alias gre get_react_element
+
+      def render_react_element(el)
+        # push el to buffer
+        `Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(el)`
+        # `console.log("render_react_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString())`
+        nil
+      end
+      alias rre render_react_element
     end
   end
 end
