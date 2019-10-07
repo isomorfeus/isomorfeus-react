@@ -77,12 +77,7 @@ module React
         Opal.React.render_buffer.push([]);
         // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call();
-        let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
-        let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
-        if (block_result && block_result !== last_buffer_element && block_result !== nil &&
-            (typeof block_result === "string" || typeof block_result === "number" || typeof block_result.$$typeof === "symbol" ||
-              (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result.length > 0 && block_result[block_result.length - 1] &&
-                block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
+        if (typeof block_result === "string" || typeof block_result === "number") {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
         // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
@@ -141,12 +136,7 @@ module React
         Opal.React.render_buffer.push([]);
         // console.log("create_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call()
-        let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
-        let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
-        if (block_result && block_result !== last_buffer_element && block_result !== nil &&
-            (typeof block_result === "string" || typeof block_result === "number" || typeof block_result.$$typeof === "symbol" ||
-              (typeof block_result.constructor !== "undefined" && block_result.constructor === Array && block_result.length > 0 && block_result[block_result.length - 1] &&
-                block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
+        if (typeof block_result === "string" || typeof block_result === "number") {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
         // console.log("create_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
