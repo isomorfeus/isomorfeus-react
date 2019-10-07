@@ -61,9 +61,9 @@ module React
         var last_arg = args[args.length - 1];
         if (typeof last_arg === 'string' || last_arg instanceof String) {
           if (args.length === 1) { return Opal.React.internal_render(component, null, last_arg, null); }
-          else { return Opal.React.internal_render(component, args[0], last_arg, null); }
-        } else { return Opal.React.internal_render(component, args[0], null, block); }
-      } else { return Opal.React.internal_render(component, null, null, block); }
+          else { Opal.React.internal_render(component, args[0], last_arg, null); }
+        } else { Opal.React.internal_render(component, args[0], null, block); }
+      } else { Opal.React.internal_render(component, null, null, block); }
     };
 
     self.internal_render = function(component, props, string_child, block) {
@@ -75,6 +75,7 @@ module React
         children = string_child;
       } else if (block && block !== nil) {
         Opal.React.render_buffer.push([]);
+        // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call();
         let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
         let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
@@ -84,6 +85,7 @@ module React
                 block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
+        // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         children = Opal.React.render_buffer.pop();
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
@@ -91,7 +93,6 @@ module React
       if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
       react_element = Opal.global.React.createElement(component, native_props, children);
       Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
-      return react_element;
     };
 
     self.active_components = [];
@@ -134,14 +135,11 @@ module React
     %x{
       let component = null;
       let native_props = null;
-      if (typeof type.react_component !== 'undefined') {
-        component = type.react_component;
-      } else {
-        component = type;
-      }
-
-      Opal.React.render_buffer.push([]);
+      if (typeof type.react_component !== 'undefined') { component = type.react_component; }
+      else { component = type; }
       if (block !== nil) {
+        Opal.React.render_buffer.push([]);
+        // console.log("create_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call()
         let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
         let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
@@ -151,10 +149,11 @@ module React
                 block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
+        // console.log("create_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         children = Opal.React.render_buffer.pop()
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
-      }
+      } else if (children === nil) { children = null; }
       if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
       return Opal.global.React.createElement(component, native_props, children);
     }
