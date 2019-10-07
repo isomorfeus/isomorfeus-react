@@ -19,7 +19,7 @@ module React
             Opal.React.render_buffer.push([]);
             // console.log("consumer pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             let block_result = block.$call();
-            if (typeof block_result === "string" || typeof block_result === "number") {
+            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
             }
             // console.log("consumer popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());

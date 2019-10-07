@@ -48,7 +48,7 @@ module LucidMaterial
               Opal.React.active_components.push(this);
               Opal.React.active_redux_components.push(this);
               let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
-              if (typeof block_result === "string" || typeof block_result === "number") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
+              if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
               Opal.React.active_redux_components.pop();
               Opal.React.active_components.pop();
               // console.log("material component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());

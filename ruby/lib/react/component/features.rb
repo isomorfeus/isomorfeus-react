@@ -20,7 +20,7 @@ module React
             let block_result = block.$call()
             let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
             let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
-            if (typeof block_result === "string" || typeof block_result === "number") {
+            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
             }
           }
