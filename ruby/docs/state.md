@@ -1,7 +1,7 @@
 ### State
 State can be accessed in components using `state`:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     if state.toggled
       DIV { 'toggled' }
@@ -13,7 +13,7 @@ end
 ```
 State can be intialized like so:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   state.toggled = false
   
   render do
@@ -27,7 +27,7 @@ end
 ```
 State can be changed like so, the component setState() will be called:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     if some_condition_is_met
       
@@ -49,7 +49,7 @@ end
 ```
 When changing state, the state is not immediately available, just like in React! For example:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     previous_state_value = state.variable
     state.variable = next_state_value # even though this looks like a assignment, it causes a side effect
@@ -63,7 +63,7 @@ end
 ```
 To make the side effect of a set_state more visible, state can be set by using a method call instead of a assignment:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     previous_state_value = state.variable
     state.variable(next_state_value) # setting state with a method call, it causes a side effect

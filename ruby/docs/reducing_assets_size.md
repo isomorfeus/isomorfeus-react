@@ -17,7 +17,6 @@ Supported Components for `require 'isomorfeus-react'`
 - All from the 'Special React Features' section of the README.
 - Most from the 'Other Features' section of the README.
 - React::Component
-- React::PureComponent
 - LucidApp
 - LucidComponent
 

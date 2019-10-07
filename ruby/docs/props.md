@@ -3,7 +3,7 @@
 In ruby props are underscored: `className -> class_name`. The conversion for React is done automatically.
 Within a component props can be accessed using `props`:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     DIV { props.text }
   end
@@ -11,7 +11,7 @@ end
 ```
 Props are passed as arguments to the component:
 ```ruby
-class MyOtherComponent < React::PureComponent::Base
+class MyOtherComponent < React::Component::Base
   render do
     MyComponent(text: 'some other text')
   end
@@ -22,7 +22,7 @@ end
 #### Using options hash style
 Props can be declared and type checked and a default value can be given:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   prop :text, class: String # a required prop of class String, class must match exactly
   prop :other, is_a: Enumerable # a required prop, which can be a Array for example, but at least must be a Enumerable
   prop :cool, default: 'yet some more text' # a optional prop with a default value
@@ -37,7 +37,7 @@ end
 #### Using validate method style
 Props can be declared and type checked and a default value can be given using a validate method chain::
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   prop :text, validate.String # a required prop of class String, class must match exactly
   prop :other, validate.Enumerable # a required prop, which can be a Array for example, but at least must be a Enumerable
   prop :cool, validate.default('yet some more text') # a optional prop with a default value
@@ -51,7 +51,7 @@ end
 ```
 More complex variations are possible and can be expressed in a concise way:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   prop :float, validate.Float.cast.default(1.0).min(0.5).and.max(1.5)
   prop :text, validate.String.matches(/(a|b|c).*/).length(5)
   

@@ -10,7 +10,7 @@ end
 
 A Function Component can then be used in other Components:
 ```ruby
-class MyComponent < React::PureComponent::Base
+class MyComponent < React::Component::Base
   render do
     MyOtherComponent(text: 'some text')
     MyFunctionComponent(text: 'more text')
