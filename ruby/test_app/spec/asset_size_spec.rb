@@ -29,7 +29,7 @@ RSpec.describe 'Asset sizes' do
     gzip_size = obj['gzipSize'] / 1024
     puts "Max asset sizes: stat: #{stat_size}kb, parsed: #{parsed_size}kb, gzip: #{gzip_size}kb"
     expect(stat_size < 330).to be true
-    expect(parsed_size < 350).to be true
+    expect(parsed_size < 360).to be true
     expect(gzip_size < 40).to be true
   end
 end

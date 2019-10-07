@@ -78,6 +78,7 @@ if RUBY_ENGINE == 'opal'
   require 'react/component/base'
 
   # React::PureComponent
+  require 'react/pure_component/native_component_constructor'
   require 'react/pure_component/mixin'
   require 'react/pure_component/base'
 
