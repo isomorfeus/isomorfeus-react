@@ -82,8 +82,8 @@ module React
         }
         // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         children = Opal.React.render_buffer.pop();
-        if (children.length == 1) { children = children[0]; }
-        else if (children.length == 0) { children = null; }
+        if (children.length === 1) { children = children[0]; }
+        else if (children.length === 0) { children = null; }
       }
       if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
       react_element = Opal.global.React.createElement(component, native_props, children);
