@@ -8,7 +8,6 @@ module React
           if (typeof #@native.props[prop] === 'undefined') {
             prop = Opal.React.lower_camelize(prop);
             if (typeof #@native.props[prop] === 'undefined') { return #{nil}; }
-            else { return #@native.props[prop]; }
           }
           return #@native.props[prop];
         }
