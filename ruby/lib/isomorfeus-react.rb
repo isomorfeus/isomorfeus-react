@@ -77,11 +77,6 @@ if RUBY_ENGINE == 'opal'
   require 'react/component/mixin'
   require 'react/component/base'
 
-  # React::PureComponent
-  require 'react/pure_component/native_component_constructor'
-  require 'react/pure_component/mixin'
-  require 'react/pure_component/base'
-
   # init component reducers
   require 'lucid_component/reducers'
   LucidComponent::Reducers.add_component_reducers_to_store

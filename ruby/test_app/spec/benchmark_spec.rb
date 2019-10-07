@@ -151,32 +151,6 @@ RSpec.describe 'Component benchmarks' do
     expect(time > 0 && time < 1000).to be_truthy
   end
 
-  it 'Pure Component' do
-    doc = visit('/')
-    time = doc.evaluate_ruby do
-      class Pure < React::PureComponent::Base
-        render do
-          DIV 'A'
-        end
-      end
-      class BenchmarkComponent < React::Component::Base
-        render do
-          Fragment do
-            10000.times do
-              Pure()
-            end
-          end
-        end
-      end
-
-      start = Time.now
-      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
-      (Time.now - start) * 1000
-    end
-    puts "10000 Pure Components took: #{time}ms"
-    expect(time > 0 && time < 1000).to be_truthy
-  end
-
   it 'Component' do
     doc = visit('/')
     time = doc.evaluate_ruby do
