@@ -11,26 +11,20 @@ module ReactDOM
 
     def hydrate(native_react_element, container, &block)
       # container is a native DOM element
-      `Opal.React.render_buffer.push([]);`
-      result = if block_given?
-                 `Opal.global.ReactDOM.hydrate(native_react_element, container, function() { block.$call() })`
-               else
-                 `Opal.global.ReactDOM.hydrate(native_react_element, container)`
-               end
-      `Opal.React.render_buffer.pop()`
-      result
+      if block_given?
+        `Opal.global.ReactDOM.hydrate(native_react_element, container, function() { block.$call() })`
+      else
+        `Opal.global.ReactDOM.hydrate(native_react_element, container)`
+      end
     end
 
     def render(native_react_element, container, &block)
       # container is a native DOM element
-      `Opal.React.render_buffer.push([]);`
-      result = if block_given?
-                 `Opal.global.ReactDOM.render(native_react_element, container, function() { block.$call() })`
-               else
-                 `Opal.global.ReactDOM.render(native_react_element, container)`
-               end
-      `Opal.React.render_buffer.pop()`
-      result
+      if block_given?
+        `Opal.global.ReactDOM.render(native_react_element, container, function() { block.$call() })`
+      else
+        `Opal.global.ReactDOM.render(native_react_element, container)`
+      end
     end
 
     def unmount_component_at_node(element_or_query)
