@@ -39,8 +39,11 @@ module React
             }
             render() {
               Opal.React.render_buffer.push([]);
+              // console.log("react component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
               Opal.React.active_components.push(this);
-              #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+              let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+              if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
+              // console.log("react component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
               Opal.React.active_components.pop();
               return Opal.React.render_buffer.pop();
             }
@@ -58,14 +61,14 @@ module React
 
                 for (var property in next_props) {
                   if (next_props.hasOwnProperty(property)) {
-                    if (!this.props.hasOwnProperty(property)) { return true; };
+                    if (!this.props.hasOwnProperty(property)) { return true; }
                     if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
                     else if (typeof next_props[property] !== "undefined" && next_props[property] !== null &&
                              typeof next_props[property]['$!='] !== "undefined" &&
                              typeof this.props[property] !== "undefined" && this.props[property] !== null &&
                              typeof this.props[property]['$!='] !== "undefined") {
-                      if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; };
-                    } else if (next_props[property] !== this.props[property]) { return true; };
+                      if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; }
+                    } else if (next_props[property] !== this.props[property]) { return true; }
                   }
                 }
                 for (var property in next_state) {
@@ -73,8 +76,8 @@ module React
                     if (!this.state.hasOwnProperty(property)) { return true; };
                     if (next_state[property] !== null && typeof next_state[property]['$!='] !== "undefined" &&
                         this.state[property] !== null && typeof this.state[property]['$!='] !== "undefined") {
-                      if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
-                    } else if (next_state[property] !== this.state[property]) { return true };
+                      if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true }
+                    } else if (next_state[property] !== this.state[property]) { return true }
                   }
                 }
                 return false;

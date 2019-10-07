@@ -43,11 +43,14 @@ module LucidComponent
           }
           render() {
             Opal.React.render_buffer.push([]);
+            // console.log("lucid component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             Opal.React.active_components.push(this);
             Opal.React.active_redux_components.push(this);
-            #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+            let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+            if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
             Opal.React.active_redux_components.pop();
             Opal.React.active_components.pop();
+            // console.log("lucid component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             return Opal.React.render_buffer.pop();
           }
           data_access() {
@@ -70,8 +73,8 @@ module LucidComponent
                          typeof next_props[property]['$!='] !== "undefined" &&
                          typeof this.props[property] !== "undefined" && this.props[property] !== null &&
                          typeof this.props[property]['$!='] !== "undefined") {
-                  if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; };
-                } else if (next_props[property] !== this.props[property]) { return true; };
+                  if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; }
+                } else if (next_props[property] !== this.props[property]) { return true; }
               }
             }
             for (var property in next_state) {
@@ -79,8 +82,8 @@ module LucidComponent
                 if (!this.state.hasOwnProperty(property)) { return true; };
                 if (next_state[property] !== null && typeof next_state[property]['$!='] !== "undefined" &&
                     this.state[property] !== null && typeof this.state[property]['$!='] !== "undefined") {
-                  if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true };
-                } else if (next_state[property] !== this.state[property]) { return true };
+                  if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true }
+                } else if (next_state[property] !== this.state[property]) { return true }
               }
             }
             return false;

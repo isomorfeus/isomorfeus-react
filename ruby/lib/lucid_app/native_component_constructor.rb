@@ -55,11 +55,14 @@ module LucidApp
           }
           render() {
             Opal.React.render_buffer.push([]);
+            // console.log("lucid app pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             Opal.React.active_components.push(this);
             Opal.React.active_redux_components.push(this.__ruby_instance);
-            #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+            let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
+            if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
             Opal.React.active_redux_components.pop();
             Opal.React.active_components.pop();
+            // console.log("lucid app popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             let children = Opal.React.render_buffer.pop();
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
           }
@@ -68,7 +71,7 @@ module LucidApp
             this.setState({ isomorfeus_store_state: next_state });
           }
           componentWillUnmount() {
-            if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
+            if (typeof this.unsubscriber === "function") { this.unsubscriber(); }
           }
           validateProp(props, propName, componentName) {
             try { base.$validate_prop(propName, props[propName]) }

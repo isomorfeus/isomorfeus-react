@@ -5,9 +5,12 @@ module React
         %x{
           base.react_component = function(props) {
             Opal.React.render_buffer.push([]);
+            // console.log("function pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             Opal.React.active_components.push(base);
-            #{base.new(`props`).instance_exec(&`base.function_block`)};
+            let block_result = #{base.new(`props`).instance_exec(&`base.function_block`)};
+            if (typeof block_result === "string") { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
             Opal.React.active_components.pop();
+            // console.log("function popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             return Opal.React.render_buffer.pop();
           }
         }

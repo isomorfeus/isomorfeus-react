@@ -7,15 +7,17 @@ module React
     end
 
     def Consumer(*args, &block)
+      # why not use internal_prepare_args and render?
       %x{
-        let children = null;
         let props = null;
 
         if (args.length > 0) { props = Opal.React.to_native_react_props(args[0]); }
 
         let react_element = Opal.global.React.createElement(this.native.Consumer, props, function(value) {
+          let children = null;
           if (block !== nil) {
             Opal.React.render_buffer.push([]);
+            // console.log("consumer pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             let block_result = block.$call();
             let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
             let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
@@ -25,18 +27,19 @@ module React
                     block_result[block_result.length - 1] !== last_buffer_element && typeof block_result[block_result.length - 1].$$typeof === "symbol"))) {
               Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
             }
+            // console.log("consumer popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             children = Opal.React.render_buffer.pop();
             if (children.length == 1) { children = children[0]; }
             else if (children.length == 0) { children = null; }
           }
-          return Opal.React.render_buffer.pop();
+          return children;
         });
         Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
-        return null;
       }
     end
 
     def Provider(*args, &block)
+      # why not use internal_prepare_args and render?
       %x{
         var props = null;
         if (args.length > 0) { props = Opal.React.to_native_react_props(args[0]); }
