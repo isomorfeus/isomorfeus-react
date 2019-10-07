@@ -25,8 +25,8 @@ module React
 
       # for router convenience
       def history
-        return nil unless @native.JS[:props].JS[:history]
-        if @native.JS[:props].JS[:history].JS[:pathname]
+        return nil if `typeof #@native.props.history === 'undefined'`
+        if `typeof #@native.props.history.pathname !== 'undefined'`
           React::Component::History.new(@native.JS[:props].JS[:history])
         else
           @native.JS[:props].JS[:history]
@@ -34,8 +34,8 @@ module React
       end
 
       def location
-        return nil unless @native.JS[:props].JS[:location]
-        if @native.JS[:props].JS[:location].JS[:pathname]
+        return nil if `typeof #@native.props.location === 'undefined'`
+        if `typeof #@native.props.location.pathname !== 'undefined'`
           React::Component::Location.new(@native.JS[:props].JS[:location])
         else
           @native.JS[:props].JS[:location]
@@ -43,8 +43,8 @@ module React
       end
 
       def match
-        return nil unless @native.JS[:props].JS[:match]
-        if @native.JS[:props].JS[:match].JS[:path]
+        return nil if `typeof #@native.props.match === 'undefined'`
+        if `typeof #@native.props.match.path !== 'undefined'`
           React::Component::Match.new(@native.JS[:props].JS[:match])
         else
           @native.JS[:props].JS[:match]
