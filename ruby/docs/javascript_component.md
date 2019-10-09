@@ -32,19 +32,35 @@ Accessing javascript constants via `Opal.global` makes sure they are available i
 
 ### Passing React Elements of Ruby Components via property
 
-Some Javascript components accept a React Element as property. A React Element can very naturally be passed in the render block just by using
-components in place:
+Some Javascript components accept a React Element as property. To get the react element for a component use `get_react_element`:
 ```ruby
-Mui.Tab(label: Mui.Hidden(smDown: true) { 'Timeline' })
+element = get_react_element do
+  Mui.Hidden(sm_down: true) { 'Timeline' }
+end
+# then pass the element
+Mui.Tab(label: element)
+# or reuse it later again
+Mui.Tab(label: element)
 ```
-Mui.Tab, which accepts a property `label` with a React Element, `Mui.Hidden(smDown: true) { 'Timeline' }` just provides that.
-However, within a render block assigning a React Element by just rendering a Component to a variable and reusing it later on is not supported and does NOT work as expected:
+
+### Direct Rendering of React Elements
+Native React Elements can be directly rendered: 
 ```ruby
 class NotWorking < React::Component::Base
   render do
-    el = Mui.Hidden(smDown: true) { 'Timeline' }
-    DIV "NOT WORKING"
-    Mui.Tab(label: el)
+    # element passed in props
+    el = props.element 
+    # render the element
+    render_react_element(el)
+
+    # or create a element
+    element = get_react_element do
+      Mui.Hidden(sm_down: true) { 'Timeline' }
+    end
+    # and render it 5 times:
+    5.times do
+      render_react_element(element)
+    end
   end
 end
 ```

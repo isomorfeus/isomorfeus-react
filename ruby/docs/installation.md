@@ -12,7 +12,7 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.5'
+gem 'opal-webpack-loader', '~> 0.9.6'
 gem 'opal-autoloader', '~> 0.1.0'
 gem 'isomorfeus-redux', '~> 4.0.11'
 ```
@@ -31,18 +31,18 @@ For the optional MaterialUI support:
 
 for package.json:
 ```json
-    "opal-webpack-loader": "^0.9.5",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
-    "react-jss": "^10.0.0-alpha.24",
-    "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1",
+    "opal-webpack-loader": "^0.9.6",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-jss": "^10.0.0",
+    "react-router": "^5.1.1",
+    "react-router-dom": "^5.1.1",
     "redux": "^4.0.1",
 ```
 for the optional MaterialUI support:
 ```json
-    "@material-ui/core": "^4.3.0",
-    "@material-ui/styles": "^4.3.0",
+    "@material-ui/core": "^4.5.0",
+    "@material-ui/styles": "^4.5.0",
 ```
 
 Then the usual:

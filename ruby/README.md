@@ -22,7 +22,7 @@ Component Types:
 - [Function and Memo Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/function_component.md)
 - [Lucid App, Lucid Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/lucid_component.md)
 - [LucidMaterial App, LucidMaterial Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/lucid_material_component.md) - support for [MaterialUI](https://material-ui.com)
-- [React Javascript Component](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/javascript_component.md)
+- [React Javascript Components and React Elements](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/javascript_component.md)
 
 Which component to use?
 - Usually LucidApp and LucidComponent along with some imported javascript components.
