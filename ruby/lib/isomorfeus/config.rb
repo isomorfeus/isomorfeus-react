@@ -50,7 +50,7 @@ module Isomorfeus
       end
 
       def env=(env_string)
-        @env = env_string ? env_string.to_s : 'development'
+        @env = env_string ? env_string : 'development'
         @development = (@env == 'development') ? true : false
         @production = (@env == 'production') ? true : false
         @test = (@env == 'test') ? true : false
