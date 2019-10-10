@@ -54,6 +54,7 @@ module LucidApp
             return #{component_name};
           }
           render() {
+            this.context = this.state.isomorfeus_store_state;
             Opal.React.render_buffer.push([]);
             // console.log("lucid app pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             Opal.React.active_components.push(this);
@@ -65,6 +66,9 @@ module LucidApp
             // console.log("lucid app popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
             let children = Opal.React.render_buffer.pop();
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
+          }
+          data_access() {
+            return this.context;
           }
           listener() {
             let next_state = Opal.Isomorfeus.store.native.getState();
