@@ -32,6 +32,10 @@ module LucidComponent
           @default_instance_store_defined = true
           @default_instance_store ||= ::LucidComponent::ComponentInstanceStoreDefaults.new(state, self.to_s)
         end
+
+        def store_readers_off
+          `delete base.lucid_react_component['contextType']`
+        end
       end
     end
   end
