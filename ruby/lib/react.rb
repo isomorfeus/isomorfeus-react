@@ -16,8 +16,8 @@ module React
 
     self.lower_camelize = function(snake_cased_word) {
       var parts = snake_cased_word.split('_');
+      if (parts.length === 1) { return parts[0]; }
       var res = parts[0];
-      if (parts.length === 1) { return res; }
       for (var i = 1; i < parts.length; i++) {
             res += parts[i][0].toUpperCase() + parts[i].slice(1);
       }
