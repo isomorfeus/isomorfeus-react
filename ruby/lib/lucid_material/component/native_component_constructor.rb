@@ -61,7 +61,7 @@ module LucidMaterial
               for (var property in next_props) {
                 if (next_props.hasOwnProperty(property)) {
                   if (!this.props.hasOwnProperty(property)) { return true; };
-                  if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
+                  if (property === "children") { if (next_props.children !== this.props.children) { return true; }}
                   else if (typeof next_props[property] !== "undefined" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
                            typeof this.props[property] !== "undefined" && this.props[property] !== null ) {
                     if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; }
