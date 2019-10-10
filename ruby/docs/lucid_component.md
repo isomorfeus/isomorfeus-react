@@ -91,6 +91,21 @@ class MyComponent < LucidComponent::Base # is a React::Context Consumer
 end
 ```
 
+Components that dont need to access the store, because they get all data passed via props for example, can opt out of store updates.
+This can improve overall render performance:
+```ruby
+class MyComponent < LucidComponent::Base
+  store_updates_off
+  
+  render do
+    DIV app_store.some_text # store access is still possible,
+    # but when app_store.some_text get changed, the component will not render
+    
+    DIV props.some_text # data changes that require a render must then be passed in props.
+    # This is useful for table rows for example or other props that get all data in props. 
+  end
+end
+```
 The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
 
