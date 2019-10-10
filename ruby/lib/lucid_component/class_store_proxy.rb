@@ -14,10 +14,18 @@ module LucidComponent
       else
         # get class state
         # check if we have a component local state value
-        if @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name] &&
-          @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS.hasOwnProperty(key)
-          return @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS[key]
-        elsif @component_instance.class.default_class_store_defined && @component_instance.class.class_store.to_h.key?(key)
+        if `this.native_component_instance.context`
+          if @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name] &&
+            @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS.hasOwnProperty(key)
+            return @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS[key]
+          end
+        else
+          a_state = Isomorfeus.store.get_state
+          if a_state.key?(:component_class_state) && a_state[:component_class_state].key?(key)
+            return a_state[:component_class_state][key]
+          end
+        end
+        if @component_instance.class.default_class_store_defined && @component_instance.class.class_store.to_h.key?(key)
           # check if a default value was given
           return @component_instance.class.class_store.to_h[key]
         end

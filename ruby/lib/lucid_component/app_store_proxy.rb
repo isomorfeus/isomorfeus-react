@@ -12,13 +12,17 @@ module LucidComponent
         Isomorfeus.store.dispatch(action)
       else
         # check if we have a component local state value
-        if `this.native_component_instance.context.application_state && this.native_component_instance.context.application_state.hasOwnProperty(key)`
-          return @native_component_instance.JS['context'].JS[:application_state].JS[key]
+        if `this.native_component_instance.context`
+          if `this.native_component_instance.context.application_state && this.native_component_instance.context.application_state.hasOwnProperty(key)`
+            return @native_component_instance.JS['context'].JS[:application_state].JS[key]
+          end
+        else
+          a_state = Isomorfeus.store.get_state
+          if a_state.key?(:application_state) && a_state[:application_state].key?(key)
+            return a_state[:application_state][key]
+          end
         end
-        a_state = Isomorfeus.store.get_state
-        if a_state.key?(:application_state) && a_state[:application_state].key?(key)
-          return a_state[:application_state][key]
-        elsif @component_instance.class.default_app_store_defined && @component_instance.class.app_store.to_h.key?(key)
+        if @component_instance.class.default_app_store_defined && @component_instance.class.app_store.to_h.key?(key)
           # check if a default value was given
           return @component_instance.class.app_store.to_h[key]
         end

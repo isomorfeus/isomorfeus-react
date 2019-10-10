@@ -16,11 +16,20 @@ module LucidComponent
       else
         # get instance state
 
-        if @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id] &&
-          @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
-          # check if we have a component local state value
-          return @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS[key]
-        elsif @component_instance.class.default_instance_store_defined && @component_instance.class.store.to_h.key?(key)
+        if `this.native_component_instance.context`
+          if @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id] &&
+            @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
+            # check if we have a component local state value
+            return @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS[key]
+          end
+        else
+          a_state = Isomorfeus.store.get_state
+          if a_state.key?(:component_state) && a_state[:component_state].key?(key)
+            return a_state[:component_state][key]
+          end
+        end
+
+        if @component_instance.class.default_instance_store_defined && @component_instance.class.store.to_h.key?(key)
           # check if a default value was given
           return @component_instance.class.store.to_h[key]
         end
