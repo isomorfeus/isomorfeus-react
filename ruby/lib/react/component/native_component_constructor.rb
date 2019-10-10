@@ -63,7 +63,7 @@ module React
                   } else if (next_props[property] !== this.props[property]) { return true; }
                 }
               }
-              if (counter !== Obj.keys(this.props).length) { return true; }
+              if (counter !== Object.keys(this.props).length) { return true; }
               counter = 0;
               for (var property in next_state) {
                 counter++;
@@ -75,7 +75,7 @@ module React
                   } else if (next_state[property] !== this.state[property]) { return true }
                 }
               }
-              if (counter !== Obj.keys(this.state).length) { return true; }
+              if (counter !== Object.keys(this.state).length) { return true; }
               return false;
             }
             validateProp(props, propName, componentName) {
