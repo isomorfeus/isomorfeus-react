@@ -47,6 +47,10 @@ module React
           def render(&block)
             `base.render_block = block`
           end
+
+          def should_component_update?(&block)
+            `base.should_component_update_block = block`
+          end
         end
       end
 

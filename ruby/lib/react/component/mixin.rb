@@ -5,7 +5,6 @@ module React
         base.include(::Native::Wrapper)
         base.extend(::React::Component::NativeComponentConstructor)
         base.extend(::LucidPropDeclaration::Mixin)
-        base.extend(::React::Component::ShouldComponentUpdate)
         base.extend(::React::Component::EventHandler)
         base.include(::React::Component::Elements)
         base.include(::React::Component::API)
