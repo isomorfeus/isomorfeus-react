@@ -16,7 +16,6 @@ module React
 
     self.lower_camelize = function(snake_cased_word) {
       var parts = snake_cased_word.split('_');
-      if (parts.length === 1) { return parts[0]; }
       var res = parts[0];
       for (var i = 1; i < parts.length; i++) {
             res += parts[i][0].toUpperCase() + parts[i].slice(1);
@@ -34,23 +33,25 @@ module React
         var result = {};
         var keys = ruby_style_props.$keys();
         var keys_length = keys.length;
+        let key;
         for (var i = 0; i < keys_length; i++) {
-          if (keys[i].startsWith("on_")) {
-            var handler = ruby_style_props['$[]'](keys[i]);
+          key = keys[i];
+          if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
+            var handler = ruby_style_props['$[]'](key);
             if (typeof handler === "function") {
-              result[Opal.React.lower_camelize(keys[i])] = handler;
+              result[Opal.React.lower_camelize(key)] = handler;
             } else {
               var active_component = Opal.React.active_component();
-              result[Opal.React.lower_camelize(keys[i])] = active_component[handler];
+              result[Opal.React.lower_camelize(key)] = active_component[handler];
             }
-          } else if (keys[i].startsWith("aria_")) {
-            result[keys[i].replace("_", "-")] = ruby_style_props['$[]'](keys[i]);
-          } else if (keys[i] === "style") {
-            var val = ruby_style_props['$[]'](keys[i]);
+          } else if (key[0] === 'a' && key.startsWith("aria_")) {
+            result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
+          } else if (keys === "style") {
+            var val = ruby_style_props['$[]'](key);
             if (typeof val.$$is_hash !== "undefined") { val = val.$to_n() }
             result["style"] = val;
           } else {
-            result[Opal.React.lower_camelize(keys[i])] = ruby_style_props['$[]'](keys[i]);
+            result[key.indexOf('_') > 0 ? Opal.React.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
           }
         }
         return result;
