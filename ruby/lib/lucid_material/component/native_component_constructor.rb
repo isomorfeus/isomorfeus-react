@@ -58,7 +58,9 @@ module LucidMaterial
               return this.context;
             }
             shouldComponentUpdate(next_props, next_state) {
+              let counter = 0;
               for (var property in next_props) {
+                counter++;
                 if (next_props.hasOwnProperty(property)) {
                   if (!this.props.hasOwnProperty(property)) { return true; };
                   if (property === "children") { if (next_props.children !== this.props.children) { return true; }}
@@ -68,7 +70,10 @@ module LucidMaterial
                   } else if (next_props[property] !== this.props[property]) { return true; }
                 }
               }
+              if (counter !== Obj.keys(this.props).length) ( return true; )
+              counter = 0;
               for (var property in next_state) {
+                counter++;
                 if (next_state.hasOwnProperty(property)) {
                   if (!this.state.hasOwnProperty(property)) { return true; };
                   if (typeof next_state[property] !== "undefined" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
@@ -77,6 +82,7 @@ module LucidMaterial
                   } else if (next_state[property] !== this.state[property]) { return true }
                 }
               }
+              if (counter !== Obj.keys(this.state).length) ( return true; )
               return false;
             }
             validateProp(props, propName, componentName) {
