@@ -51,27 +51,31 @@ module React
               if (base.should_component_update_block) {
                 return #{!!`this.__ruby_instance`.instance_exec(React::Component::Props.new(`{props: next_props}`), React::Component::State.new(`{state: next_state }`), &`base.should_component_update_block`)};
               }
+              let counter = 0;
               for (var property in next_props) {
+                counter++;
                 if (next_props.hasOwnProperty(property)) {
-                  if (!this.props.hasOwnProperty(property)) { return true; }
-                  if (property == "children") { if (next_props.children !== this.props.children) { return true; }}
-                  else if (typeof next_props[property] !== "undefined" && next_props[property] !== null &&
-                           typeof next_props[property]['$!='] !== "undefined" &&
-                           typeof this.props[property] !== "undefined" && this.props[property] !== null &&
-                           typeof this.props[property]['$!='] !== "undefined") {
+                  if (!this.props.hasOwnProperty(property)) { return true; };
+                  if (property === "children") { if (next_props.children !== this.props.children) { return true; }}
+                  else if (typeof next_props[property] !== "undefined" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
+                           typeof this.props[property] !== "undefined" && this.props[property] !== null ) {
                     if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; }
                   } else if (next_props[property] !== this.props[property]) { return true; }
                 }
               }
+              if (counter !== Obj.keys(this.props).length) ( return true; )
+              counter = 0;
               for (var property in next_state) {
+                counter++;
                 if (next_state.hasOwnProperty(property)) {
                   if (!this.state.hasOwnProperty(property)) { return true; };
-                  if (next_state[property] !== null && typeof next_state[property]['$!='] !== "undefined" &&
-                      this.state[property] !== null && typeof this.state[property]['$!='] !== "undefined") {
+                  if (typeof next_state[property] !== "undefined" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
+                      typeof this.state[property] !== "undefined" && this.state[property] !== null) {
                     if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true }
                   } else if (next_state[property] !== this.state[property]) { return true }
                 }
               }
+              if (counter !== Obj.keys(this.state).length) ( return true; )
               return false;
             }
             validateProp(props, propName, componentName) {
