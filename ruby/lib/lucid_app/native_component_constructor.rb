@@ -87,7 +87,7 @@ module LucidApp
           let classes = null;
           let theme = Opal.global.ReactJSS.useTheme();
           if (base.jss_styles) {
-            if (!base.use_styles || (Opal.Isomorfeus["$development?"]() && !Object.is(base.jss_styles, base.jss_styles_used))) {
+            if (!base.use_styles || (Opal.Isomorfeus.development && !Object.is(base.jss_styles, base.jss_styles_used))) {
               base.jss_styles_used = base.jss_styles;
               let styles = base.jss_styles
               if (typeof styles === 'function') { styles = styles(theme); }
