@@ -6,6 +6,7 @@ task default: %w[ruby_specs]
 task :ruby_specs do
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app')
+  system('rm -f public/assets/*')
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
   result = system('env -i PATH=$PATH THREADS=4 WORKERS=1 bundle exec rspec')
