@@ -50,7 +50,6 @@ module React
             if (typeof val.$$is_hash !== "undefined") { val = val.$to_n() }
             result["style"] = val;
           } else {
-            let key = keys[i];
             result[Opal.React.lower_camelize(keys[i])] = ruby_style_props['$[]'](keys[i]);
           }
         }

@@ -51,14 +51,6 @@ module React
               if (base.should_component_update_block) {
                 return #{!!`this.__ruby_instance`.instance_exec(React::Component::Props.new(`{props: next_props}`), React::Component::State.new(`{state: next_state }`), &`base.should_component_update_block`)};
               }
-              var next_props_keys = Object.keys(next_props);
-              var this_props_keys = Object.keys(this.props);
-              if (next_props_keys.length !== this_props_keys.length) { return true; }
-
-              var next_state_keys = Object.keys(next_state);
-              var this_state_keys = Object.keys(this.state);
-              if (next_state_keys.length !== this_state_keys.length) { return true; }
-
               for (var property in next_props) {
                 if (next_props.hasOwnProperty(property)) {
                   if (!this.props.hasOwnProperty(property)) { return true; }
