@@ -34,13 +34,14 @@ module Isomorfeus
             end
             begin
               Isomorfeus::TopLevel.mount_component(component, props, root_element, hydrated)
-            rescue Exception
+            rescue Exception => e
               @timeout_start = Time.now unless @timeout_start
               if (Time.now - @timeout_start) < 10
                 `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 100)`
               else
-                `console.error("Unable to mount '" + #{component_name} + "'!")`
-              end
+                `console.error("Unable to mount '" + #{component_name} + "'! Error: " + #{e.message} + "!")`
+                `console.error(#{e.backtrace.join("\n")})`
+             end
             end
           end
         end
