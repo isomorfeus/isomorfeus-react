@@ -46,7 +46,7 @@ Mui.Tab(label: element)
 ### Direct Rendering of React Elements
 Native React Elements can be directly rendered: 
 ```ruby
-class NotWorking < React::Component::Base
+class Working < React::Component::Base
   render do
     # element passed in props
     el = props.element 
