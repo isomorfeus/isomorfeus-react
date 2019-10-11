@@ -46,9 +46,9 @@ module React
             }
           } else if (key[0] === 'a' && key.startsWith("aria_")) {
             result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
-          } else if (keys === "style") {
+          } else if (key === "style") {
             var val = ruby_style_props['$[]'](key);
-            if (typeof val.$$is_hash !== "undefined") { val = val.$to_n() }
+            if (typeof val.$to_n === "function") { val = val.$to_n() }
             result["style"] = val;
           } else {
             result[key.indexOf('_') > 0 ? Opal.React.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
