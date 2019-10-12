@@ -42,6 +42,10 @@ module LucidMaterial
             static get displayName() {
               return #{component_name};
             }
+            static set displayName(new_name) {
+              // dont do anything here except returning the set value
+              return new_name;
+            }
             render() {
               Opal.React.render_buffer.push([]);
               // console.log("material component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());

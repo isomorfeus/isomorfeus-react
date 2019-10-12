@@ -53,6 +53,10 @@ module LucidApp
           static get displayName() {
             return #{component_name};
           }
+          static set displayName(new_name) {
+            // dont do anything here except returning the set value
+            return new_name;
+          }
           render() {
             this.context = this.state.isomorfeus_store_state;
             Opal.React.render_buffer.push([]);
