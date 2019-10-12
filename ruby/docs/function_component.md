@@ -2,7 +2,7 @@
 Function Components are created using a Ruby DSL that is used within the creator class. 
 ```ruby
 class MyFunctionComponent < React::FunctionComponent::Base
-  create_function do |props|
+  create_function do 
     SPAN { props.text }
   end
 end
@@ -81,7 +81,7 @@ end
 ```ruby
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_function do |props|
+  create_function do
     use_effect do
       # show effect
     end
@@ -97,7 +97,7 @@ React.create_context('MyContext', 10)
 
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_function do |props|
+  create_function do
     value = use_context(MyContext) 
    
     SPAN { props.text }
