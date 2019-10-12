@@ -33,8 +33,11 @@ module LucidComponent
           @default_instance_store ||= ::LucidComponent::ComponentInstanceStoreDefaults.new(state, self.to_s)
         end
 
-        def store_updates_off
-          `delete base.lucid_react_component['contextType']`
+        def store_updates(switch)
+          case switch
+          when :on then `base.store_updates = true`
+          when :off then `base.store_updates = false`
+          end
         end
       end
     end

@@ -99,9 +99,11 @@ module LucidMaterial
           base.jss_styles = null;
           base.jss_styles_used = null;
           base.use_styles = null;
+          base.store_updates = true;
           base.react_component = function(props) {
             let classes = null;
-            let store = Opal.global.React.useContext(Opal.global.LucidApplicationContext);
+            let store;
+            if (base.store_updates) { store = Opal.global.React.useContext(Opal.global.LucidApplicationContext); }
             let theme = Opal.global.MuiStyles.useTheme();
             if (base.jss_styles) {
               if (!base.use_styles || (Opal.Isomorfeus.development && !Object.is(base.jss_styles, base.jss_styles_used))) {
