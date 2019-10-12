@@ -7,7 +7,9 @@ task :ruby_specs => [:ruby_react_specs, :ruby_preact_specs, :ruby_nervjs_specs]
 
 task :ruby_react_specs do
   pwd = Dir.pwd
-  Dir.chdir('ruby/test_app')
+  Dir.chdir('ruby/test_app_react')
+  system('rm -rf spec')
+  system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
@@ -19,6 +21,8 @@ end
 task :ruby_nervjs_specs do
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app_nervjs')
+  system('rm -rf spec')
+  system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
@@ -30,6 +34,8 @@ end
 task :ruby_preact_specs do
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app_preact')
+  system('rm -rf spec')
+  system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
   system('env -i PATH=$PATH bundle install')
