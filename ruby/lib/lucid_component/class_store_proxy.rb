@@ -14,9 +14,10 @@ module LucidComponent
       else
         # get class state
         # check if we have a component local state value
-        if `this.native_component_instance.context`
-          if @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name] &&
-            @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS.hasOwnProperty(key)
+        if @native_component_instance.JS['context']
+          if @native_component_instance.JS['context'].JS[:component_class_state] &&
+              @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name] &&
+              @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS.hasOwnProperty(key)
             return @native_component_instance.JS['context'].JS[:component_class_state].JS[@component_name].JS[key]
           end
         else
