@@ -26,6 +26,7 @@ node_modules
 /.owl_cache
 
 /ruby/test_app*/public/assets
+/ruby/test_app*/spec
 /public/packs
 .byebug_history
 
