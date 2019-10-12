@@ -59,7 +59,7 @@ module LucidMaterial
               return Opal.React.render_buffer.pop();
             }
             data_access() {
-              return this.context;
+              return this.props.store;
             }
             shouldComponentUpdate(next_props, next_state) {
               let counter = 0;
@@ -95,12 +95,13 @@ module LucidMaterial
               return null;
             }
           };
-          base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
+          // base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
           base.jss_styles = null;
           base.jss_styles_used = null;
           base.use_styles = null;
           base.react_component = function(props) {
             let classes = null;
+            let store = Opal.global.React.useContext(Opal.global.LucidApplicationContext);
             let theme = Opal.global.MuiStyles.useTheme();
             if (base.jss_styles) {
               if (!base.use_styles || (Opal.Isomorfeus.development && !Object.is(base.jss_styles, base.jss_styles_used))) {
@@ -111,8 +112,11 @@ module LucidMaterial
               }
               classes = base.use_styles();
             }
-            let themed_classes_props = Object.assign({}, props, { classes: classes, theme: theme });
-            return Opal.global.React.createElement(base.lucid_react_component, themed_classes_props);
+            let new_props = Object.assign({}, props)
+            new_props.classes = classes;
+            new_props.theme = theme;
+            new_props.store = store;
+            return Opal.global.React.createElement(base.lucid_react_component, new_props);
           }
         }
       end

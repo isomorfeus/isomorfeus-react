@@ -1,7 +1,7 @@
 module LucidComponent
   class AppStoreProxy
     def initialize(component_instance)
-      @native_component_instance = component_instance.to_n
+      @native = component_instance.to_n
       @component_instance = component_instance
     end
 
@@ -12,9 +12,9 @@ module LucidComponent
         Isomorfeus.store.dispatch(action)
       else
         # check if we have a component local state value
-        if `this.native_component_instance.context`
-          if `this.native_component_instance.context.application_state && this.native_component_instance.context.application_state.hasOwnProperty(key)`
-            return @native_component_instance.JS['context'].JS[:application_state].JS[key]
+        if `this.native.props.store`
+          if `this.native.props.store.application_state && this.native.props.store.application_state.hasOwnProperty(key)`
+            return @native.JS[:props].JS[:store].JS[:application_state].JS[key]
           end
         else
           a_state = Isomorfeus.store.get_state

@@ -1,7 +1,7 @@
 module LucidComponent
   class InstanceStoreProxy
     def initialize(component_instance)
-      @native_component_instance = component_instance.to_n
+      @native = component_instance.to_n
       @component_instance = component_instance
       @component_object_id = component_instance.object_id.to_s
     end
@@ -16,12 +16,12 @@ module LucidComponent
       else
         # get instance state
 
-        if @native_component_instance.JS[:context]
-          if @native_component_instance.JS[:context].JS[:component_state] &&
-              @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id] &&
-              @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
+        if @native.JS[:props].JS[:store]
+          if @native.JS[:props].JS[:store].JS[:component_state] &&
+              @native.JS[:props].JS[:store].JS[:component_state].JS[@component_object_id] &&
+              @native.JS[:props].JS[:store].JS[:component_state].JS[@component_object_id].JS.hasOwnProperty(key)
             # check if we have a component local state value
-            return @native_component_instance.JS[:context].JS[:component_state].JS[@component_object_id].JS[key]
+            return @native.JS[:props].JS[:store].JS[:component_state].JS[@component_object_id].JS[key]
           end
         else
           a_state = Isomorfeus.store.get_state
