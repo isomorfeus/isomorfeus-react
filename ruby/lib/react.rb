@@ -136,12 +136,12 @@ module React
       if (block !== nil) {
         Opal.React.render_buffer.push([]);
         // console.log("create_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        let block_result = block.$call()
+        let block_result = block.$call();
         if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
         }
         // console.log("create_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        children = Opal.React.render_buffer.pop()
+        children = Opal.React.render_buffer.pop();
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       } else if (children === nil) { children = null; }
