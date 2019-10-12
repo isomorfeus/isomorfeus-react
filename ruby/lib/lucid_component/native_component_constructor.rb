@@ -94,7 +94,6 @@ module LucidComponent
             return null;
           }
         }
-        // base.lucid_react_component.contextType = Opal.global.LucidApplicationContext;
         base.jss_styles = null;
         base.jss_styles_used = null;
         base.use_styles = null;
