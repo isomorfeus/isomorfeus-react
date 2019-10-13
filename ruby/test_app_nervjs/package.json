@@ -5,6 +5,7 @@
     "@material-ui/core": "^4.5.0",
     "@material-ui/styles": "^4.5.0",
     "formik": "^1.5.8",
+    "nerv-devtools": "^1.4.6",
     "nerv-server": "^1.4.6",
     "nervjs": "^1.4.6",
     "opal-webpack-loader": "^0.9.6",
