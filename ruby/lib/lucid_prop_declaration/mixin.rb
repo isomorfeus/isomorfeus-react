@@ -75,6 +75,7 @@ module LucidPropDeclaration
     end
 
     def validate_props(props)
+      props = {} unless props
       declared_props.each_key do |prop|
         if declared_props[prop].key?(:required) && declared_props[prop][:required] && !props.key?(prop)
           raise "Required prop #{prop} not given!"
