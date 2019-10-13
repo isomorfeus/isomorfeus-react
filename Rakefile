@@ -21,10 +21,11 @@ task :ruby_react_specs do
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
-  system('env -i PATH=$PATH bundle install')
-  result = system('env -i PATH=$PATH THREADS=4 WORKERS=1 bundle exec rspec')
+  Bundler.with_original_env do
+    system('bundle install')
+    system('THREADS=4 WORKERS=1 bundle exec rspec')
+  end
   Dir.chdir(pwd)
-  raise "Ruby tests failed!" unless result
 end
 
 task :ruby_nervjs_specs do
@@ -44,10 +45,11 @@ task :ruby_nervjs_specs do
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
-  system('env -i PATH=$PATH bundle install')
-  result = system('env -i PATH=$PATH THREADS=4 WORKERS=1 bundle exec rspec')
+  Bundler.with_original_env do
+    system('bundle install')
+    system('THREADS=4 WORKERS=1 bundle exec rspec')
+  end
   Dir.chdir(pwd)
-  raise "Ruby tests failed!" unless result
 end
 
 task :ruby_preact_specs do
@@ -66,8 +68,9 @@ task :ruby_preact_specs do
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
   system('yarn install')
-  system('env -i PATH=$PATH bundle install')
-  result = system('env -i PATH=$PATH THREADS=4 WORKERS=1 bundle exec rspec')
+  Bundler.with_original_env do
+    system('bundle install')
+    system('THREADS=4 WORKERS=1 bundle exec rspec')
+  end
   Dir.chdir(pwd)
-  raise "Ruby tests failed!" unless result
 end
