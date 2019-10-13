@@ -83,23 +83,35 @@ module Isomorfeus
               return (o !== null && typeof o[x] !== "undefined" && o[x] !== null) ? o[x] : null;
             }, global.Opal.global)
             if (!component) { component = global.Opal.Isomorfeus.$cached_component_class('#{component_name}'); }
-            let sheets = new global.Opal.global.MuiStyles.ServerStyleSheets();
-            let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
-            rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app));
-            ssr_styles = sheets.toString();
+            try {
+              let sheets = new global.Opal.global.MuiStyles.ServerStyleSheets();
+              let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
+              rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app));
+              ssr_styles = sheets.toString();
+            } catch (e) {
+              rendered_tree = e.message + "\\n" + e.stack;
+            }
           } else if (typeof global.Opal.global.ReactJSS !== 'undefined' && typeof global.Opal.global.ReactJSS.SheetsRegistry !== 'undefined') {
             component = '#{component_name}'.split(".").reduce(function(o, x) {
               return (o !== null && typeof o[x] !== "undefined" && o[x] !== null) ? o[x] : null;
             }, global.Opal.global)
             if (!component) { component = global.Opal.Isomorfeus.$cached_component_class('#{component_name}'); }
-            let sheets = new global.Opal.global.ReactJSS.SheetsRegistry();
-            let generate_id = global.Opal.global.ReactJSS.createGenerateId();
-            let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
-            let element = global.Opal.global.React.createElement(global.Opal.global.ReactJSS.JssProvider, { registry: sheets, generateId: generate_id }, app);
-            rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element);
-            ssr_styles = sheets.toString();
+            try {
+              let sheets = new global.Opal.global.ReactJSS.SheetsRegistry();
+              let generate_id = global.Opal.global.ReactJSS.createGenerateId();
+              let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
+              let element = global.Opal.global.React.createElement(global.Opal.global.ReactJSS.JssProvider, { registry: sheets, generateId: generate_id }, app);
+              rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element);
+              ssr_styles = sheets.toString();
+            } catch (e) {
+              rendered_tree = e.message + "\\n" + e.stack;
+            }
           } else {
-            rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+            try {
+              rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+            } catch (e) {
+              rendered_tree = e.message + "\\n" + e.stack;
+            }
           }
           let application_state = global.Opal.Isomorfeus.store.native.getState();
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { global.Opal.Isomorfeus.Transport.$disconnect(); }
@@ -111,7 +123,7 @@ module Isomorfeus
 
         # build result
         render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
-        render_result << rendered_tree
+        render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
         render_result << " data-iso-nloc='#{props[:locale]}'>"
       end
