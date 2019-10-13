@@ -5,10 +5,12 @@ RSpec.describe 'Server Side Rendering' do
     @doc = visit('/ssr')
   end
   it 'renders on the server' do
+    skip unless Isomorfeus.server_side_rendering
     expect(@doc.html).to include('Rendered!')
   end
 
   it 'save the application state for the client' do
+    skip unless Isomorfeus.server_side_rendering
     node = @doc.find('[data-iso-state]')
     expect(node).to be_truthy
     state_json = node.get_attribute('data-iso-state')
@@ -28,6 +30,7 @@ RSpec.describe 'Server Side Rendering' do
   end
 
   it 'save the application state for the client, also on subsequent renders' do
+    skip unless Isomorfeus.server_side_rendering
     # just the same as above, just a second time, just to see if the store is initialized correctly
     node = @doc.find('[data-iso-state]')
     expect(node).to be_truthy
@@ -48,6 +51,7 @@ RSpec.describe 'Server Side Rendering' do
   end
 
   it 'it returns 404 if page not found' do
+    skip unless Isomorfeus.server_side_rendering
     # just the same as above, just a second time, just to see if the store is initialized correctly
     @doc = visit('/whatever')
     expect(@doc.response.status).to eq(404)
