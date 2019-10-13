@@ -36,7 +36,11 @@ For package.json:
 ```
 
 When using Nervjs:
-- TODO
+```json
+    "nerv-devtools": "^1.4.6",
+    "nerv-server": "^1.4.6",
+    "nervjs": "^1.4.6",
+```
 
 And these are required:
 - opal-webpack-laoder
@@ -119,7 +123,7 @@ React is resolved with Preact in the webpack configs resolvers:
     resolve: {
         alias: {
             "react": "preact/compat",
-            "react-dom": "preact/compat",
+            "react-dom": "preact/compat"
         }
     }
 ```
@@ -129,6 +133,7 @@ The javascript must be directed to the correct renderer in the applications SSR 
 ```javascript
 import render from 'preact-render-to-string';
 const ReactDOMServer = { renderToString: render };
+global.ReactDOMServer = ReactDOMServer;
 ```
 
 ##### Devtools Support
@@ -142,4 +147,29 @@ if (process.env.NODE_ENV==='development') {
 ```
 
 #### Nervjs
-TODO
+
+##### Webpack
+React is resolved with Nervjs in the webpack configs resolvers:
+```javascript
+    resolve: {
+        alias: {
+            'react': 'nervjs',
+            'react-dom': 'nervjs',
+            'react-dom/server': 'nerv-server'
+        }
+    }
+```
+
+##### Server Side Rendering
+Currently doesn't work. `renderToString` from nerv-server v 1.4.6 unfortunately returns just `null`.
+If SSR is needed, for the moment use React or Preact.
+
+##### Devtools Support
+To support React Devtools add this to the applications imports:
+```javascript
+if (process.env.NODE_ENV==='development') {
+    // Must use require here as import statements are only allowed
+    // to exist at the top of a file.
+    require('nerv-devtools');
+}
+```
