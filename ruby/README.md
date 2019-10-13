@@ -5,9 +5,17 @@ Develop React components for Opal Ruby along with very easy to use and advanced 
 ## Community and Support
 At the [Isomorfeus Framework Project](http://isomorfeus.com) 
 
-## Versioning
+## Versioning and Compatibility
 isomorfeus-react version follows the React version which features and API it implements.
-Isomorfeus-react 16.8.x implements features and the API of React 16.8 and should be used with React 16.8
+
+### React
+Isomorfeus-react 16.10.x implements features and the API of React 16.8 and should be used with React 16.10
+
+### Preact
+isomorfeus-react works with preact version 10.0.x.
+
+### Nerv
+isomorfeus-react works with nervjs 1.4.x.
 
 ## Documentation
 

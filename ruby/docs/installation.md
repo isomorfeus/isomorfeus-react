@@ -2,34 +2,56 @@
 ### Dependencies
 
 For full functionality the following are required:
+
 Ruby Gems:
 - [Opal with ES6 modules](https://github.com/opal/opal/pull/1976)
 - [Opal Webpack Loader](https://github.com/isomorfeus/opal-webpack-loader)
-- [Opal Autoloader](https://github.com/janbiedermann/opal-autoloader)
-- [Isomorfeus-Speednode](https://github.com/isomorfeus/isomorfeus-speednode)
-- [Isomorfeus-Redux](https://github.com/isomorfeus/isomorfeus-redux)
 
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
 gem 'opal-webpack-loader', '~> 0.9.6'
-gem 'opal-autoloader', '~> 0.1.0'
-gem 'isomorfeus-redux', '~> 4.0.11'
+gem 'isomorfeus-react', '~> 16.10.9'
 ```
 Required Javascript Npms:
-- opal-webpack-laoder
+
+When using React:
 - react
 - react-dom
+
+For package.json:
+```json
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+```
+
+When using Preact:
+- preact
+- preact-render-to-string
+
+For package.json:
+```json
+    "preact": "^10.0.0",
+    "preact-render-to-string": "^5.0.6",
+```
+
+When using Nervjs:
+- TODO
+
+And these are required:
+- opal-webpack-laoder
 - react-router
 - react-router-dom
 - redux
+
+For LucidComponent styling support, required when using LucidComponents:
 - react-jss
 
 For the optional MaterialUI support:
 - @material-ui/core
 - @material-ui/styles
 
-for package.json:
+For package.json:
 ```json
     "opal-webpack-loader": "^0.9.6",
     "react": "^16.10.2",
@@ -39,7 +61,8 @@ for package.json:
     "react-router-dom": "^5.1.1",
     "redux": "^4.0.1",
 ```
-for the optional MaterialUI support:
+
+For the optional MaterialUI support:
 ```json
     "@material-ui/core": "^4.5.0",
     "@material-ui/styles": "^4.5.0",
@@ -70,7 +93,8 @@ global.NavLink = NavLink;
 global.Route = Route;
 global.Switch = Switch;
 ```
-for the optional MaterialUI support:
+
+For the optional MaterialUI support:
 ```javascript
 import * as Mui from '@material-ui/core'
 import * as MuiStyles from '@material-ui/styles'
@@ -80,9 +104,42 @@ global.MuiStyles = MuiStyles;
 
 Loading the opal code:
 ```ruby
-require 'opal'
-require 'opal-autoloader'
-require 'isomorfeus-redux'
 require 'isomorfeus-react'
 require 'isomorfeus-react-material-ui' # optional, for MaterialUI support
 ```
+
+### Configuration
+
+#### Preact
+Things to change when switching from the default React configuration to Preact
+
+##### Webpack
+React is resolved with Preact in the webpack configs resolvers:
+```javascript
+    resolve: {
+        alias: {
+            "react": "preact/compat",
+            "react-dom": "preact/compat",
+        }
+    }
+```
+
+##### Server Side Rendering
+The javascript must be directed to the correct renderer in the applications SSR imports:
+```javascript
+import render from 'preact-render-to-string';
+const ReactDOMServer = { renderToString: render };
+```
+
+##### Devtools Support
+To support React Devtools add this to the applications imports:
+```javascript
+if (process.env.NODE_ENV==='development') {
+    // Must use require here as import statements are only allowed
+    // to exist at the top of a file.
+    require("preact/debug");
+}
+```
+
+#### Nervjs
+TODO
