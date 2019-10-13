@@ -95,7 +95,7 @@ Components that dont need to access the store, because they get all data passed 
 This can improve overall render performance:
 ```ruby
 class MyComponent < LucidComponent::Base
-  store_updates_off
+  store_updates :off
   
   render do
     DIV app_store.some_text # store access is still possible,
