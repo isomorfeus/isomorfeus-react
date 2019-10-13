@@ -1,6 +1,12 @@
 // entry file for the browser environment
-// import stylesheets here
+// Must be the first import
+if (process.env.NODE_ENV==='development') {
+    // Must use require here as import statements are only allowed
+    // to exist at the top of a file.
+    require("preact/debug");
+}
 var start = new Date();
+// import stylesheets here
 import '../styles/application.css';
 
 // import npm modules that are valid to use only in the browser
