@@ -23,9 +23,9 @@ const common_config = {
             new OwlResolver('resolve', 'resolved') // resolve ruby files
         ],
         alias: {
-            'react': 'nervjs',
-            'react-dom': 'nervjs',
-            'react-dom/server': 'nerv-server'
+            "react": "nervjs",
+            "react-dom": "nervjs",
+            "react-dom/server": "nerv-server"
         }
     },
     module: {
@@ -97,18 +97,18 @@ const ssr_config = {
     ],
 };
 
-const web_worker_config = {
-    target: 'webworker',
-    entry: {
-        web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
-    },
-    plugins: [
-        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
-    ],
-};
+// const web_worker_config = {
+//     target: 'webworker',
+//     entry: {
+//         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
+//     },
+//     plugins: [
+//         new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
+//     ],
+// };
 
 const browser = Object.assign({}, common_config, browser_config);
 const ssr = Object.assign({}, common_config, ssr_config);
-const web_worker = Object.assign({}, common_config, web_worker_config);
+// const web_worker = Object.assign({}, common_config, web_worker_config);
 
 module.exports = [ browser, ssr ];
