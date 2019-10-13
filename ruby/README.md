@@ -15,7 +15,9 @@ Isomorfeus-react 16.10.x implements features and the API of React 16.8 and shoul
 isomorfeus-react works with preact version 10.0.x.
 
 ### Nerv
-isomorfeus-react works with nervjs 1.4.x.
+isomorfeus-react works in general with nervjs 1.4.x. with some issues:
+ - Server Side Rendering does currently not work at all.
+ - Some specs with respect to callbacks (component_will_unmount) and styles fail.
 
 ## Documentation
 
