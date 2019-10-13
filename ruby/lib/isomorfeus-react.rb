@@ -129,7 +129,6 @@ else
     Isomorfeus.server_side_rendering = false
   end
 
-  require 'isomorfeus/execution_environment'
   require 'isomorfeus/react_view_helper'
 
   Opal.append_path(__dir__.untaint)
