@@ -33,6 +33,7 @@ const common_config = {
         alias: {
             'react': 'nervjs',
             'react-dom': 'nervjs',
+            'react-dom/server': 'nerv-server'
         }
     },
     plugins: [
