@@ -1,6 +1,8 @@
 # isomorfeus-react
 
-Develop React Components along with very easy to use and advanced React-Redux Components.
+Develop React Components along with very easy to use styled Components with store access in Ruby.
+
+Compatible with React, Preact and Nervjs.
 
 Currently there is a Opal/Ruby implementation:
 [Ruby Readme](https://github.com/isomorfeus/isomorfeus-react/tree/master/ruby)
