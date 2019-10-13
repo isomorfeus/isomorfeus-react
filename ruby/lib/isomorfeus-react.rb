@@ -1,11 +1,11 @@
 if RUBY_ENGINE == 'opal'
-  require 'opal'
-  require 'opal-autoloader'
-  require 'native'
-  require 'promise'
-  require 'active_support/core_ext/string'
-  require 'react/active_support_support'
+  # require 'opal'
+  # require 'native'
+  # require 'promise'
+  # rely on i-redux to have included above reqiorements
   require 'isomorfeus-redux'
+  require 'active_support/core_ext/string'
+  require 'opal-autoloader'
 
   if Isomorfeus.on_browser?
     require 'browser/event'
