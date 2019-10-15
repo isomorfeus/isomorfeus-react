@@ -28,7 +28,11 @@ module Isomorfeus
         end
 
         # build javascript for rendering first pass
+        # it will initialize buffers to guard against leaks, maybe caused by previous exceptions
         javascript = <<~JAVASCRIPT
+          global.Opal.React.render_buffer = [];
+          global.Opal.React.active_components = [];
+          global.Opal.React.active_redux_components = [];
           global.FirstPassFinished = false;
           global.Opal.Isomorfeus['$env=']('#{Isomorfeus.env}');
           if (typeof global.Opal.Isomorfeus.$negotiated_locale === 'function') {
@@ -87,7 +91,11 @@ module Isomorfeus
         end
 
         # build javascript for second render pass
+        # guard against leaks from first pass, maybe because of a exception
         javascript = <<~JAVASCRIPT
+          global.Opal.React.render_buffer = [];
+          global.Opal.React.active_components = [];
+          global.Opal.React.active_redux_components = [];
           let rendered_tree;
           let ssr_styles;
           let component;
