@@ -1,6 +1,4 @@
 module React
-  # to_native_react_props: the native_component params is used for event handlers, it keeps the event handlers
-  # it does not need to be compone nt, can be a object with the event handlers
   # language=JS
   %x{
     self.render_buffer = [];
@@ -15,10 +13,10 @@ module React
     };
 
     self.lower_camelize = function(snake_cased_word) {
-      var parts = snake_cased_word.split('_');
-      var res = parts[0];
-      for (var i = 1; i < parts.length; i++) {
-            res += parts[i][0].toUpperCase() + parts[i].slice(1);
+      let parts = snake_cased_word.split('_');
+      let res = parts[0];
+      for (let i = 1; i < parts.length; i++) {
+        res += parts[i][0].toUpperCase() + parts[i].slice(1);
       }
       return res;
     };
@@ -30,36 +28,36 @@ module React
     };
 
     self.to_native_react_props = function(ruby_style_props) {
-        var result = {};
-        var keys = ruby_style_props.$keys();
-        var keys_length = keys.length;
-        let key;
-        for (var i = 0; i < keys_length; i++) {
-          key = keys[i];
-          if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
-            var handler = ruby_style_props['$[]'](key);
-            if (typeof handler === "function") {
-              result[Opal.React.lower_camelize(key)] = handler;
-            } else {
-              var active_component = Opal.React.active_component();
-              result[Opal.React.lower_camelize(key)] = active_component[handler];
-            }
-          } else if (key[0] === 'a' && key.startsWith("aria_")) {
-            result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
-          } else if (key === "style") {
-            var val = ruby_style_props['$[]'](key);
-            if (typeof val.$to_n === "function") { val = val.$to_n() }
-            result["style"] = val;
+      let result = {};
+      let keys = ruby_style_props.$keys();
+      let keys_length = keys.length;
+      let key = '';
+      for (let i = 0; i < keys_length; i++) {
+        key = keys[i];
+        if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
+          let handler = ruby_style_props['$[]'](key);
+          if (typeof handler === "function") {
+            result[Opal.React.lower_camelize(key)] = handler;
           } else {
-            result[key.indexOf('_') > 0 ? Opal.React.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
+            let active_component = Opal.React.active_component();
+            result[Opal.React.lower_camelize(key)] = active_component[handler];
           }
+        } else if (key[0] === 'a' && key.startsWith("aria_")) {
+          result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
+        } else if (key === "style") {
+          let val = ruby_style_props['$[]'](key);
+          if (typeof val.$to_n === "function") { val = val.$to_n() }
+          result["style"] = val;
+        } else {
+          result[key.indexOf('_') > 0 ? Opal.React.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
         }
-        return result;
+      }
+      return result;
     };
 
     self.internal_prepare_args_and_render = function(component, args, block) {
       if (args.length > 0) {
-        var last_arg = args[args.length - 1];
+        let last_arg = args[args.length - 1];
         if (last_arg && last_arg.constructor === String) {
           if (args.length === 1) { return Opal.React.internal_render(component, null, last_arg, null); }
           else { Opal.React.internal_render(component, args[0], last_arg, null); }
@@ -94,7 +92,7 @@ module React
     self.active_components = [];
 
     self.active_component = function() {
-      var length = Opal.React.active_components.length;
+      let length = Opal.React.active_components.length;
       if (length === 0) { return null; };
       return Opal.React.active_components[length-1];
     };
@@ -102,7 +100,7 @@ module React
     self.active_redux_components = [];
 
     self.active_redux_component = function() {
-      var length = Opal.React.active_redux_components.length;
+      let length = Opal.React.active_redux_components.length;
       if (length === 0) { return null; };
       return Opal.React.active_redux_components[length-1];
     };
