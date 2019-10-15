@@ -123,6 +123,8 @@ else
 
   Isomorfeus.env = ENV['RACK_ENV']
 
+  require 'net/http' if Isomorfeus.development?
+
   if Isomorfeus.production? || Isomorfeus.test?
     Isomorfeus.server_side_rendering = true
   else

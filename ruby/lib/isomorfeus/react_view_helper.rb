@@ -7,11 +7,18 @@ module Isomorfeus
       render_result = "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
       if Isomorfeus.server_side_rendering
 
-        # initialize speednode context
-        unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
-          asset_file_name = OpalWebpackLoader::Manifest.lookup_path_for(asset)
-          asset_path = File.join('public', asset_file_name)
-          Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(File.read(asset_path))
+        if Isomorfeus.development?
+          # always create a new context, effectively reloading code
+          asset_path = "#{OpalWebpackLoader.client_asset_path}#{asset}"
+          asset = Net::HTTP.get(URI(asset_path))
+          Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
+        else
+          # initialize speednode context
+          unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
+            asset_file_name = OpalWebpackLoader::Manifest.lookup_path_for(asset)
+            asset_path = File.join('public', asset_file_name)
+            Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(File.read(asset_path))
+          end
         end
 
         # build javascript for rendering first pass
