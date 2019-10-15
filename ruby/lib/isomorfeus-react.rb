@@ -125,11 +125,7 @@ else
 
   require 'net/http' if Isomorfeus.development?
 
-  if Isomorfeus.production? || Isomorfeus.test?
-    Isomorfeus.server_side_rendering = true
-  else
-    Isomorfeus.server_side_rendering = false
-  end
+  Isomorfeus.server_side_rendering = true
 
   require 'isomorfeus/react_view_helper'
 
