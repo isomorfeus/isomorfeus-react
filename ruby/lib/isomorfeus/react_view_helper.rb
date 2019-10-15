@@ -9,6 +9,12 @@ module Isomorfeus
 
         if Isomorfeus.development?
           # always create a new context, effectively reloading code
+          # delete the existing context first, saves memory
+          if Isomorfeus.ssr_contexts.key?(thread_id_asset)
+            uuid = Isomorfeus.ssr_contexts[thread_id_asset].instance_variable_get(:@uuid)
+            runtime = Isomorfeus.ssr_contexts[thread_id_asset].instance_variable_get(:@runtime)
+            runtime.vm.delete_context(uuid)
+          end
           asset_path = "#{OpalWebpackLoader.client_asset_path}#{asset}"
           asset = Net::HTTP.get(URI(asset_path))
           Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
