@@ -348,6 +348,6 @@ RSpec.describe 'Component benchmarks' do
       (Time.now - start) * 1000
     end
     puts "10000 Themed and Styled Lucid Material Components took: #{time}ms"
-    expect(time > 0 && time < 1500).to be_truthy
+    expect(time > 0 && time < 2000).to be_truthy
   end
 end
