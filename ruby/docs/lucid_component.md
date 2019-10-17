@@ -1,6 +1,5 @@
 ### LucidApp and LucidComponent
-A LucidComponent works very similar like a React::ReduxComponent, the same `store`, `class_store` and `app_store` is available.
-The difference is, that the data changes are passed using props instead of setting component state.
+The data changes are passed using props instead of setting component state.
 Therefore a LucidComponent needs a LucidApp as outer component.
 LucidApp sets up a React::Context Provider, LucidComponent works as a React::Context Consumer.
 LucidApp also sets up theming.
@@ -108,6 +107,29 @@ end
 ```
 The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
+
+Data or anything else can be preloaded before rendering
+```ruby
+class MyComponent < LucidComponent::Base
+  # use preload to define what needs to be loaded. The block result must be a promise.
+  preload do
+    MyGraph.promise_load
+  end
+
+  # the block passed to while_loading wil be rendered until the data is loaded
+  # and the promise is resolved
+  while_loading do
+    DIV "Loading data ... Please wait ..."
+  end
+
+  # the usual render block is shown when the data has been loaded
+  render do
+    MyGraph.all_nodes.each do |node|
+      DIV node.name
+    end
+  end
+end
+```
 
 **Data flow of a LucidComponent within a LucidApp:**
 ![LucidComponent within a LucidApp Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_lucid_component.png)
