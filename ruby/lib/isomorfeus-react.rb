@@ -95,7 +95,7 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_component/instance_store_proxy'
   require 'lucid_component/initializer'
   require 'lucid_component/native_component_constructor'
-  require 'lucid_component/event_handler'
+  require 'lucid_component/preloading_support'
   require 'lucid_component/mixin'
   require 'lucid_component/base'
 
