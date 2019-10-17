@@ -18,13 +18,22 @@ module React
 
           def component_did_mount(&block)
             %x{
-              var fun = function() {
+              let fun = function() {
                 Opal.React.active_redux_components.push(this.__ruby_instance);
                 #{`this.__ruby_instance`.instance_exec(&block)};
                 Opal.React.active_redux_components.pop();
               }
-              if (self.lucid_react_component) { self.lucid_react_component.prototype.componentDidMount = fun; }
-              else { self.react_component.prototype.componentDidMount = fun; }
+              if (self.lucid_react_component) {
+                if (self.lucid_react_component.prototype.componentDidMount) {
+                  let fun_one = self.lucid_react_component.prototype.componentDidMount;
+                  let fun_two = fun;
+                  fun = function() {
+                    fun_one();
+                    fun_two();
+                  }
+                }
+                self.lucid_react_component.prototype.componentDidMount = fun;
+              } else { self.react_component.prototype.componentDidMount = fun; }
             }
           end
 
