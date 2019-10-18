@@ -148,7 +148,42 @@ class MyComponent < LucidComponent::Base
   end
 end
 ```
+#### Execution Environment
+Sometimes its useful to prevent execution or rendering during Server Side Rendering or execute code specifically in a certain environment.
+For this the environment helpers can be used:
+- `on_browser?` - true if executing on the browser
+- `on_ssr?` - true if executing in Server Side Rendering
 
+```ruby
+class MyComponent < LucidComponent::Base
+  # use preload to define what needs to be loaded. The block result must be a promise.
+  preload do
+    if on_browser?
+      MyGraph.promise_load # load the graph only on the browser
+    else
+      Promise.new
+    end 
+  end
+
+  # the block passed to while_loading wil be rendered until the data is loaded
+  # and the promise is resolved
+  while_loading do
+    DIV "Loading data ... Please wait ..."
+  end
+
+  # the usual render block is shown when the data has been loaded
+  render do
+    if on_browser?
+      CANVAS do
+        # a canvas cannot be drawn to in Server Side Rendering, so paint the canvas only on the browser
+      end
+    end
+    MyGraph.all_nodes.each do |node|
+      DIV node.name
+    end
+  end
+end
+```
 #### Data flow
 **Data flow of a LucidComponent within a LucidApp:**
 ![LucidComponent within a LucidApp Data Flow](https://raw.githubusercontent.com/isomorfeus/isomorfeus-react/master/images/data_flow_lucid_component.png)
