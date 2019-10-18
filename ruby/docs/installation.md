@@ -31,15 +31,15 @@ When using Preact:
 
 For package.json:
 ```json
-    "preact": "^10.0.0",
-    "preact-render-to-string": "^5.0.6",
+    "preact": "^10.0.1",
+    "preact-render-to-string": "^5.0.7",
 ```
 
 When using Nervjs:
 ```json
-    "nerv-devtools": "^1.4.6",
-    "nerv-server": "^1.4.6",
-    "nervjs": "^1.4.6",
+    "nerv-devtools": "^1.5.1",
+    "nerv-server": "^1.5.1",
+    "nervjs": "^1.5.1",
 ```
 
 And these are required:
@@ -158,6 +158,13 @@ React is resolved with Nervjs in the webpack configs resolvers:
             'react-dom/server': 'nerv-server'
         }
     }
+```
+
+##### Fix for Nervjs with styled components
+In javascript imports, after importing React add this line:
+```javascript
+// Fix for nervjs 1.5.1
+global.React.useDebugValue = function(val) { return; };
 ```
 
 ##### Server Side Rendering
