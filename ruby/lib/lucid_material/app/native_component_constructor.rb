@@ -65,7 +65,7 @@ module LucidMaterial
               Opal.React.active_components.push(this);
               Opal.React.active_redux_components.push(this.__ruby_instance);
               let block_result;
-              if (base.preload_block && !this.state.preloaded && base.while_loding_block) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
+              if (base.preload_block && !this.state.preloaded && base.while_loading_block) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
               else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
               if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
               Opal.React.active_redux_components.pop();
@@ -90,6 +90,8 @@ module LucidMaterial
               return null;
             }
           }
+          base.preload_block = null;
+          base.while_loading_block = null;
           base.jss_styles = null;
           base.jss_theme = Opal.global.Mui.createMuiTheme();
           base.use_styles = null;
