@@ -1,7 +1,9 @@
 module React
   module Component
     class Props
-      include ::Native::Wrapper
+      def initialize(native)
+        @native = native
+      end
 
       def method_missing(prop, *args, &block)
         %x{
@@ -14,11 +16,11 @@ module React
       end
 
       def classes
-        @classes ||= `Opal.React.Component.Styles.$new(#@native.props.classes)`
+        @classes ||= `Opal.React.Component.Styles.$new(#@native, 'classes')`
       end
 
       def theme
-        @theme ||= `Opal.React.Component.Styles.$new(#@native.props.theme)`
+        @theme ||= `Opal.React.Component.Styles.$new(#@native, 'theme')`
       end
 
       def isomorfeus_store
