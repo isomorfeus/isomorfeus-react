@@ -3,7 +3,7 @@ require 'bundler/cli/exec'
 
 task default: %w[ruby_specs]
 
-task :ruby_specs => [:ruby_react_specs, :ruby_preact_specs]
+task :ruby_specs => [:ruby_react_specs, :ruby_preact_specs, :ruby_nervjs_specs]
 
 task :ruby_react_specs do
   puts <<~'ASCII'
