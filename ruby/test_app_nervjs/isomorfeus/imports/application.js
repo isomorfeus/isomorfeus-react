@@ -1,9 +1,9 @@
 // entry file for the browser environment
-if (process.env.NODE_ENV==='development') {
+// if (process.env.NODE_ENV==='development') {
     // Must use require here as import statements are only allowed
     // to exist at the top of a file.
-    require('nerv-devtools');
-}
+//    require('nerv-devtools');
+// }
 var start = new Date();
 // import stylesheets here
 import '../styles/application.css';
