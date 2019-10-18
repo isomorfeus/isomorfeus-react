@@ -32,8 +32,8 @@ const common_config = {
         ],
         alias: {
             'react': 'nervjs',
-            'react-dom': 'nervjs',
-            'react-dom/server': 'nerv-server'
+            'react-dom/server': 'nerv-server/index',
+            'react-dom': 'nervjs'
         }
     },
     plugins: [
@@ -134,7 +134,7 @@ const browser_config = {
 //         application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')]
 //     }
 // };
-//
+
 // const web_worker_config = {
 //     target: 'webworker',
 //     entry: {
