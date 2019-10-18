@@ -71,8 +71,3 @@ https://github.com/facebook/react-devtools
 - clone repo
 - `bundle install`
 - `rake`
-
-Implementations for the [js-framework-benchmark](https://github.com/krausest/js-framework-benchmark):
-
-- [using LucidComponent](https://github.com/janbiedermann/js-framework-benchmark/tree/master/frameworks/keyed/isomorfeus-lucid)
-- [using React::Component](https://github.com/janbiedermann/js-framework-benchmark/tree/master/frameworks/keyed/isomorfeus-react)
