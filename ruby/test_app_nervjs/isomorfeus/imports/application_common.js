@@ -3,6 +3,8 @@ import * as Redux from 'redux';
 global.Redux = Redux;
 import React from 'react';
 global.React = React;
+// Fix for nervjs 1.5.1
+global.React.useDebugValue = function(val) { return; };
 import * as ReactRouter from 'react-router';
 import * as ReactRouterDOM from 'react-router-dom';
 global.ReactRouter = ReactRouter;
