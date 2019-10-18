@@ -99,7 +99,6 @@ module LucidComponent
         base.preload_block = null;
         base.while_loading_block = null;
         base.jss_styles = null;
-        base.jss_styles_used = null;
         base.use_styles = null;
         base.store_updates = true;
         base.react_component = function(props) {
@@ -108,10 +107,10 @@ module LucidComponent
           if (base.store_updates) { store = Opal.global.React.useContext(Opal.global.LucidApplicationContext); }
           let theme = Opal.global.ReactJSS.useTheme();
           if (base.jss_styles) {
-            if (!base.use_styles || (Opal.Isomorfeus.development && !Object.is(base.jss_styles, base.jss_styles_used))) {
-              base.jss_styles_used = base.jss_styles;
-              let styles = base.jss_styles
-              if (typeof styles === 'function') { styles = base.jss_styles(theme); }
+            if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
+              let styles;
+              if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
+              else { styles = base.jss_styles; }
               base.use_styles = Opal.global.ReactJSS.createUseStyles(styles);
             }
             classes = base.use_styles();

@@ -91,17 +91,16 @@ module LucidMaterial
             }
           }
           base.jss_styles = null;
-          base.jss_styles_used = null;
           base.jss_theme = Opal.global.Mui.createMuiTheme();
           base.use_styles = null;
           base.themed_react_component = function(props) {
             let classes = null;
             let theme = Opal.global.MuiStyles.useTheme();
             if (base.jss_styles) {
-              if (!base.use_styles || (Opal.Isomorfeus.development && !Object.is(base.jss_styles, base.jss_styles_used))) {
-                base.jss_styles_used = base.jss_styles;
-                let styles = base.jss_styles
-                if (typeof styles === 'function') { styles = styles(theme); }
+              if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
+                let styles;
+                if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
+                else { styles = base.jss_styles; }
                 base.use_styles = Opal.global.MuiStyles.makeStyles(styles);
               }
               classes = base.use_styles();
