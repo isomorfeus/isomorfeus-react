@@ -67,9 +67,7 @@ module React
 
     self.internal_render = function(component, props, string_child, block) {
       let children;
-      let react_element;
       let native_props = null;
-
       if (string_child) {
         children = string_child;
       } else if (block && block !== nil) {
@@ -85,8 +83,7 @@ module React
         else if (children.length === 0) { children = null; }
       }
       if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
-      react_element = Opal.global.React.createElement(component, native_props, children);
-      Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
+      Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(Opal.global.React.createElement(component, native_props, children));
     };
 
     self.active_components = [];
