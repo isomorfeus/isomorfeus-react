@@ -126,17 +126,24 @@ The lifecycle callbacks starting with `unsafe_` are not supported.
 Overwriting should_component_update is also not supported.
 
 #### Preloading Data before render
-Data or anything else that returns a promise can be preloaded before rendering
+Data or anything else that returns a promise can be preloaded before rendering from within LucidComponents
 ```ruby
 class MyComponent < LucidComponent::Base
-  # use preload to define what needs to be loaded. The block result must be a promise.
+  # Use preload to define what needs to be loaded. The block result must be a promise.
+  # The preload block will only be executed on the client/browser. 
   preload do
     MyGraph.promise_load
   end
 
-  # the block passed to while_loading wil be rendered until the data is loaded
+  # The block passed to while_loading will be rendered until the data is loaded
   # and the promise is resolved
+  # It will also be rendered in Server Side Rendering by default.  
   while_loading do
+    DIV "Loading data ... Please wait ..."
+  end
+
+  # When using the :except_ssr option, then in Server Side Rendering the normal render block will be executed
+  while_loading :except_ssr do
     DIV "Loading data ... Please wait ..."
   end
 
