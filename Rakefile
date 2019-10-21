@@ -17,6 +17,7 @@ task :ruby_react_specs do
   ASCII
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app_react')
+  system('rm -f Gemfile.lock')
   system('rm -rf spec')
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
@@ -41,6 +42,7 @@ task :ruby_nervjs_specs do
   ASCII
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app_nervjs')
+  system('rm -f Gemfile.lock')
   system('rm -rf spec')
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
@@ -64,6 +66,7 @@ task :ruby_preact_specs do
   ASCII
   pwd = Dir.pwd
   Dir.chdir('ruby/test_app_preact')
+  system('rm -f Gemfile.lock')
   system('rm -rf spec')
   system('cp -R ../common_spec spec')
   system('rm -f public/assets/*')
