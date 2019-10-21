@@ -16,15 +16,17 @@ Gem::Specification.new do |s|
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  # s.post_install_message = <<~TEXT
-  #
-  # isomorfeus-react 16.10.12:
-  # Breaking changes:
-  # Server Side Rendering is on by default in the development environment.
-  # Please enable SSR asset builds in the webpack config of your app or turn SSR off with:
-  # Isomorfeus.server_side_rendering = false
-  #
-  # TEXT
+  s.post_install_message = <<~TEXT
+
+  isomorfeus-react 16.10.15:
+  Breaking changes:
+  Server Side Rendering is on by default in the development environment.
+  Server Side Rendering in development will use the new
+    Isomorfeus.ssr_hot_asset_url
+  option to get its assets. See:
+    https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/server_side_rendering.md
+
+  TEXT
 
   s.add_dependency 'oj', '>= 3.8'
   s.add_dependency 'opal', '>= 0.11.0'
