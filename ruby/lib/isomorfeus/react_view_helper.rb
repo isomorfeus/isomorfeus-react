@@ -147,7 +147,8 @@ module Isomorfeus
         rendered_tree, application_state, @ssr_styles, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
 
         # build result
-        render_result << " data-iso-hydrated='true' data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        render_result << " data-iso-hydrated='true'" if rendered_tree
+        render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
         render_result << " data-iso-nloc='#{props[:locale]}'>"
