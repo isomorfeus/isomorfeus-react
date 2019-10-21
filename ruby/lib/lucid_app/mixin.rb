@@ -5,7 +5,6 @@ module LucidApp
       base.extend(::LucidApp::NativeComponentConstructor)
       base.extend(::LucidPropDeclaration::Mixin)
       base.extend(::React::Component::EventHandler)
-      base.include(::LucidComponent::PreloadingSupport)
       base.extend(::LucidComponent::EnvironmentSupport)
       base.include(::LucidComponent::EnvironmentSupport)
       base.include(::React::Component::Elements)
