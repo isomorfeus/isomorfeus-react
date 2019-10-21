@@ -71,8 +71,7 @@ module LucidMaterial
               Opal.React.active_redux_components.pop();
               Opal.React.active_components.pop();
               // console.log("material app popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-              var children = Opal.React.render_buffer.pop();
-              return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
+              return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, Opal.React.render_buffer.pop());
             }
             data_access() {
               return this.context;
