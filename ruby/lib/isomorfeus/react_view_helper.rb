@@ -16,8 +16,12 @@ module Isomorfeus
             runtime.vm.delete_context(uuid)
           end
           asset_path = "#{OpalWebpackLoader.client_asset_path}#{asset}"
-          asset = Net::HTTP.get(URI(asset_path))
-          Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
+          begin
+            asset = Net::HTTP.get(URI(asset_path))
+            Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
+          rescue
+            STDERR.puts "SSR: Failed loading assets from webpack dev server."
+          end
         else
           # initialize speednode context
           unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
@@ -143,7 +147,7 @@ module Isomorfeus
         rendered_tree, application_state, @ssr_styles, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
 
         # build result
-        render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        render_result << " data-iso-hydrated='true' data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
         render_result << " data-iso-nloc='#{props[:locale]}'>"
