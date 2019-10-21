@@ -57,6 +57,10 @@ module LucidComponent
             Opal.React.active_redux_components.pop();
             Opal.React.active_components.pop();
             // console.log("lucid component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+            if (base.except_ssr) {
+              if (typeof block_result === "object" && block_result.danger) { return Opal.global.React.createElement('div', {'data-ssrhelper': this.__ruby_instance.$class().$to_s(), dangerouslySetInnerHTML: { __html: block_result.html}});}
+              else { return Opal.global.React.createElement('div', {'data-ssrhelper': this.__ruby_instance.$class().$to_s()}, Opal.React.render_buffer.pop()); }
+            }
             return Opal.React.render_buffer.pop();
           }
           data_access() {
