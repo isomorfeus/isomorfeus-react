@@ -15,7 +15,7 @@ module Isomorfeus
             runtime = Isomorfeus.ssr_contexts[thread_id_asset].instance_variable_get(:@runtime)
             runtime.vm.delete_context(uuid)
           end
-          asset_path = "#{OpalWebpackLoader.client_asset_path}#{asset}"
+          asset_path = "#{Isomorfeus.ssr_hot_asset_url}#{asset}"
           begin
             asset = Net::HTTP.get(URI(asset_path))
             Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)

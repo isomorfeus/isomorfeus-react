@@ -124,7 +124,10 @@ else
 
   Isomorfeus.env = ENV['RACK_ENV']
 
-  require 'net/http' if Isomorfeus.development?
+  if Isomorfeus.development?
+    require 'net/http'
+    Isomorfeus.ssr_hot_asset_url = 'http://localhost:3036/assets/'
+  end
 
   Isomorfeus.server_side_rendering = true
 

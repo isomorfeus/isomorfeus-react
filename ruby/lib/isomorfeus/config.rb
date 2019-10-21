@@ -93,6 +93,7 @@ module Isomorfeus
   else
     class << self
       attr_accessor :server_side_rendering
+      attr_accessor :ssr_hot_asset_url
       attr_reader :env
 
       def configuration(&block)
