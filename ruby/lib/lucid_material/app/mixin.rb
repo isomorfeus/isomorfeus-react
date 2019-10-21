@@ -3,6 +3,7 @@ module LucidMaterial
     module Mixin
       def self.included(base)
         base.include(::Native::Wrapper)
+        base.extend(::LucidApp::NativeLucidComponentConstructor)
         base.extend(::LucidMaterial::App::NativeComponentConstructor)
         base.extend(::LucidPropDeclaration::Mixin)
         base.extend(::React::Component::EventHandler)
