@@ -9,7 +9,7 @@ At the [Isomorfeus Framework Project](http://isomorfeus.com)
 isomorfeus-react version follows the React version which features and API it implements.
 
 ### React
-Isomorfeus-react 16.10.x implements features and the API of React 16.8 and should be used with React 16.10
+Isomorfeus-react 16.11.x implements features and the API of React 16.11 and should be used with React 16.11
 
 ### Preact
 isomorfeus-react works with preact version 10.0.x.

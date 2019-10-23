@@ -11,7 +11,7 @@ For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
 gem 'opal-webpack-loader', '~> 0.9.6'
-gem 'isomorfeus-react', '~> 16.10.9'
+gem 'isomorfeus-react', '>= 16.11.0'
 ```
 Required Javascript Npms:
 
@@ -21,8 +21,8 @@ When using React:
 
 For package.json:
 ```json
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
 ```
 
 When using Preact:
