@@ -10,6 +10,10 @@ module React
     def method_missing(name, *args, &block)
       # language=JS
       %x{
+        if (name[0] === 'u' && name[1] === 's' && name[2] === 'e') {
+          if (name.indexOf('_') > 0) { name = Opal.React.lower_camelize(name); }
+          return #@native[name].call(this, args);
+        }
         var component = null;
         var component_type = typeof #@native[name];
         if (component_type === "function" || component_type === "object") {
