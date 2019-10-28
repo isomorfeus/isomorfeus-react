@@ -8,12 +8,9 @@ module React
       def event_handler(name, &block)
         event_handlers << name
         %x{
-           var fun = function(event, info) {
-            if (typeof event === "object") {
-              #{ruby_event = ::React::SyntheticEvent.new(`event`)};
-            } else {
-              #{ruby_event = `event`};
-            }
+          var fun = function(event, info) {
+            if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+            else { #{ruby_event = `event`}; }
             #{`this.__ruby_instance`.instance_exec(ruby_event, `info`, &block)};
           }
           if (self.lucid_react_component) { self.lucid_react_component.prototype[name] = fun; }
