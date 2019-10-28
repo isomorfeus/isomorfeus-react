@@ -2,7 +2,7 @@
 Function Components are created using a Ruby DSL that is used within the creator class. 
 ```ruby
 class MyFunctionComponent < React::FunctionComponent::Base
-  create_function do 
+  render do 
     SPAN { props.text }
   end
 end
@@ -30,7 +30,7 @@ class MyFunctionComponent < React::MemoComponent::Base
     prev_props != next_props
   end
   
-  create_memo do |props|
+  render do |props|
     SPAN { props.text }
   end
 end
@@ -55,7 +55,7 @@ class MyFunctionComponent < React::FunctionComponent::Base
     `alert("ORANGE ALERT!")`
   end
 
-  create_function 'AFunComponent' do
+  render 'AFunComponent' do
     SPAN(on_click: props.on_click) { 'Click for orange alert! ' } # event handler passed in props, applied to a element
     SPAN(on_click: :show_red_alert) { 'Click for red alert! '  } # event handler directly applied to a element
   end
@@ -68,7 +68,7 @@ end
 class MyFunctionComponent
   include React::FunctionComponent::Base
   
-  create_function do
+  render do
     value, set_value = use_state('nothinghere')
     handler = proc { |event| set_value.call('somethinghere') }
     DIV(id: :test_component, on_click: handler) { value }
@@ -81,7 +81,7 @@ end
 ```ruby
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_function do
+  render do
     use_effect do
       # show effect
     end
@@ -97,7 +97,7 @@ React.create_context('MyContext', 10)
 
 class MyFunctionComponent
   include React::FunctionComponent::Base
-  create_function do
+  render do
     value = use_context(MyContext) 
    
     SPAN { props.text }
