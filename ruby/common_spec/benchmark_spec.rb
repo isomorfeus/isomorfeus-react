@@ -103,7 +103,7 @@ RSpec.describe 'Component benchmarks' do
     doc = visit('/')
     time = doc.evaluate_ruby do
       class Fun < React::FunctionComponent::Base
-        create_function do
+        render do
           DIV 'A'
         end
       end
@@ -129,7 +129,7 @@ RSpec.describe 'Component benchmarks' do
     doc = visit('/')
     time = doc.evaluate_ruby do
       class Memo < React::MemoComponent::Base
-        create_memo do
+        render do
           DIV 'A'
         end
       end
@@ -151,7 +151,7 @@ RSpec.describe 'Component benchmarks' do
     expect(time > 0 && time < 1000).to be_truthy
   end
 
-  it 'Component' do
+  it 'React Component' do
     doc = visit('/')
     time = doc.evaluate_ruby do
       class Pure < React::Component::Base
@@ -173,7 +173,33 @@ RSpec.describe 'Component benchmarks' do
       Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
       (Time.now - start) * 1000
     end
-    puts "10000 Components took: #{time}ms"
+    puts "10000 React Components took: #{time}ms"
+    expect(time > 0 && time < 1000).to be_truthy
+  end
+
+  it 'Lucid Func' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Fun < LucidFunc::Base
+        render do
+          DIV 'A'
+        end
+      end
+      class BenchmarkComponent < LucidApp::Base
+        render do
+          Fragment do
+            10000.times do
+              Fun()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Lucid Funcs took: #{time}ms"
     expect(time > 0 && time < 1000).to be_truthy
   end
 
@@ -263,6 +289,33 @@ RSpec.describe 'Component benchmarks' do
     puts "10000 Themed and Styled Lucid Components took: #{time}ms"
     expect(time > 0 && time < 1500).to be_truthy
   end
+
+  it 'LucidMaterial Func' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Fun < LucidMaterial::Func::Base
+        render do
+          DIV 'A'
+        end
+      end
+      class BenchmarkComponent < LucidMaterial::App::Base
+        render do
+          Fragment do
+            10000.times do
+              Fun()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Lucid Material Funcs took: #{time}ms"
+    expect(time > 0 && time < 1000).to be_truthy
+  end
+
 
   it 'Lucid Material Component' do
     doc = visit('/')
