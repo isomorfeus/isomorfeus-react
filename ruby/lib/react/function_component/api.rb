@@ -1,10 +1,8 @@
 module React
   module FunctionComponent
     module API
-      attr_accessor :props
-
-      def initialize(props)
-        @props = ::React::Component::Props.new(`{props: props}`)
+      def props
+        @native_props
       end
 
       def use_callback(deps, &block)
@@ -87,6 +85,10 @@ module React
         nil
       end
       alias rre render_react_element
+
+      def to_n
+        self
+      end
     end
   end
 end
