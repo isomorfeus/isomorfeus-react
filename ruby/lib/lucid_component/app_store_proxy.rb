@@ -12,8 +12,8 @@ module LucidComponent
         Isomorfeus.store.dispatch(action)
       else
         # check if we have a component local state value
-        if `this.native.props.store`
-          if `this.native.props.store.application_state && this.native.props.store.application_state.hasOwnProperty(key)`
+        if `#@native.props.store`
+          if `#@native.props.store.application_state && #@native.props.store.application_state.hasOwnProperty(key)`
             return @native.JS[:props].JS[:store].JS[:application_state].JS[key]
           end
         else
