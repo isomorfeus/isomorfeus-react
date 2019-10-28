@@ -5,7 +5,7 @@ module LucidMaterial
       # to do so, we convert the props to ruby hashes and then compare
       # this makes sure, that for example rubys Nil object gets handled properly
       def self.extended(base)
-        component_name = base.to_s
+        component_name = base.to_s + 'Wrapper'
         # language=JS
         %x{
           base.react_component = function(props) {
@@ -28,6 +28,7 @@ module LucidMaterial
             new_props.store = store;
             return Opal.global.React.createElement(base.lucid_react_component, new_props);
           }
+          base.react_component.displayName = #{component_name};
         }
       end
     end
