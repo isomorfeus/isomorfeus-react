@@ -51,12 +51,13 @@ if RUBY_ENGINE == 'opal'
 
   # Function Component
   require 'react/function_component/resolution'
+  require 'react/function_component/initializer'
   require 'react/function_component/api'
   require 'react/function_component/event_handler'
-  require 'react/function_component/creator'
+  require 'react/function_component/native_component_constructor'
   require 'react/function_component/mixin'
   require 'react/function_component/base'
-  require 'react/memo_component/creator'
+  require 'react/memo_component/native_component_constructor'
   require 'react/memo_component/mixin'
   require 'react/memo_component/base'
 
@@ -84,10 +85,15 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_app/context'
   LucidApp::Context.create_application_context
 
+  # LucidFunc
+  require 'lucid_func/initializer'
+  require 'lucid_func/native_component_constructor'
+  require 'lucid_func/mixin'
+  require 'lucid_func/base'
+
   # LucidComponent
   require 'lucid_component/environment_support'
-  require 'lucid_component/styles_support'
-  require 'lucid_component/store_api'
+  require 'lucid_component/api'
   require 'lucid_component/app_store_defaults'
   require 'lucid_component/component_class_store_defaults'
   require 'lucid_component/component_instance_store_defaults'

@@ -1,16 +1,20 @@
 module React
   module FunctionComponent
     module EventHandler
+      def event_handlers
+        @event_handlers ||= []
+      end
+
       def event_handler(name, &block)
-        define_method(name) do |event, info|
-          ruby_event = if `typeof event === "object"`
-                         ::React::SyntheticEvent.new(event)
-                       else
-                         event
-                       end
-          block.call(ruby_event, info)
-        end
-        `self[name] = self.prototype['$' + name]`
+        event_handlers << name
+        %x{
+          var fun = function(event, info) {
+            if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+            else { #{ruby_event = `event`}; }
+            #{`this`.instance_exec(ruby_event, `info`, &block)};
+          }
+          self[name] = fun;
+        }
       end
     end
   end
