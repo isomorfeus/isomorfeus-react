@@ -5,7 +5,7 @@ RSpec.describe 'React::FunctionComponent' do
     doc = visit('/')
     doc.evaluate_ruby do
       class TestComponent < React::FunctionComponent::Base
-        create_function do
+        render do
           DIV(id: :test_component) { 'TestComponent rendered' }
         end
       end
@@ -20,7 +20,7 @@ RSpec.describe 'React::FunctionComponent' do
     doc.evaluate_ruby do
       class TestComponent
         include React::FunctionComponent::Mixin
-        create_function do
+        render do
           DIV(id: :test_component) { 'TestComponent rendered' }
         end
       end
@@ -38,7 +38,7 @@ RSpec.describe 'React::FunctionComponent' do
     it 'access them' do
       @doc.evaluate_ruby do
         class TestComponent < React::FunctionComponent::Base
-          create_function do
+          render do
             DIV(id: :test_component) do
               SPAN props.text
               SPAN props.other_text
@@ -56,7 +56,7 @@ RSpec.describe 'React::FunctionComponent' do
     it 'accept a missing prop' do
       @doc.evaluate_ruby do
         class TestComponent < React::FunctionComponent::Base
-          create_function do
+          render do
             DIV(id: :test_component) { "nothing#{props.a_prop}here" }
           end
         end
@@ -79,7 +79,7 @@ RSpec.describe 'React::FunctionComponent' do
           event_handler :change_hash do |event|
             IT[:clicked] = true
           end
-          create_function do
+          render do
             DIV(id: :test_component, on_click: :change_hash) { 'nothinghere' }
           end
         end
@@ -102,7 +102,7 @@ RSpec.describe 'React::FunctionComponent' do
     it 'use_state' do
       @doc.evaluate_ruby do
         class TestComponent < React::FunctionComponent::Base
-          create_function do
+          render do
             value, set_value = use_state('nothinghere')
             handler = proc { |event| set_value.call('somethinghere') }
             DIV(id: :test_component, on_click: handler) { value }

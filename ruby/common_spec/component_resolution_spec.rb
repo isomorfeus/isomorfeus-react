@@ -26,7 +26,7 @@ RSpec.describe 'Component Resolution' do
       end
 
       class TopFunction < React::FunctionComponent::Base
-        create_function do
+        render do
           DIV 'TopFunction'
         end
       end
@@ -34,7 +34,7 @@ RSpec.describe 'Component Resolution' do
       module VeryDeeply
         module VeryNested
           class VeryFunction < React::FunctionComponent::Base
-            create_function do
+            render do
               DIV 'VeryDeeply::VeryNested::VeryFunction'
             end
           end
@@ -164,7 +164,7 @@ RSpec.describe 'Component Resolution' do
   it 'can resolve components from a top level React::FunctionComponent' do
     @doc.evaluate_ruby do
       class TestComponent < React::FunctionComponent::Base
-        create_function do
+        render do
           TopPure()
           Deeply::Nested::Pure()
           TopFunction()
@@ -192,7 +192,7 @@ RSpec.describe 'Component Resolution' do
         module SuperDeeply
           module SuperNested
             class TestComponent < React::FunctionComponent::Base
-              create_function do
+              render do
                 TopPure()
                 Deeply::Nested::Pure()
                 TopFunction()
@@ -223,7 +223,7 @@ RSpec.describe 'Component Resolution' do
   #   @doc.evaluate_ruby do
   #     module ExampleFunction
   #       class AComponent < React::FunctionComponent::Base
-  #         create_function do
+  #         render do
   #           DIV "AComponent"
   #         end
   #       end
@@ -231,7 +231,7 @@ RSpec.describe 'Component Resolution' do
   #
   #     module ExampleFunction
   #       class AnotherComponent < React::FunctionComponent::Base
-  #         create_function do
+  #         render do
   #           DIV "AnotherComponent"
   #           AComponent()
   #         end
