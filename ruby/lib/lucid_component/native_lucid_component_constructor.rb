@@ -46,22 +46,23 @@ module LucidComponent
             return new_name;
           }
           render() {
-            Opal.React.render_buffer.push([]);
-            // console.log("lucid component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-            Opal.React.active_components.push(this);
-            Opal.React.active_redux_components.push(this);
+            const oper = Opal.React;
+            oper.render_buffer.push([]);
+            // console.log("lucid component pushed", oper.render_buffer, oper.render_buffer.toString());
+            oper.active_components.push(this);
+            oper.active_redux_components.push(this);
             let block_result;
             if (base.preload_block && base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
             else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
-            Opal.React.active_redux_components.pop();
-            Opal.React.active_components.pop();
-            // console.log("lucid component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+            oper.active_redux_components.pop();
+            oper.active_components.pop();
+            // console.log("lucid component popping", oper.render_buffer, oper.render_buffer.toString());
             if (base.except_ssr) {
               if (typeof block_result === "object" && block_result.danger) { return Opal.global.React.createElement('div', {'data-ssrhelper': this.__ruby_instance.$class().$to_s(), dangerouslySetInnerHTML: { __html: block_result.html}});}
-              else { return Opal.global.React.createElement('div', {'data-ssrhelper': this.__ruby_instance.$class().$to_s()}, Opal.React.render_buffer.pop()); }
+              else { return Opal.global.React.createElement('div', {'data-ssrhelper': this.__ruby_instance.$class().$to_s()}, oper.render_buffer.pop()); }
             }
-            return Opal.React.render_buffer.pop();
+            return oper.render_buffer.pop();
           }
           data_access() {
             return this.props.store;

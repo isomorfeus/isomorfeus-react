@@ -42,14 +42,15 @@ module React
               return new_name;
             }
             render() {
-              Opal.React.render_buffer.push([]);
-              // console.log("react component pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-              Opal.React.active_components.push(this);
+              const oper = Opal.React;
+              oper.render_buffer.push([]);
+              // console.log("react component pushed", oper.render_buffer, oper.render_buffer.toString());
+              oper.active_components.push(this);
               let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
-              if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
-              // console.log("react component popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-              Opal.React.active_components.pop();
-              return Opal.React.render_buffer.pop();
+              if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+              // console.log("react component popping", oper.render_buffer, oper.render_buffer.toString());
+              oper.active_components.pop();
+              return oper.render_buffer.pop();
             }
             shouldComponentUpdate(next_props, next_state) {
               if (base.should_component_update_block) {

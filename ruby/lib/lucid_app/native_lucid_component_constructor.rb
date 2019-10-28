@@ -58,19 +58,20 @@ module LucidApp
             return new_name;
           }
           render() {
+            const oper = Opal.React;
             this.context = this.state.isomorfeus_store_state;
-            Opal.React.render_buffer.push([]);
-            // console.log("lucid app pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-            Opal.React.active_components.push(this);
-            Opal.React.active_redux_components.push(this.__ruby_instance);
+            oper.render_buffer.push([]);
+            // console.log("lucid app pushed", oper.render_buffer, oper.render_buffer.toString());
+            oper.active_components.push(this);
+            oper.active_redux_components.push(this.__ruby_instance);
             let block_result;
             if (base.preload_block && base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
             else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result); }
-            Opal.React.active_redux_components.pop();
-            Opal.React.active_components.pop();
-            // console.log("lucid app popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-            return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, Opal.React.render_buffer.pop());
+            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+            oper.active_redux_components.pop();
+            oper.active_components.pop();
+            // console.log("lucid app popping", oper.render_buffer, oper.render_buffer.toString());
+            return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, oper.render_buffer.pop());
           }
           data_access() {
             return this.context;
