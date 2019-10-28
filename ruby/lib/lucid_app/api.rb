@@ -21,10 +21,6 @@ module LucidApp
         end
         alias_method :theme=, :theme
       end
-
-      def context
-        @native.JS[:context]
-      end
     end
   end
 end
