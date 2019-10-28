@@ -1,5 +1,5 @@
 class WelcomeComponent < React::FunctionComponent::Base
-  create_function do
+  render do
     DIV "Welcome!"
     # TestComponent()
     NavigationLinks()

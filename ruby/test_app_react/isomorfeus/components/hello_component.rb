@@ -5,10 +5,19 @@ class PropTest
   prop :name, validate.String.matches(/T.+/).max_length(12)
 end
 
+class MemoTest < LucidMaterial::Func::Base
+  render do
+    DIV "Memo"
+    DIV app_store.a_value
+    DIV "b: #{app_store.b_value}"
+  end
+end
+
 class HelloComponent < LucidMaterial::Component::Base
   class_store.a_value = 'component class store works'
   store.a_value = 'component store works'
   app_store.a_value = 'application store works'
+  app_store.b_value = 0
 
   styles do
     { test: { color: 'red' }}
@@ -18,6 +27,10 @@ class HelloComponent < LucidMaterial::Component::Base
 
   event_handler :validate_form do
     ruby_ref(:form).current.JS.validateForm()
+  end
+
+  event_handler :incr do
+    app_store.b_value = app_store.b_value + 1
   end
 
   render do
@@ -43,6 +56,8 @@ class HelloComponent < LucidMaterial::Component::Base
         BUTTON(type: :submit, on_submit: :validate_form) { 'validate' }
       end
     end
+    MemoTest()
+    DIV(on_click: :incr) { "incr b_value" }
     NavigationLinks()
   end
 end

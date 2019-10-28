@@ -1,5 +1,5 @@
 class NavigationLinks < React::FunctionComponent::Base
-  create_function do
+  render do
     P do
       Link(to: '/') { 'Hello World!' }
       SPAN " | "
