@@ -104,3 +104,20 @@ class MyFunctionComponent
   end
 end
 ```
+
+##### Using Hooks from Imports
+Hooks from imports can be directly used.
+If for example Mui is imported with:
+```javascript
+import * as Mui from '@material-ui/core'
+global.Mui = Mui;
+```
+then the useTheme Hook cen be used with:
+```ruby
+class MyFunctionComponent
+  include React::FunctionComponent::Base
+  render do
+    theme = Mui.useTheme
+    # or more ruby style
+    theme = Mui.use_theme
+```
