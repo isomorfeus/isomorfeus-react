@@ -46,8 +46,8 @@ module React
         [state, proc { |arg| `dispatcher(arg)` }]
       end
 
-      def use_ref(initial_value)
-        React::Ref.new(`Opal.global.React.useRef(initial_value)`)
+      def use_ref(native_ref)
+        React::Ref.new(`Opal.global.React.useRef(native_ref)`)
       end
 
       def use_state(initial_value)
