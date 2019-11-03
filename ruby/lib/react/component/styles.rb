@@ -10,10 +10,16 @@ module React
         %x{
           let value;
           if (#@props_prop) {
-            if (!#@native.props[#@props_prop] || typeof #@native.props[#@props_prop][prop] === 'undefined') { return #{nil}; }
+            if (!#@native.props[#@props_prop] || typeof #@native.props[#@props_prop][prop] === 'undefined') {
+              console.warn("Style/Theme key " + prop + " returning nil!");
+              return #{nil};
+            }
             value = #@native.props[#@props_prop][prop];
           } else {
-            if (!#@native || typeof #@native[prop] === 'undefined') { return #{nil}; }
+            if (!#@native || typeof #@native[prop] === 'undefined') {
+              console.warn("Style/Theme key " + prop + " returning nil!");
+              return #{nil};
+            }
             value = #@native[prop];
           }
           if (typeof value === 'string' || typeof value === 'number' || Array.isArray(value)) { return value; }
