@@ -18,9 +18,13 @@ module Isomorfeus
           asset_path = "#{Isomorfeus.ssr_hot_asset_url}#{asset}"
           begin
             asset = Net::HTTP.get(URI(asset_path))
+          rescue Exception => e
+            raise "SSR: Failed loading asset #{asset_path} from webpack dev server. Error: #{e.message}"
+          end
+          begin
             Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
-          rescue
-            STDERR.puts "SSR: Failed loading assets from webpack dev server."
+          rescue Exception => e
+            raise "SSR: Failed creating context for #{asset_path}. Error: #{e.message}"
           end
         else
           # initialize speednode context
