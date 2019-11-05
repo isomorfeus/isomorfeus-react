@@ -34,7 +34,7 @@ module React
               var component;
               for (var i = modules_length; i > 0; i--) {
                 try {
-                  module = modules.slice(0, i).join('::')
+                  module = modules.slice(0, i).join('::');
                   constant = self.$const_get(module).$const_get(component_name, false);
                   if (typeof constant.react_component !== 'undefined') {
                     component = constant.react_component;
@@ -53,7 +53,7 @@ module React
               if (component) {
                 return Opal.React.internal_prepare_args_and_render(component, args, block);
               } else {
-                return #{_react_component_resolution_original_method_missing(component_name, *args, block)};
+                return #{_react_component_class_resolution_original_method_missing(component_name, *args, block)};
               }
             }
           end
@@ -81,7 +81,7 @@ module React
             var constant;
             for (var i = modules_length; i > 0; i--) {
               try {
-                module = modules.slice(0, i).join('::')
+                module = modules.slice(0, i).join('::');
                 constant = self.$class().$const_get(module).$const_get(component_name, false);
                 if (typeof constant.react_component !== 'undefined') {
                   component = constant.react_component;
