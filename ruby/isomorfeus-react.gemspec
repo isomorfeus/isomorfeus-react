@@ -19,19 +19,22 @@ Gem::Specification.new do |s|
   s.post_install_message = <<~TEXT
 
   isomorfeus-react #{React::VERSION}:
-    Breaking changes:
-      - React::MemoComponent#create_memo has been renamed to React::MemoComponent#render
-      - React::FunctionComponent#create_function has been renamed to React::FunctionComponent#render
+    Major improvement:
+      Using Zeitwerk and Opal-Zeitwerk for autoloading, may break existing installations which use opal-autoloader.
+      - existing installations may lock isomorfeus-react to 16.11.1 or upgrade to isomorfeus 1.0.0.zeta6
+      - new installations with isomorfeus 1.0.0.zeta5 should lock to 16.11.1
+      - new installations with isomorfeus 1.0.0.zeta6 and up -> enjoy the latest isomorfeus-react
 
   TEXT
 
   s.add_dependency 'oj', '>= 3.8'
-  s.add_dependency 'opal', '>= 0.11.0'
+  s.add_dependency 'opal', '>= 1.0.0'
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
-  s.add_dependency 'opal-autoloader', '~> 0.1.0'
+  s.add_dependency 'opal-zeitwerk', '~> 0.0.2'
   s.add_dependency 'opal-webpack-loader', '>= 0.9.6'
   s.add_dependency 'isomorfeus-redux', '~> 4.0.16'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.11'
+  s.add_dependency 'zeitwerk', '~> 2.2.1'
   s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.2.9'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.8'
