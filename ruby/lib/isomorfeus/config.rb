@@ -6,6 +6,7 @@ module Isomorfeus
       attr_accessor :ssr_response_status
       attr_reader :initialized
       attr_reader :env
+      attr_accessor :zeitwerk
 
       def init
         return if initialized
@@ -69,6 +70,10 @@ module Isomorfeus
       end
 
       def start_app!
+        if Isomorfeus.development? && Isomorfeus.on_browser?
+          Isomorfeus.zeitwerk.enable_reloading
+        end
+        Isomorfeus.zeitwerk.setup
         Isomorfeus::TopLevel.mount!
       end
 
@@ -83,6 +88,8 @@ module Isomorfeus
             end
           end
         rescue
+          # TODO try mount first
+          # if it fails
           `location.reload()` if on_browser?
         end
         nil
@@ -95,6 +102,8 @@ module Isomorfeus
       attr_accessor :server_side_rendering
       attr_accessor :ssr_hot_asset_url
       attr_reader :env
+      attr_accessor :zeitwerk
+      attr_accessor :zeitwerk_lock
 
       def configuration(&block)
         block.call(self)
