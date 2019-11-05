@@ -5,84 +5,69 @@ const OwlResolver = require('opal-webpack-loader/resolver'); // to resolve ruby 
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to watch for added ruby files
 
 const common_config = {
-    target: 'web',
+    target: 'node',
     context: path.resolve(__dirname, '../isomorfeus'),
     mode: "development",
     optimization: {
         removeAvailableModules: false,
         removeEmptyChunks: false,
-        minimize: false // dont minimize for debugging
+        minimize: false // dont minimize in development, to speed up hot reloads
     },
     performance: {
         maxAssetSize: 20000000,
         maxEntrypointSize: 20000000
     },
-    // use one of these below for source maps
-    devtool: 'source-map', // this works well, good compromise between accuracy and performance
-    // devtool: 'cheap-eval-source-map', // less accurate
-    // devtool: 'inline-source-map', // slowest
-    // devtool: 'inline-cheap-source-map',
+    devtool: false,
     output: {
         // webpack-dev-server keeps the output in memory
         filename: '[name].js',
         path: path.resolve(__dirname, '../public/assets'),
-        publicPath: 'http://localhost:3035/assets/'
+        publicPath: 'http://localhost:3036/assets/'
     },
     resolve: {
-        plugins: [new OwlResolver('resolve', 'resolved')], // this makes it possible for webpack to find ruby files
+        plugins: [ new OwlResolver('resolve', 'resolved') ],
         alias: {
             "react": "preact/compat",
             "react-dom": "preact/compat",
         }
     },
     plugins: [
-        // both for hot reloading
-        new webpack.HotModuleReplacementPlugin(),
+        // dont split ssr asset in chunks
+        new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
         // watch for added files in opal dir
-        new ExtraWatchWebpackPlugin({ dirs: [path.resolve(__dirname, '../isomorfeus')] }),
-        new webpack.DefinePlugin({
-            OPAL_DEVTOOLS_OBJECT_REGISTRY: true
-        })
+        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../isomorfeus') ] })
     ],
     module: {
         rules: [
             {
+                // loader for .scss files
+                // test means "test for for file endings"
                 test: /.scss$/,
-                use: [ "style-loader",
-                    {
-                        loader: "css-loader",
-                        options: { sourceMap: true }
-                    },
+                use: [ "style-loader", "css-loader",
                     {
                         loader: "sass-loader",
-                        options: {
-                            includePaths: [path.resolve(__dirname, '../isomorfeus/styles')],
-                            sourceMap: true // set to false to speed up hot reloads
-                        }
+                        options: { includePaths: [path.resolve(__dirname, '../isomorfeus/styles')] }
                     }
                 ]
             },
             {
+                // loader for .css files
                 test: /.css$/,
-                use: [ "style-loader",
-                    {
-                        loader: "css-loader",
-                        options: { sourceMap: true }
-                    }
-                ]
+                use: [ "style-loader", "css-loader" ]
             },
             {
                 test: /.(png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/,
                 use: [ "file-loader" ]
             },
             {
+                // opal-webpack-loader will compile and include ruby files in the pack
                 test: /(\.js)?\.rb$/,
                 use: [
                     {
-                        loader: 'opal-webpack-loader', // opal-webpack-loader will compile and include ruby files in the pack
+                        loader: 'opal-webpack-loader',
                         options: {
-                            sourceMap: true,
-                            hmr: true,
+                            sourceMap: false,
+                            hmr: false,
                             hmrHook: 'Opal.Isomorfeus.$force_render()'
                         }
                     }
@@ -93,10 +78,9 @@ const common_config = {
     // configuration for webpack-dev-server
     devServer: {
         open: false,
-        lazy: false,
-        port: 3035,
-        hot: true,
-        // hotOnly: true,
+        lazy: true,
+        port: 3036,
+        hot: false,
         inline: true,
         https: false,
         disableHostCheck: true,
@@ -116,21 +100,10 @@ const common_config = {
     }
 };
 
-const browser_config = {
-    entry: {
-        application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')]
-    }
+const ssr_config = {
+    entry: { application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')] }
 };
 
-// const web_worker_config = {
-//     target: 'webworker',
-//     entry: {
-//         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
-//     }
-// };
+const ssr = Object.assign({}, common_config, ssr_config);
 
-const browser = Object.assign({}, common_config, browser_config);
-// const ssr = Object.assign({}, common_config, ssr_config);
-// const web_worker = Object.assign({}, common_config, web_worker_config);
-
-module.exports = [ browser ];
+module.exports = ssr;

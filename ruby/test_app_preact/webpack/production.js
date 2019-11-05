@@ -19,9 +19,7 @@ const common_config = {
         publicPath: '/assets/'
     },
     resolve: {
-        plugins: [
-            new OwlResolver('resolve', 'resolved') // resolve ruby files
-        ],
+        plugins: [ new OwlResolver('resolve', 'resolved') ],
         alias: {
             "react": "preact/compat",
             "react-dom": "preact/compat",

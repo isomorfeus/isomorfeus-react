@@ -15,7 +15,7 @@
   },
   "scripts": {
     "debug": "webpack-dev-server --config=webpack/debug.js",
-    "development": "webpack-dev-server --config=webpack/development.js",
+    "development_ssr": "webpack-dev-server --config=webpack/development_ssr.js",
     "production_build": "parallel-webpack --config=webpack/production.js --max-tries=1 --no-stats"
   },
   "devDependencies": {

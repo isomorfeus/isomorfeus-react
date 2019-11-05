@@ -5,9 +5,9 @@
     "@material-ui/core": "^4.5.1",
     "@material-ui/styles": "^4.5.0",
     "formik": "^1.5.8",
-    "nerv-devtools": "1.5.1",
-    "nerv-server": "1.5.1",
-    "nervjs": "1.5.1",
+    "nerv-devtools": "1.5.3",
+    "nerv-server": "1.5.3",
+    "nervjs": "1.5.3",
     "opal-webpack-loader": "^0.9.6",
     "react-jss": "^10.0.0",
     "react-router": "^5.1.1",
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "debug": "webpack-dev-server --config=webpack/debug.js",
-    "development": "webpack-dev-server --config=webpack/development.js",
+    "development_ssr": "webpack-dev-server --config=webpack/development_ssr.js",
     "production_build": "parallel-webpack --config=webpack/production.js --max-tries=1 --no-stats"
   },
   "devDependencies": {

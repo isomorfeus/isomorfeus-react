@@ -1,5 +1,4 @@
 require 'opal'
-require 'opal-autoloader'
 require 'isomorfeus-redux'
 start = Time.now
 require 'isomorfeus-react'

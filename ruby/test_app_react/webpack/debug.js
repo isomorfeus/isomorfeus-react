@@ -5,9 +5,12 @@ const OwlResolver = require('opal-webpack-loader/resolver'); // to resolve ruby 
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to watch for added ruby files
 
 const common_config = {
+    target: 'web',
     context: path.resolve(__dirname, '../isomorfeus'),
     mode: "development",
     optimization: {
+        removeAvailableModules: false,
+        removeEmptyChunks: false,
         minimize: false // dont minimize for debugging
     },
     performance: {
@@ -26,10 +29,7 @@ const common_config = {
         publicPath: 'http://localhost:3035/assets/'
     },
     resolve: {
-        plugins: [
-            // this makes it possible for webpack to find ruby files
-            new OwlResolver('resolve', 'resolved')
-        ],
+        plugins: [new OwlResolver('resolve', 'resolved')], // this makes it possible for webpack to find ruby files
         alias: {
             'react-dom': 'react-dom/profiling',
             'schedule/tracing': 'schedule/tracing-profiling',
@@ -37,19 +37,18 @@ const common_config = {
     },
     plugins: [
         // both for hot reloading
-        new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         // watch for added files in opal dir
-        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../isomorfeus') ] })
+        new ExtraWatchWebpackPlugin({ dirs: [path.resolve(__dirname, '../isomorfeus')] }),
+        new webpack.DefinePlugin({
+            OPAL_DEVTOOLS_OBJECT_REGISTRY: true
+        })
     ],
     module: {
         rules: [
             {
-                // loader for .scss files
-                // test means "test for for file endings"
                 test: /.scss$/,
-                use: [
-                    { loader: "style-loader" },
+                use: [ "style-loader",
                     {
                         loader: "css-loader",
                         options: { sourceMap: true }
@@ -64,10 +63,8 @@ const common_config = {
                 ]
             },
             {
-                // loader for .css files
                 test: /.css$/,
-                use: [
-                    { loader: "style-loader" },
+                use: [ "style-loader",
                     {
                         loader: "css-loader",
                         options: { sourceMap: true }
@@ -79,11 +76,10 @@ const common_config = {
                 use: [ "file-loader" ]
             },
             {
-                // opal-webpack-loader will compile and include ruby files in the pack
-                test: /.(rb|js.rb)$/,
+                test: /(\.js)?\.rb$/,
                 use: [
                     {
-                        loader: 'opal-webpack-loader',
+                        loader: 'opal-webpack-loader', // opal-webpack-loader will compile and include ruby files in the pack
                         options: {
                             sourceMap: true,
                             hmr: true,
@@ -121,28 +117,20 @@ const common_config = {
 };
 
 const browser_config = {
-    target: 'web',
     entry: {
         application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')]
     }
 };
 
-const ssr_config = {
-    target: 'node',
-    entry: {
-        application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')]
-    }
-};
-
-const web_worker_config = {
-    target: 'webworker',
-    entry: {
-        web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
-    }
-};
+// const web_worker_config = {
+//     target: 'webworker',
+//     entry: {
+//         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
+//     }
+// };
 
 const browser = Object.assign({}, common_config, browser_config);
-const ssr = Object.assign({}, common_config, ssr_config);
-const web_worker = Object.assign({}, common_config, web_worker_config);
+// const ssr = Object.assign({}, common_config, ssr_config);
+// const web_worker = Object.assign({}, common_config, web_worker_config);
 
 module.exports = [ browser ];

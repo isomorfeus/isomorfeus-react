@@ -1,2 +1,2 @@
 require 'opal'
-require 'opal-autoloader'
+require 'zeitwerk'

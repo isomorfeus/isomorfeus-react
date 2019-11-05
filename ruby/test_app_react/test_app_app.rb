@@ -2,8 +2,6 @@ require_relative 'app_loader'
 require_relative 'owl_init'
 require_relative 'iodine_config'
 
-Isomorfeus.server_side_rendering = false # if Isomorfeus.development?
-
 class TestAppApp < Roda
   include OpalWebpackLoader::ViewHelper
   include Isomorfeus::ReactViewHelper
