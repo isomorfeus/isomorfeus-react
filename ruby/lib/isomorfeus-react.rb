@@ -5,7 +5,7 @@ if RUBY_ENGINE == 'opal'
   # rely on i-redux to have included above reqiorements
   require 'isomorfeus-redux'
   require 'active_support/core_ext/string'
-  require 'opal-autoloader'
+  require 'zeitwerk'
 
   if Isomorfeus.on_browser?
     require 'browser/event'
@@ -114,12 +114,17 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_app/mixin'
   require 'lucid_app/base'
 
-  Opal::Autoloader.add_load_path('components')
+  require 'react/vivify_module'
+
+  Isomorfeus.zeitwerk = Zeitwerk::Loader.new
+  Isomorfeus.zeitwerk.push_dir('components')
+  Isomorfeus.zeitwerk.vivify_mod_dir = 'components/'
+  Isomorfeus.zeitwerk.vivify_mod_class = React::VivifyModule
 else
   require 'oj'
   require 'opal'
   require 'opal-activesupport'
-  require 'opal-autoloader'
+  require 'opal-zeitwerk'
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'
   require 'react/version'
@@ -146,4 +151,11 @@ else
   if Dir.exist?('isomorfeus')
     Opal.append_path(File.expand_path('isomorfeus')) unless Opal.paths.include?(File.expand_path('isomorfeus'))
   end
+
+  require 'concurrent'
+  require 'zeitwerk'
+
+  Isomorfeus.zeitwerk = Zeitwerk::Loader.new
+  Isomorfeus.zeitwerk_lock = Concurrent::ReentrantReadWriteLock.new if Isomorfeus.development?
+  # nothing to push_dir to zeitwerk here, as components are available only within browser/SSR
 end
