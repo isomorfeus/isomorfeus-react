@@ -1,0 +1,44 @@
+{
+  "name": "AllComponentTypesApp",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.4.3",
+    "@material-ui/styles": "^4.4.3",
+    "opal-webpack-loader": "^0.9.7",
+    "react": "^16.11.0",
+    "react-deep-force-update": "^2.1.3",
+    "react-dom": "^16.11.0",
+    "react-jss": "^10.0.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4",
+    "ws": "^7.2.0"
+  },
+  "scripts": {
+    "debug": "webpack-dev-server --config=webpack/debug.js",
+    "development": "webpack-dev-server --config=webpack/development.js",
+    "development_ssr": "webpack-dev-server --config=webpack/development_ssr.js",
+    "production_build": "parallel-webpack --config=webpack/production.js"
+  },
+  "devDependencies": {
+    "compression-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.2.0",
+    "extra-watch-webpack-plugin": "^1.0.3",
+    "file-loader": "^4.2.0",
+    "jsdom": "15.2.1",
+    "node-sass": "^4.13.0",
+    "parallel-webpack": "^2.4.0",
+    "puppeteer": "2.0.0",
+    "sass-loader": "^8.0.0",
+    "style-loader": "^1.0.0",
+    "terser-webpack-plugin": "^2.2.1",
+    "webpack": "^4.41.2",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-cli": "^3.3.10",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.1",
+    "utf-8-validate": "^5.0.2"
+  }
+}
