@@ -10,7 +10,8 @@ module Isomorfeus
           component = nil
           begin
             component = component_name.constantize
-          rescue Exception
+          rescue Exception => e
+            `console.warn("Deferring mount: " + #{e.message})`
             @timeout_start = Time.now unless @timeout_start
             if (Time.now - @timeout_start) < 10
               `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 100)`
@@ -21,14 +22,16 @@ module Isomorfeus
           if component
             props_json = root_element.JS.getAttribute('data-iso-props')
             props = `Opal.Hash.$new(JSON.parse(props_json))`
-            hydrated = root_element.JS.getAttribute('data-iso-hydrated')
+            hydrated = (root_element.JS.getAttribute('data-iso-hydrated') == "true")
             state_json = root_element.JS.getAttribute('data-iso-state')
             if state_json
               %x{
                 var state = JSON.parse(state_json);
                 var keys = Object.keys(state);
                 for(var i=0; i < keys.length; i++) {
-                  global.Opal.Isomorfeus.store.native.dispatch({ type: keys[i].toUpperCase(), set_state: state[keys[i]] });
+                  if (Object.keys(state[keys[i]]).length > 0) {
+                    global.Opal.Isomorfeus.store.native.dispatch({ type: keys[i].toUpperCase(), set_state: state[keys[i]] });
+                  }
                 }
               }
             end
@@ -48,14 +51,24 @@ module Isomorfeus
       end
 
       def on_ready(&block)
-        # this looks a bit odd but works across _all_ browsers, and no event handler mess
         %x{
           function run() { block.$call() };
-          function ready_fun() {
-            /in/.test(document.readyState) ? setTimeout(ready_fun,5) : run();
+          function ready_fun(fn) {
+            if (document.readyState === "complete" || document.readyState === "interactive") {
+              setTimeout(fn, 1);
+            } else {
+              document.addEventListener("DOMContentLoaded", fn);
+            }
           }
-          ready_fun();
+          ready_fun(run);
         }
+        # %x{
+        #   function run() { block.$call() };
+        #   function ready_fun() {
+        #     /in/.test(document.readyState) ? setTimeout(ready_fun,5) : run();
+        #   }
+        #   ready_fun();
+        # }
       end
 
       def on_ready_mount(component, props = nil, element_query = nil)
