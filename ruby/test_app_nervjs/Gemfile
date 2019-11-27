@@ -7,7 +7,7 @@ gem 'foreman', require: false
 gem 'roda', '~> 3.25.0'
 
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '>= 0.9.6'
+gem 'opal-webpack-loader', '>= 0.9.7'
 
 gem 'isomorfeus-redux', '~> 4.0.16'
 gem 'isomorfeus-react', path: '..'
