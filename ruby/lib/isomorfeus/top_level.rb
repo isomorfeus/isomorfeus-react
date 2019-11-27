@@ -22,7 +22,8 @@ module Isomorfeus
           if component
             props_json = root_element.JS.getAttribute('data-iso-props')
             props = `Opal.Hash.$new(JSON.parse(props_json))`
-            hydrated = (root_element.JS.getAttribute('data-iso-hydrated') == "true")
+            raw_hydrated = root_element.JS.getAttribute('data-iso-hydrated')
+            hydrated = (raw_hydrated && raw_hydrated == "true")
             state_json = root_element.JS.getAttribute('data-iso-state')
             if state_json
               %x{
