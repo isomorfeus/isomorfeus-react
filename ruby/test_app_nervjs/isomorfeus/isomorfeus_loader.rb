@@ -37,7 +37,7 @@ IR_REQUIRE_TIME = (Time.now - start) * 1000
   Opal.global.NestedNative.AnotherComponent = AnotherComponent;
 }
 
-require_tree 'components'
+require_tree 'components', :autoload
 
 Isomorfeus.start_app!
 IR_LOAD_TIME = (Time.now - start) * 1000
