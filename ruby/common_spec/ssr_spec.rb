@@ -18,10 +18,9 @@ RSpec.describe 'Server Side Rendering' do
     expect(state).to have_key('application_state')
     expect(state).to have_key('component_state')
     expect(state).to have_key('component_class_state')
-
-    # because of autoloading classes this is no longer true as the class has not been loaded yet
-    # expect(state['application_state']).to have_key('a_value')
-    # expect(state['application_state']['a_value']).to eq('application store works')
+    
+    expect(state['application_state']).to have_key('a_value')
+    expect(state['application_state']['a_value']).to eq('application store works')
     expect(state['component_class_state']).to have_key('HelloComponent')
     expect(state['component_class_state']['HelloComponent'])
     expect(state['component_class_state']['HelloComponent']['a_value']).to eq('component class store works')
@@ -40,10 +39,9 @@ RSpec.describe 'Server Side Rendering' do
     expect(state).to have_key('application_state')
     expect(state).to have_key('component_state')
     expect(state).to have_key('component_class_state')
-
-    # because of autoloading classes this is no longer true as the class has not been loaded yet
-    # expect(state['application_state']).to have_key('a_value')
-    # expect(state['application_state']['a_value']).to eq('application store works')
+    
+    expect(state['application_state']).to have_key('a_value')
+    expect(state['application_state']['a_value']).to eq('application store works')
     expect(state['component_class_state']).to have_key('HelloComponent')
     expect(state['component_class_state']['HelloComponent'])
     expect(state['component_class_state']['HelloComponent']['a_value']).to eq('component class store works')
