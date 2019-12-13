@@ -52,6 +52,7 @@ module Isomorfeus
       end
 
       def type!
+        return if @o[:allow_nil] && @v.nil?
         if @o.key?(:class)
           raise "#{@c}: #{@p} class not #{@o[:class]}" unless @v.class == @o[:class]
         elsif @o.key?(:is_a)

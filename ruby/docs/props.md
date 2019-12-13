@@ -24,6 +24,7 @@ Props can be declared and type checked and a default value can be given:
 ```ruby
 class MyComponent < React::Component::Base
   prop :text, class: String # a required prop of class String, class must match exactly
+  prop :maybe_text, class: String, allow_nil: true # a required prop of class String, class must match exactly but a nil value is also ok.
   prop :other, is_a: Enumerable # a required prop, which can be a Array for example, but at least must be a Enumerable
   prop :cool, default: 'yet some more text' # a optional prop with a default value
   prop :even_cooler, class: String, required: false # a optional prop, which when given, must be of class String

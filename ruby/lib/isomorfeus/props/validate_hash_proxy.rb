@@ -12,6 +12,11 @@ module Isomorfeus
       alias_method :has, :is
       alias_method :with, :is
 
+      def allow_nil
+        @validation_hash[:allow_nil] = true
+        self
+      end
+
       def cast
         @validation_hash[:cast] = true
         self
