@@ -9,13 +9,13 @@ At the [Isomorfeus Framework Project](http://isomorfeus.com)
 isomorfeus-react version follows the React version which features and API it implements.
 
 ### React
-Isomorfeus-react 16.11.x implements features and the API of React 16.11 and should be used with React 16.11
+Isomorfeus-react 16.12.x implements features and the API of React 16.12 and should be used with React 16.12
 
 ### Preact
-isomorfeus-react works with preact version 10.0.x.
+isomorfeus-react works with preact version 10.1.x.
 
 ### Nerv
-isomorfeus-react works in general with nervjs 1.4.x. with some issues:
+isomorfeus-react works in general with nervjs 1.5.x. with some issues:
  - Server Side Rendering does currently not work at all.
  - Some specs with respect to callbacks (component_will_unmount) and styles fail.
 
@@ -37,6 +37,7 @@ Component Types:
 
 Which component to use?
 - Usually LucidApp and LucidComponent along with some imported javascript components.
+- For MaterialUI LucidMaterial::App and LucidMaterial::Component along with some imported javascript components.
 
 Specific to Class, Pure, Lucid and LucidMaterial Components:
 - [Events](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md)
