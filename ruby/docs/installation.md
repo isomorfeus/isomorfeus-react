@@ -4,15 +4,18 @@
 For full functionality the following are required:
 
 Ruby Gems:
+
 - [Opal with ES6 modules](https://github.com/opal/opal/pull/1976)
 - [Opal Webpack Loader](https://github.com/isomorfeus/opal-webpack-loader)
+- [Opal-Zeitwerk Autoloader](https://github.com/isomorfeus/opal-zeitwerk)
 
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.6'
-gem 'isomorfeus-react', '>= 16.11.0'
+gem 'opal-webpack-loader', '~> 0.9.9'
+gem 'isomorfeus-react', '>= 16.12.0'
 ```
+
 Required Javascript Npms:
 
 When using React:
@@ -21,8 +24,8 @@ When using React:
 
 For package.json:
 ```json
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
 ```
 
 When using Preact:
@@ -31,8 +34,8 @@ When using Preact:
 
 For package.json:
 ```json
-    "preact": "^10.0.1",
-    "preact-render-to-string": "^5.0.7",
+    "preact": "^10.1.0",
+    "preact-render-to-string": "^5.1.2",
 ```
 
 When using Nervjs:
@@ -57,9 +60,9 @@ For the optional MaterialUI support:
 
 For package.json:
 ```json
-    "opal-webpack-loader": "^0.9.6",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
+    "opal-webpack-loader": "^0.9.9",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
     "react-jss": "^10.0.0",
     "react-router": "^5.1.1",
     "react-router-dom": "^5.1.1",
