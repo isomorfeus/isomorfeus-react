@@ -1,6 +1,8 @@
 require 'bundler/cli'
 require 'bundler/cli/exec'
 
+require_relative 'ruby/lib/react/version'
+
 task default: %w[ruby_specs]
 
 task :ruby_specs => [:ruby_react_specs, :ruby_preact_specs, :ruby_nervjs_specs]
@@ -76,4 +78,17 @@ task :ruby_preact_specs do
     system('THREADS=4 WORKERS=1 bundle exec rspec')
   end
   Dir.chdir(pwd)
+end
+
+task :push_ruby_packages do
+  Rake::Task['push_ruby_packages_to_rubygems'].invoke
+  Rake::Task['push_ruby_packages_to_github'].invoke
+end
+
+task :push_ruby_packages_to_rubygems do
+  system("gem push ruby/isomorfeus-react-#{React::VERSION}.gem")
+end
+
+task :push_ruby_packages_to_github do
+  system("gem push --key github --host https://rubygems.pkg.github.com/isomorfeus ruby/isomorfeus-react-#{React::VERSION}.gem")
 end
