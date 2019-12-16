@@ -5,6 +5,7 @@ module Isomorfeus
         Isomorfeus.init
         Isomorfeus::TopLevel.on_ready do
           root_element = `document.querySelector('div[data-iso-root]')`
+          raise "Isomorfeus root element not found!" unless root_element
           component_name = root_element.JS.getAttribute('data-iso-root')
           Isomorfeus.env = root_element.JS.getAttribute('data-iso-env')
           component = nil
@@ -37,11 +38,13 @@ module Isomorfeus
               }
             end
             begin
-              Isomorfeus::TopLevel.mount_component(component, props, root_element, hydrated)
+              result = Isomorfeus::TopLevel.mount_component(component, props, root_element, hydrated)
+              @tried_another_time = false
+              result
             rescue Exception => e
-              @timeout_start = Time.now unless @timeout_start
-              if (Time.now - @timeout_start) < 10
-                `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 100)`
+              if  !@tried_another_time
+                @tried_another_time = true
+                `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 250)`
               else
                 `console.error("Unable to mount '" + #{component_name} + "'! Error: " + #{e.message} + "!")`
                 `console.error(#{e.backtrace.join("\n")})`
