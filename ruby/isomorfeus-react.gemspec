@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
   TEXT
 
   s.add_dependency 'concurrent-ruby', '~> 1.1.0'
-  s.add_dependency 'oj', '>= 3.8'
+  s.add_dependency 'oj', '>= 3.10'
   s.add_dependency 'opal', '>= 1.0.0'
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'opal-zeitwerk', '~> 0.0.2'
