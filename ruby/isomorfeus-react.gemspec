@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary       = 'React for Opal Ruby.'
   s.license       = 'MIT'
   s.description   = 'Write React Components in Ruby.'
-
+  s.metadata     = { "github_repo" => "ssh://github.com/isomorfeus/gems" }
   s.files         = `git ls-files -- {lib,LICENSE,README.md}`.split("\n")
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
