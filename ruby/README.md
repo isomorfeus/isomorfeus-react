@@ -63,7 +63,6 @@ Other Features:
 - [Server Side Rendering](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/server_side_rendering.md)
 - [Using React Router](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/react_router.md)
 - [Isomorfeus Helpers](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/isomorfeus_helpers.md)
-- [Reducing Asset Size](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/reducing_asset_size.md)
 
 ### Development Tools
 The React Developer Tools allow for analyzing, debugging and profiling components. A very helpful toolset and working very nice with isomorfeus-react:
