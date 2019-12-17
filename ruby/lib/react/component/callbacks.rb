@@ -7,7 +7,7 @@ module React
             # TODO convert error and info
             %x{
               var fun = function(error, info) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
                 #{`this.__ruby_instance`.instance_exec(`error`, `info`, &block)};
                 Opal.React.active_redux_components.pop();
               }
@@ -19,7 +19,7 @@ module React
           def component_did_mount(&block)
             %x{
               let fun = function() {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
                 #{`this.__ruby_instance`.instance_exec(&block)};
                 Opal.React.active_redux_components.pop();
               }
@@ -40,7 +40,7 @@ module React
           def component_did_update(&block)
             %x{
               var fun = function(prev_props, prev_state, snapshot) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
                 #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
                                                        `Opal.React.Component.State.$new({state: prev_state})`,
                                                        `snapshot`, &block)};
@@ -55,7 +55,7 @@ module React
             %x{
               var fun = function() {
                 if (typeof this.unsubscriber === "function") { this.unsubscriber(); };
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
                 #{`this.__ruby_instance`.instance_exec(&block)};
                 Opal.React.active_redux_components.pop();
               }
@@ -81,7 +81,7 @@ module React
           def get_derived_state_from_props(&block)
             %x{
               var fun = function(props, state) {
-                Opal.React.active_redux_components.push(this.__ruby_instance);
+                Opal.React.active_redux_components.push(this);
                 var result = #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: props})`,
                                                                      `Opal.React.Component.State.$new({state: state})`, &block)};
                 Opal.React.active_redux_components.pop();
@@ -97,7 +97,7 @@ module React
           def get_snapshot_before_update(&block)
             %x{
               var fun = function(prev_props, prev_state) {
-
+                Opal.React.active_redux_components.push(this);
                 var result = #{`this.__ruby_instance`.instance_exec(`Opal.React.Component.Props.$new({props: prev_props})`,
                                                                     `Opal.React.Component.State.$new({state: prev_state})`, &block)};
                 Opal.React.active_redux_components.pop();

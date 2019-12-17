@@ -6,7 +6,12 @@ module LucidMaterial
         %x{
           base.store_updates = true;
           base.equality_checker = null;
-          base.instance_init = function(initial) { return { instance: #{base.new(`{}`)} }; }
+          base.instance_init = function(initial) {
+            let ruby_instance = { instance: #{base.new(`{}`)} };
+            ruby_instance.data_access = function() { return this.props.store; }
+            ruby_instance.data_access.bind(ruby_instance);
+            return ruby_instance;
+          }
           base.instance_reducer = function(state, action) { return state; }
           base.react_component = Opal.global.React.memo(function(props) {
             const og = Opal.global;

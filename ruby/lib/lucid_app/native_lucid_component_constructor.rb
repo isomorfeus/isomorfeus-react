@@ -63,7 +63,7 @@ module LucidApp
             oper.render_buffer.push([]);
             // console.log("lucid app pushed", oper.render_buffer, oper.render_buffer.toString());
             oper.active_components.push(this);
-            oper.active_redux_components.push(this.__ruby_instance);
+            oper.active_redux_components.push(this);
             let block_result;
             if (base.preload_block && base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
             else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
