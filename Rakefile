@@ -1,3 +1,4 @@
+require 'bundler'
 require 'bundler/cli'
 require 'bundler/cli/exec'
 
