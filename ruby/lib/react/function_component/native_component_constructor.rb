@@ -4,7 +4,11 @@ module React
       def self.extended(base)
         component_name = base.to_s
         %x{
-          base.instance_init = function(initial) { return { instance: #{base.new(`{}`)} }; }
+          base.instance_init = function(initial) {
+            let ruby_state = { instance: #{base.new(`{}`)} };
+            ruby_state.instance.__ruby_instance = ruby_state.instance;
+            return ruby_state;
+          }
           base.instance_reducer = function(state, action) { return state; }
           base.react_component = function(props) {
             const oper = Opal.React;
