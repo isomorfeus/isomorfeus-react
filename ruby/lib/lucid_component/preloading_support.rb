@@ -12,22 +12,16 @@ module LucidComponent
         end
 
         def while_loading(option = nil, &block)
-          if option == :except_ssr
-            `base.except_ssr = true;`
-            block = if on_ssr?
-                      proc { instance_exec(&`base.render_block`) }
-                    else
-                      given_block = block
-                      proc do
-                        %x{
-                          let query = "[data-ssrhelper='" + #{self.class.to_s} + "']";
-                          let el = document.querySelector(query);
-                          if (el) { return { danger: true, html: el.innerHTML }; }
-                          else { return #{instance_exec(&given_block)};
-                          }
-                        }
-                      end
-                    end
+          if on_ssr?
+            given_block = block
+            block = proc {
+              promise = instance_exec(&`base.preload_block`)
+              if promise.resolved?
+                instance_exec(&`base.render_block`)
+              else
+                instance_exec(&given_block)
+              end
+            }
           end
           `base.while_loading_block = block`
         end
