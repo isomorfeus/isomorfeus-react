@@ -37,7 +37,13 @@ module React
         if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
           let handler = ruby_style_props['$[]'](key);
           if (typeof handler === "function") {
-            result[Opal.React.lower_camelize(key)] = handler;
+            let active_c = self.active_component();
+            result[Opal.React.lower_camelize(key)] = function(event, info) {
+              let ruby_event;
+              if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+              else { #{ruby_event = `event`}; }
+              #{`active_c.__ruby_instance`.instance_exec(ruby_event, `info`, &`handler`)};
+            }
           } else {
             let active_component = Opal.React.active_component();
             result[Opal.React.lower_camelize(key)] = active_component[handler];

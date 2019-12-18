@@ -9,6 +9,7 @@ module React
         event_handlers << name
         %x{
           var fun = function(event, info) {
+            let ruby_event;
             if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
             else { #{ruby_event = `event`}; }
             #{`this.__ruby_instance`.instance_exec(ruby_event, `info`, &block)};
