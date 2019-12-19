@@ -1,5 +1,18 @@
 module Isomorfeus
   module ReactViewHelper
+    def cached_mount_component(component_name, props = {}, asset = 'application_ssr.js')
+      key = "#{component_name}#{props}#{asset}"
+      if Isomorfeus.production? && component_cache.key?(key)
+        render_result = component_cache[key][:render_result]
+        @ssr_response_status = component_cache[key][:ssr_response_status]
+        @sst_styles = component_cache[key][:ssr_styles]
+      else
+        render_result = mount_component(component_name, props, asset)
+        component_cache[key] = { render_result: render_result, ssr_response_status: ssr_response_status, ssr_styles: ssr_styles }
+      end
+      render_result
+    end
+
     def mount_component(component_name, props = {}, asset = 'application_ssr.js')
       @ssr_response_status = nil
       @ssr_styles = nil
@@ -153,12 +166,16 @@ module Isomorfeus
 
         # build result
         render_result << " data-iso-hydrated='true'" if rendered_tree
-        render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        # render_result << " data-iso-nloc='#{props[:locale]}' data-iso-state='#{Oj.dump(application_state, mode: :strict)}'>"
+        render_result << " data-iso-nloc='#{props[:locale]}'>"
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
         render_result << " data-iso-nloc='#{props[:locale]}'>"
       end
       render_result << '</div>'
+      if Isomorfeus.server_side_rendering
+        render_result = "<script type='application/javascript'>\nServerSideRenderingStateJSON = #{Oj.dump(application_state, mode: :strict)}\n</script>\n" << render_result
+      end
       render_result
     end
 
@@ -168,6 +185,12 @@ module Isomorfeus
 
     def ssr_styles
       @ssr_styles || ''
+    end
+
+    private
+
+    def component_cache
+      Thread.current[:component_cache] ||= {}
     end
   end
 end
