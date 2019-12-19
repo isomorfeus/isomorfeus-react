@@ -47,6 +47,7 @@ module LucidApp
                 this[ref] = Opal.global.React.createRef();
               }
             }
+            if (base.preload_block) { this.state.preloaded = this.__ruby_instance.$execute_preload_block(); }
             this.listener = this.listener.bind(this);
             this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
           }
@@ -65,7 +66,7 @@ module LucidApp
             oper.active_components.push(this);
             oper.active_redux_components.push(this);
             let block_result;
-            if (base.preload_block && base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
+            if (base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
             else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
             if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
             oper.active_redux_components.pop();
