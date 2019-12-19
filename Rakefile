@@ -83,8 +83,8 @@ end
 
 task :push_ruby_packages do
   Rake::Task['push_ruby_packages_to_rubygems'].invoke
-  Rake::Task['push_ruby_packages_to_github'].invoke
   Rake::Task['push_ruby_packages_to_isomorfeus'].invoke
+  Rake::Task['push_ruby_packages_to_github'].invoke
 end
 
 task :push_ruby_packages_to_rubygems do
@@ -96,5 +96,7 @@ task :push_ruby_packages_to_github do
 end
 
 task :push_ruby_packages_to_isomorfeus do
-  system("gem inabox ruby/isomorfeus-react-#{React::VERSION}.gem --host http://localhost:5555/")
+  Bundler.with_original_env do
+    system("gem inabox ruby/isomorfeus-react-#{React::VERSION}.gem --host http://localhost:5555/")
+  end
 end
