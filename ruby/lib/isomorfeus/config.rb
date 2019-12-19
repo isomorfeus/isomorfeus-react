@@ -28,6 +28,10 @@ module Isomorfeus
         client_init_class_names << init_class_name
       end
 
+      def add_client_init_after_store_class_name(init_class_name)
+        client_init_after_store_class_names << init_class_name
+      end
+
       def add_client_option(key, value = nil)
         self.class.attr_accessor(key)
         self.send("#{key}=", value)
@@ -46,6 +50,12 @@ module Isomorfeus
 
       def execute_init_classes
         client_init_class_names.each do |constant|
+          constant.constantize.send(:init)
+        end
+      end
+
+      def execute_init_after_store_classes
+        client_init_after_store_class_names.each do |constant|
           constant.constantize.send(:init)
         end
       end
@@ -97,6 +107,7 @@ module Isomorfeus
     end
 
     self.add_client_option(:client_init_class_names, [])
+    self.add_client_option(:client_init_after_store_class_names, [])
   else
     class << self
       attr_accessor :server_side_rendering
