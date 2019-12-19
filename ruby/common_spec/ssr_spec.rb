@@ -11,14 +11,12 @@ RSpec.describe 'Server Side Rendering' do
 
   it 'save the application state for the client' do
     skip unless Isomorfeus.server_side_rendering
-    node = @doc.find('[data-iso-state]')
-    expect(node).to be_truthy
-    state_json = node.get_attribute('data-iso-state')
+    state_json = @doc.evaluate_script('JSON.stringify(ServerSideRenderingStateJSON)')
     state = Oj.load(state_json, mode: :strict)
     expect(state).to have_key('application_state')
     expect(state).to have_key('component_state')
     expect(state).to have_key('component_class_state')
-    
+
     expect(state['application_state']).to have_key('a_value')
     expect(state['application_state']['a_value']).to eq('application store works')
     expect(state['component_class_state']).to have_key('HelloComponent')
@@ -32,14 +30,12 @@ RSpec.describe 'Server Side Rendering' do
   it 'save the application state for the client, also on subsequent renders' do
     skip unless Isomorfeus.server_side_rendering
     # just the same as above, just a second time, just to see if the store is initialized correctly
-    node = @doc.find('[data-iso-state]')
-    expect(node).to be_truthy
-    state_json = node.get_attribute('data-iso-state')
+    state_json = @doc.evaluate_script('JSON.stringify(ServerSideRenderingStateJSON)')
     state = Oj.load(state_json, mode: :strict)
     expect(state).to have_key('application_state')
     expect(state).to have_key('component_state')
     expect(state).to have_key('component_class_state')
-    
+
     expect(state['application_state']).to have_key('a_value')
     expect(state['application_state']['a_value']).to eq('application store works')
     expect(state['component_class_state']).to have_key('HelloComponent')
