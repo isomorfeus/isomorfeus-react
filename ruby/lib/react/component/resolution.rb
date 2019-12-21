@@ -75,8 +75,8 @@ module React
           if (component_type === "function" || component_type === "object") {
             component = Opal.global[component_name];
           } else {
-            var modules = self.$class().$to_s().split("::");
-            var modules_length = modules.length - 1;
+            var modules = self.$to_s().split("::");
+            var modules_length = modules.length;
             var module;
             var constant;
             for (var i = modules_length; i > 0; i--) {

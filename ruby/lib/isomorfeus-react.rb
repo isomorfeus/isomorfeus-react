@@ -103,7 +103,6 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_component/initializer'
   require 'lucid_component/native_lucid_component_constructor'
   require 'lucid_component/native_component_constructor'
-  require 'lucid_component/preloading_support'
   require 'lucid_component/mixin'
   require 'lucid_component/base'
 
@@ -113,6 +112,10 @@ if RUBY_ENGINE == 'opal'
   require 'lucid_app/native_component_constructor'
   require 'lucid_app/mixin'
   require 'lucid_app/base'
+
+  class Object
+    include React::Component::Resolution
+  end
 
   require 'react/vivify_module'
 
