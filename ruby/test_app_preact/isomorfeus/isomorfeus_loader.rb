@@ -38,7 +38,6 @@ IR_REQUIRE_TIME = (Time.now - start) * 1000
 }
 
 require_tree 'components', :autoload
-require 'components/hello_component' # have to load in advance to make store work for SSR
 
 Isomorfeus.start_app!
 IR_LOAD_TIME = (Time.now - start) * 1000

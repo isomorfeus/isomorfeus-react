@@ -1,4 +1,4 @@
-module React
+module Isomorfeus
   class VivifyModule < ::Module
     # this is required for autoloading support, as the component may not be loaded and so its method is not registered.
     # must load it first, done by const_get, and next time the method will be there.
