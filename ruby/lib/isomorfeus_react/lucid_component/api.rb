@@ -1,5 +1,5 @@
 module LucidComponent
-  module API
+  module Api
     def self.included(base)
       base.instance_exec do
         # store

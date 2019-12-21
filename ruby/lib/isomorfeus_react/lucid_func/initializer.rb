@@ -3,9 +3,9 @@ module LucidFunc
     def initialize
       self.JS[:native_props] = `{ props: null }`
       @native_props = `Opal.React.Component.Props.$new(#{self})`
-      @app_store = `Opal.LucidComponent.AppStoreProxy.$new(#{self})`
-      @class_store = `Opal.LucidComponent.ClassStoreProxy.$new(#{self})`
-      @store = `Opal.LucidComponent.InstanceStoreProxy.$new(#{self})`
+      @app_store = LucidComponent::AppStoreProxy.new(self)
+      @class_store = LucidComponent::ClassStoreProxy.new(self)
+      @store = LucidComponent::InstanceStoreProxy.new(self)
       event_handlers = self.class.event_handlers
       event_handler_source = self.class
       %x{

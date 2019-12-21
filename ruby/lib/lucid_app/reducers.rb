@@ -1,4 +1,4 @@
-module LucidComponent
+module LucidApp
   module Reducers
     class << self
       attr_reader :component_reducers_added

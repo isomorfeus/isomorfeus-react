@@ -1,6 +1,6 @@
 module React
   module FunctionComponent
-    module API
+    module Api
       def props
         @native_props
       end

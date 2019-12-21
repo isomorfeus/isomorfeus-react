@@ -2,7 +2,7 @@ if RUBY_ENGINE == 'opal'
   # require 'opal'
   # require 'native'
   # require 'promise'
-  # rely on i-redux to have included above reqiorements
+  # rely on i-redux to have included above requirements
   require 'isomorfeus-redux'
   require 'active_support/core_ext/string'
   require 'zeitwerk'
@@ -50,21 +50,20 @@ if RUBY_ENGINE == 'opal'
   require 'react/native_constant_wrapper'
 
   # Function Component
-  require 'react/function_component/resolution'
-  require 'react/function_component/initializer'
-  require 'react/function_component/api'
-  require 'react/function_component/event_handler'
-  require 'react/function_component/native_component_constructor'
-  require 'react/function_component/mixin'
-  require 'react/function_component/base'
-  require 'react/memo_component/native_component_constructor'
-  require 'react/memo_component/mixin'
-  require 'react/memo_component/base'
+  #require 'react/function_component/resolution'
+  #require 'react/function_component/initializer'
+  #require 'react/function_component/api'
+  #require 'react/function_component/event_handler'
+  #require 'react/function_component/native_component_constructor'
+  #require 'react/function_component/mixin'
+  #require 'react/function_component/base'
+  #require 'react/memo_component/native_component_constructor'
+  #require 'react/memo_component/mixin'
+  #require 'react/memo_component/base'
 
   # React::Component
   require 'react/component/api'
   require 'react/component/callbacks'
-  # require 'react/component/unsafe_api'
   require 'react/component/initializer'
   require 'react/component/native_component_constructor'
   require 'react/component/state'
@@ -78,51 +77,55 @@ if RUBY_ENGINE == 'opal'
   require 'react/component/base'
 
   # init component reducers
-  require 'lucid_component/reducers'
-  LucidComponent::Reducers.add_component_reducers_to_store
+  require 'lucid_app/reducers'
+  LucidApp::Reducers.add_component_reducers_to_store
 
   # init LucidApplicationContext (Store Provider and Consumer)
   require 'lucid_app/context'
   LucidApp::Context.create_application_context
 
   # LucidFunc
-  require 'lucid_func/initializer'
-  require 'lucid_func/native_component_constructor'
-  require 'lucid_func/mixin'
-  require 'lucid_func/base'
+  #require 'lucid_func/initializer'
+  #require 'lucid_func/native_component_constructor'
+  #require 'lucid_func/mixin'
+  #require 'lucid_func/base'
 
   # LucidComponent
-  require 'lucid_component/environment_support'
-  require 'lucid_component/api'
-  require 'lucid_component/app_store_defaults'
-  require 'lucid_component/component_class_store_defaults'
-  require 'lucid_component/component_instance_store_defaults'
-  require 'lucid_component/app_store_proxy'
-  require 'lucid_component/class_store_proxy'
-  require 'lucid_component/instance_store_proxy'
-  require 'lucid_component/initializer'
-  require 'lucid_component/native_lucid_component_constructor'
-  require 'lucid_component/native_component_constructor'
-  require 'lucid_component/mixin'
-  require 'lucid_component/base'
+  #require 'lucid_component/environment_support'
+  #require 'lucid_component/api'
+  #require 'lucid_component/app_store_defaults'
+  #require 'lucid_component/component_class_store_defaults'
+  #require 'lucid_component/component_instance_store_defaults'
+  #require 'lucid_component/app_store_proxy'
+  #require 'lucid_component/class_store_proxy'
+  #require 'lucid_component/instance_store_proxy'
+  #require 'lucid_component/initializer'
+  #require 'lucid_component/native_lucid_component_constructor'
+  #require 'lucid_component/native_component_constructor'
+  #require 'lucid_component/mixin'
+  #require 'lucid_component/base'
 
   # LucidApp
-  require 'lucid_app/api'
-  require 'lucid_app/native_lucid_component_constructor'
-  require 'lucid_app/native_component_constructor'
-  require 'lucid_app/mixin'
-  require 'lucid_app/base'
+  #require 'lucid_app/api'
+  #require 'lucid_app/native_lucid_component_constructor'
+  #require 'lucid_app/native_component_constructor'
+  #require 'lucid_app/mixin'
+  #require 'lucid_app/base'
 
   class Object
     include React::Component::Resolution
   end
 
-  require 'react/vivify_module'
+  # require 'isomorfeus/vivify_module'
 
   Isomorfeus.zeitwerk = Zeitwerk::Loader.new
+  # Isomorfeus.zeitwerk.vivify_mod_dir = 'components/'
+  # Isomorfeus.zeitwerk.vivify_mod_class = Isomorfeus::VivifyModule
+
+  Isomorfeus.zeitwerk.push_dir('isomorfeus_react')
+  require_tree 'isomorfeus_react', :autoload
+
   Isomorfeus.zeitwerk.push_dir('components')
-  Isomorfeus.zeitwerk.vivify_mod_dir = 'components/'
-  Isomorfeus.zeitwerk.vivify_mod_class = React::VivifyModule
 else
   require 'oj'
   require 'opal'

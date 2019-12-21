@@ -1,5 +1,5 @@
 module LucidApp
-  module API
+  module Api
     def self.included(base)
       base.instance_exec do
         def theme(theme_hash = nil, &block)

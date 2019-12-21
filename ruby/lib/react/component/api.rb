@@ -1,6 +1,6 @@
 module React
   module Component
-    module API
+    module Api
       def self.included(base)
         base.instance_exec do
           base_module = base.to_s.deconstantize

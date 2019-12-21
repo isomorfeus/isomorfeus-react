@@ -1,17 +1,18 @@
-module LucidComponent
+module LucidApp
   module Mixin
     def self.included(base)
       base.include(::Native::Wrapper)
-      base.extend(::LucidComponent::NativeLucidComponentConstructor)
-      base.extend(::LucidComponent::NativeComponentConstructor)
+      base.extend(::LucidApp::NativeLucidComponentConstructor)
+      base.extend(::LucidApp::NativeComponentConstructor)
       base.extend(::LucidPropDeclaration::Mixin)
       base.extend(::React::Component::EventHandler)
       base.extend(::LucidComponent::EnvironmentSupport)
       base.include(::LucidComponent::EnvironmentSupport)
       base.include(::React::Component::Elements)
-      base.include(::React::Component::API)
+      base.include(::React::Component::Api)
       base.include(::React::Component::Callbacks)
-      base.include(::LucidComponent::API)
+      base.include(::LucidComponent::Api)
+      base.include(::LucidApp::Api)
       base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)
       base.include(::React::Component::Resolution)
