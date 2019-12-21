@@ -62,34 +62,36 @@ module React
     };
 
     self.internal_prepare_args_and_render = function(component, args, block) {
+      let operain = Opal.React.internal_render;
       if (args.length > 0) {
         let last_arg = args[args.length - 1];
         if (last_arg && last_arg.constructor === String) {
-          if (args.length === 1) { return Opal.React.internal_render(component, null, last_arg, null); }
-          else { Opal.React.internal_render(component, args[0], last_arg, null); }
-        } else { Opal.React.internal_render(component, args[0], null, block); }
-      } else { Opal.React.internal_render(component, null, null, block); }
+          if (args.length === 1) { return operain(component, null, last_arg, null); }
+          else { operain(component, args[0], last_arg, null); }
+        } else { operain(component, args[0], null, block); }
+      } else { operain(component, null, null, block); }
     };
 
     self.internal_render = function(component, props, string_child, block) {
+      let operabu = Opal.React.render_buffer;
       let children;
       let native_props = null;
       if (string_child) {
         children = string_child;
       } else if (block && block !== nil) {
-        Opal.React.render_buffer.push([]);
+        operabu.push([]);
         // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call();
         if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-          Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
+          operabu[operabu.length - 1].push(block_result);
         }
         // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        children = Opal.React.render_buffer.pop();
+        children = operabu.pop();
         if (children.length === 1) { children = children[0]; }
         else if (children.length === 0) { children = null; }
       }
       if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
-      Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(Opal.global.React.createElement(component, native_props, children));
+      operabu[operabu.length - 1].push(Opal.global.React.createElement(component, native_props, children));
     };
 
     self.active_components = [];

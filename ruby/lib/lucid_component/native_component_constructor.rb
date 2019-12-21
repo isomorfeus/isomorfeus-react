@@ -8,16 +8,17 @@ module LucidComponent
       # language=JS
       %x{
         base.react_component = function(props) {
+          let opag = Opal.global;
           let classes = null;
           let store;
-          if (base.store_updates) { store = Opal.global.React.useContext(Opal.global.LucidApplicationContext); }
-          let theme = Opal.global.ReactJSS.useTheme();
+          if (base.store_updates) { store = opag.React.useContext(opag.LucidApplicationContext); }
+          let theme = opag.ReactJSS.useTheme();
           if (base.jss_styles) {
             if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
               let styles;
               if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
               else { styles = base.jss_styles; }
-              base.use_styles = Opal.global.ReactJSS.createUseStyles(styles);
+              base.use_styles = opag.ReactJSS.createUseStyles(styles);
             }
             classes = base.use_styles();
           }
@@ -25,7 +26,7 @@ module LucidComponent
           new_props.classes = classes;
           new_props.theme = theme;
           new_props.store = store;
-          return Opal.global.React.createElement(base.lucid_react_component, new_props);
+          return opag.React.createElement(base.lucid_react_component, new_props);
         }
         base.react_component.displayName = #{component_name};
       }

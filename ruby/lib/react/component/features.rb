@@ -14,20 +14,21 @@ module React
           element = element_or_query
         end
         %x{
-          Opal.React.render_buffer.push([]);
-          // console.log("portal pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+          let operabu = Opal.React.render_buffer;
+          operabu.push([]);
+          // console.log("portal pushed", operabu, operabu.toString());
           if (block !== nil) {
             let block_result = block.$call()
-            let last_buffer_length = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].length;
-            let last_buffer_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1][last_buffer_length - 1];
+            let last_buffer_length = operabu[operabu.length - 1].length;
+            let last_buffer_element = operabu[operabu.length - 1][last_buffer_length - 1];
             if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-              Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
+              operabu[operabu.length - 1].push(block_result);
             }
           }
-          // console.log("portal popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-          var react_element = Opal.global.React.createPortal(Opal.React.render_buffer.pop(), element);
-          Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
-          // console.log("portal pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+          // console.log("portal popping", operabu, operabu.toString());
+          var react_element = Opal.global.React.createPortal(operabu.pop(), element);
+          operabu[operabu.length - 1].push(react_element);
+          // console.log("portal pushed", operabu, operabu.toString());
         }
       end
 

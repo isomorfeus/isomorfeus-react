@@ -9,6 +9,7 @@ module React
     def Consumer(*args, &block)
       # why not use internal_prepare_args and render?
       %x{
+        let operabu = Opal.React.render_buffer;
         let props = null;
 
         if (args.length > 0) { props = Opal.React.to_native_react_props(args[0]); }
@@ -16,20 +17,20 @@ module React
         let react_element = Opal.global.React.createElement(this.native.Consumer, props, function(value) {
           let children = null;
           if (block !== nil) {
-            Opal.React.render_buffer.push([]);
-            // console.log("consumer pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+            operabu.push([]);
+            // console.log("consumer pushed", operabu, operabu.toString());
             let block_result = block.$call();
             if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-              Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
+              operabu[operabu.length - 1].push(block_result);
             }
-            // console.log("consumer popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-            children = Opal.React.render_buffer.pop();
+            // console.log("consumer popping", operabu, operabu.toString());
+            children = operabu.pop();
             if (children.length == 1) { children = children[0]; }
             else if (children.length == 0) { children = null; }
           }
           return children;
         });
-        Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(react_element);
+        operabu[operabu.length - 1].push(react_element);
       }
     end
 
