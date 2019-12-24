@@ -97,9 +97,10 @@ module Isomorfeus
               `Opal.global.deepForceUpdate(#{Isomorfeus.top_component})`
             end
           end
-        rescue
+        rescue Exception => e
           # TODO try mount first
           # if it fails
+          `console.error("force_render failed'! Error: " + #{e.message} + "! Reloading page.")`
           `location.reload()` if on_browser?
         end
         nil
