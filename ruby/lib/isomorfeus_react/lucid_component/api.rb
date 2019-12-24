@@ -67,7 +67,12 @@ module LucidComponent
         def preload(&block)
           `base.preload_block = block`
           component_did_mount do
-            @_preload_promise.then { self.state.preloaded = true } unless self.state.preloaded
+            unless self.state.preloaded
+              @_preload_promise.then { self.state.preloaded = true }.fail do |result|
+                err_text = "#{self.class.name}: preloading failed, last result: #{result.nil? ? 'nil' : result}!"
+                `console.error(err_text)`
+              end
+            end
           end
         end
 
