@@ -10,6 +10,7 @@ module LucidApp
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
+            const oper = Opal.React;
             if (base.$default_state_defined()) {
               this.state = base.$state().$to_n();
             } else {
@@ -39,7 +40,7 @@ module LucidApp
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {
                 this[ref] = function(element) {
-                  element = Opal.React.native_element_or_component_to_ruby(element);
+                  element = oper.native_element_or_component_to_ruby(element);
                   #{`this.__ruby_instance`.instance_exec(`element`, &`defined_refs[ref]`)}
                 }
                 this[ref] = this[ref].bind(this);
@@ -47,7 +48,11 @@ module LucidApp
                 this[ref] = Opal.global.React.createRef();
               }
             }
-            if (base.preload_block) { this.state.preloaded = this.__ruby_instance.$execute_preload_block(); }
+            if (base.preload_block) {
+              oper.active_redux_components.push(this);
+              this.state.preloaded = this.__ruby_instance.$execute_preload_block();
+              oper.active_redux_components.pop();
+            }
             this.listener = this.listener.bind(this);
             this.unsubscriber = Opal.Isomorfeus.store.native.subscribe(this.listener);
           }
@@ -60,7 +65,6 @@ module LucidApp
           }
           render() {
             const oper = Opal.React;
-            this.context = this.state.isomorfeus_store_state;
             oper.render_buffer.push([]);
             // console.log("lucid app pushed", oper.render_buffer, oper.render_buffer.toString());
             oper.active_components.push(this);
@@ -75,7 +79,7 @@ module LucidApp
             return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, oper.render_buffer.pop());
           }
           data_access() {
-            return this.context;
+            this.state.isomorfeus_store_state;
           }
           listener() {
             let next_state = Opal.Isomorfeus.store.native.getState();

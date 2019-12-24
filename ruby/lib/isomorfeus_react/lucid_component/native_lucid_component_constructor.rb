@@ -10,6 +10,7 @@ module LucidComponent
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
             super(props);
+            const oper = Opal.React;
             if (base.$default_state_defined()) {
               this.state = base.$state().$to_n();
             } else {
@@ -29,7 +30,7 @@ module LucidComponent
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {
                 this[ref] = function(element) {
-                  element = Opal.React.native_element_or_component_to_ruby(element);
+                  element = oper.native_element_or_component_to_ruby(element);
                   #{`this.__ruby_instance`.instance_exec(`element`, &`defined_refs[ref]`)}
                 }
                 this[ref] = this[ref].bind(this);
@@ -37,7 +38,11 @@ module LucidComponent
                 this[ref] = Opal.global.React.createRef();
               }
             }
-            if (base.preload_block) { this.state.preloaded = this.__ruby_instance.$execute_preload_block(); }
+            if (base.preload_block) {
+              oper.active_redux_components.push(this);
+              this.state.preloaded = this.__ruby_instance.$execute_preload_block();
+              oper.active_redux_components.pop();
+            }
           }
           static get displayName() {
             return #{component_name};
