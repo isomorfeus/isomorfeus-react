@@ -47,6 +47,7 @@ module Isomorfeus
             rescue Exception => e
               if  !@tried_another_time
                 @tried_another_time = true
+                `console.warn("Deferring mount: " + #{e.message})`
                 `setTimeout(Opal.Isomorfeus.TopLevel['$mount!'], 250)`
               else
                 `console.error("Unable to mount '" + #{component_name} + "'! Error: " + #{e.message} + "!")`
