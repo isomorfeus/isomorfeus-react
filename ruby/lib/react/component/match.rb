@@ -4,7 +4,7 @@ module React
       include ::Native::Wrapper
 
       def method_missing(prop, *args, &block)
-        @native.JS[:props].JS[:match].JS[prop]
+        @native.JS[:props].JS[:match].JS[:params].JS[prop]
       end
 
       def is_exact
