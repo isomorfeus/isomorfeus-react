@@ -31,7 +31,7 @@ module React
       def history
         return @history if @history
         return nil if `typeof #@native.props.history === 'undefined'`
-        if `typeof #@native.props.history.pathname !== 'undefined'`
+        if `typeof #@native.props.history.action !== 'undefined'`
           @history = React::Component::History.new(@native)
         else
           @native.JS[:props].JS[:history]
