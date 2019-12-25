@@ -7,6 +7,10 @@ module React
         @native.JS[:props].JS[:history].JS.block(prompt)
       end
 
+      def create_href(location)
+        @native.JS[:props].JS[:history].JS.createHref(location)
+      end
+
       def go(n)
         @native.JS[:props].JS[:history].JS.go(n)
       end
