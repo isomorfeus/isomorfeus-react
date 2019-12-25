@@ -14,25 +14,28 @@ global.Route = Route;
 global.Switch = Switch;
 ```
 Only import whats needed, or import HashRouter instead of BrowserRouter.
-Then the Router components can be used as an other component:
+Then the Router components can be used:
 ```ruby
 class RouterComponent < React::Component::Base
   render do
     DIV do
-      # The location prop is for SSR when using StaticRouter:
-      # import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';  
-      # global.Router = StaticRouter
+      # The location prop is important for SSR when using StaticRouter:
       Router(location: props.location) do
         Switch do
-          Route(path: '/my_path/:id', exact: true, component: MyOtherComponent.JS[:react_component])
-          Route(path: '/', strict: true, component: MyCompnent.JS[:react_component])
+          Route(path: '/my_path/:id', exact: true, component: component_fun('MyOtherComponent'))
+          Route(path: '/', strict: true, component: component_fun('MyComponent', another_prop: 'test')) # <- passing additional prop
         end
       end
     end
   end
 end
 ```
-The Javascript React components of the ruby class must be passed as shown above. The child components then get the Router props
+The `component_fun` method creates a small wrapper component that ensures the component constant is only autoloaded when actually being rendered.
+In addition to that, it allows for passing additional props to the component, besides the react router props.
+
+#### Props
+
+The child components then get the Router props
 (match, history, location) passed in their props. They can be accessed like this:
 ```ruby
 class MyOtherComponent < React::Component::Base
@@ -56,3 +59,12 @@ class MyOtherComponent < React::Component::Base
 end
 ```
 Otherwise the React Router documentation applies: https://reacttraining.com/react-router/
+
+#### Server Side Rendering
+
+For Server Side Rendering the StaticRouter must be used. Import:
+
+```javascript
+import { StaticRouter, Link, NavLink, Route, Switch } from 'react-router-dom';  
+global.Router = StaticRouter
+```
