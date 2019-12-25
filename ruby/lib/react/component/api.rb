@@ -67,6 +67,16 @@ module React
         end
       end
 
+      def component_fun(class_name, **ruby_props)
+        %x{
+          return function(props) {
+            let outer_props = Opal.React.to_native_react_props(#{ruby_props});
+            let new_props = Object.assign({}, props, outer_props);
+            return Opal.global.React.createElement(#{class_name.constantize}.react_component, new_props)
+          }
+        }
+      end
+
       def get_react_element(arg, &block)
         if block_given?
           # execute block, fetch last element from buffer
