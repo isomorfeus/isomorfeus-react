@@ -66,5 +66,5 @@ For Server Side Rendering the StaticRouter must be used. Import:
 
 ```javascript
 import { StaticRouter, Link, NavLink, Route, Switch } from 'react-router-dom';  
-global.Router = StaticRouter
+global.Router = StaticRouter;
 ```
