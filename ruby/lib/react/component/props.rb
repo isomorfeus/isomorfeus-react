@@ -16,11 +16,11 @@ module React
       end
 
       def classes
-        @classes ||= `Opal.React.Component.Styles.$new(#@native, 'classes')`
+        @classes ||= React::Component::Styles.new(@native, 'classes')
       end
 
       def theme
-        @theme ||= `Opal.React.Component.Styles.$new(#@native, 'theme')`
+        @theme ||= React::Component::Styles.new(@native, 'theme')
       end
 
       def isomorfeus_store
@@ -29,27 +29,30 @@ module React
 
       # for router convenience
       def history
+        return @history if @history
         return nil if `typeof #@native.props.history === 'undefined'`
         if `typeof #@native.props.history.pathname !== 'undefined'`
-          React::Component::History.new(@native.JS[:props].JS[:history])
+          @history = React::Component::History.new(@native)
         else
           @native.JS[:props].JS[:history]
         end
       end
 
       def location
+        return @location if @location
         return nil if `typeof #@native.props.location === 'undefined'`
         if `typeof #@native.props.location.pathname !== 'undefined'`
-          React::Component::Location.new(@native.JS[:props].JS[:location])
+          @location = React::Component::Location.new(@native)
         else
           @native.JS[:props].JS[:location]
         end
       end
 
       def match
+        return @match if @match
         return nil if `typeof #@native.props.match === 'undefined'`
         if `typeof #@native.props.match.path !== 'undefined'`
-          React::Component::Match.new(@native.JS[:props].JS[:match])
+          @match = React::Component::Match.new(@native)
         else
           @native.JS[:props].JS[:match]
         end

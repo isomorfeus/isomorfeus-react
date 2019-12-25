@@ -3,33 +3,58 @@ module React
     class History
       include ::Native::Wrapper
 
-      alias_native :block, :block
-      alias_native :create_href, :createHref
-      alias_native :go, :go
-      alias_native :go_back, :goBack
-      alias_native :go_forward, :goForward
-      alias_native :listen, :listen
-      alias_native :push, :push
-      alias_native :replace, :replace
+      def block(prompt)
+        @native.JS[:props].JS[:history].JS.block(prompt)
+      end
 
-      alias _react_component_hitory_original_method_missing method_missing
+      def go(n)
+        @native.JS[:props].JS[:history].JS.go(n)
+      end
+
+      def go_back
+        @native.JS[:props].JS[:history].JS.goBack()
+      end
+
+      def go_forward
+        @native.JS[:props].JS[:history].JS.goForward()
+      end
+
+      def push(*args)
+        @native.JS[:props].JS[:history].JS.push(*args)
+      end
+
+      def replace(*args)
+        @native.JS[:props].JS[:history].JS.replace(*args)
+      end
 
       def method_missing(prop, *args, &block)
-        @native.JS[:params].JS[prop]
+        @native.JS[:props].JS[:history].JS[prop]
+      end
+
+      def listen(&block)
+        fun = nil
+        %x{
+          fun = function(location, action) {
+            let ruby_location = #{React::Component::Location.new(`{ props: { location: location }}`)}
+            block.$call(ruby_location, action);
+          }
+        }
+        unlisten = @native.JS[:props].JS[:history].JS.listen(fun)
+        -> { unlisten.JS.call() }
       end
 
       def location
         return @location if @location
-        return nil unless @native.JS[:props].JS[:location]
-        if @native.JS[:props].JS[:location].JS[:pathname]
-          @location = React::Component::Location.new(@native.JS[:props].JS[:location])
+        return nil unless @native.JS[:props].JS[:history].JS[:location]
+        if @native.JS[:props].JS[:history].JS[:location].JS[:pathname]
+          @location = React::Component::Location.new(@native)
         else
-          @native.JS[:props].JS[:location]
+          @native.JS[:props].JS[:history].JS[:location]
         end
       end
 
       def to_n
-        @native
+        @native.JS[:props].JS[:history]
       end
     end
   end

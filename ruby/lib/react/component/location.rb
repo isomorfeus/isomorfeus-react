@@ -4,7 +4,7 @@ module React
       include ::Native::Wrapper
 
       def method_missing(prop, *args, &block)
-        @native.JS[:params].JS[prop]
+        @native.JS[:props].JS[:location].JS[prop]
       end
 
       def to_n

@@ -4,11 +4,11 @@ module React
       include ::Native::Wrapper
 
       def method_missing(prop, *args, &block)
-        @native.JS[:params].JS[prop]
+        @native.JS[:props].JS[:match].JS[prop]
       end
 
       def is_exact
-        @native.JS[:isExact]
+        @native.JS[:props].JS[:match].JS[:isExact]
       end
 
       def params
@@ -16,15 +16,15 @@ module React
       end
 
       def path
-        @native.JS[:path]
+        @native.JS[:props].JS[:match].JS[:path]
       end
 
       def url
-        @native.JS[:url]
+        @native.JS[:props].JS[:match].JS[:url]
       end
 
       def to_n
-        @native
+        @native.JS[:props].JS[:match]
       end
     end
   end
