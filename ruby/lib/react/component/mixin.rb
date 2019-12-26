@@ -11,7 +11,6 @@ module React
         base.include(::React::Component::Callbacks)
         base.include(::React::Component::Initializer)
         base.include(::React::Component::Features)
-        base.include(::React::Component::Resolution)
       end
     end
   end

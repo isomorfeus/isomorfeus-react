@@ -8,7 +8,7 @@ module React
           def const_missing(const_name)
             # language=JS
             %x{
-              if (typeof Opal.global[const_name] === "object") {
+              if (typeof Opal.global[const_name] !== "undefined" && (const_name[0] === const_name[0].toUpperCase())) {
                 var new_const = #{React::NativeConstantWrapper.new(`Opal.global[const_name]`, const_name)};
                 #{Object.const_set(const_name, `new_const`)};
                 return new_const;
@@ -20,7 +20,10 @@ module React
 
           # this is required for autoloading support, as the component may not be loaded and so its method is not registered.
           # must load it first, done by const_get, and next time the method will be there.
-          alias _react_component_class_resolution_original_method_missing method_missing
+
+          unless method_defined?(:_react_component_class_resolution_original_method_missing)
+            alias _react_component_class_resolution_original_method_missing method_missing
+          end
 
           def method_missing(component_name, *args, &block)
             # check for ruby component and render it
@@ -60,8 +63,9 @@ module React
         end
       end
 
-
-      alias _react_component_resolution_original_method_missing method_missing
+      unless method_defined?(:_react_component_resolution_original_method_missing)
+        alias _react_component_resolution_original_method_missing method_missing
+      end
 
       def method_missing(component_name, *args, &block)
         # html tags are defined as methods, so they will not end up here.
@@ -71,8 +75,7 @@ module React
         # language=JS
         %x{
           var component = null;
-          var component_type = typeof Opal.global[component_name];
-          if (component_type === "function" || component_type === "object") {
+          if (typeof Opal.global[component_name] !== "undefined" && (component_name[0] === component_name[0].toUpperCase())) {
             component = Opal.global[component_name];
           } else {
             var modules = self.$to_s().split("::");

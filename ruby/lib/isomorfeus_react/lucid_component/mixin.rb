@@ -14,7 +14,6 @@ module LucidComponent
       base.include(::LucidComponent::Api)
       base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)
-      base.include(::React::Component::Resolution)
     end
   end
 end
