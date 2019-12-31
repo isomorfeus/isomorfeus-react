@@ -8,7 +8,10 @@ module Isomorfeus
         @sst_styles = component_cache[key][:ssr_styles]
       else
         render_result = mount_component(component_name, props, asset)
-        component_cache[key] = { render_result: render_result, ssr_response_status: ssr_response_status, ssr_styles: ssr_styles }
+        status = ssr_response_status
+        if status >= 200 && status < 300
+          component_cache[key] = { render_result: render_result, ssr_response_status: status, ssr_styles: ssr_styles }
+        end
       end
       render_result
     end
