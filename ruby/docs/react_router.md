@@ -22,8 +22,8 @@ class RouterComponent < React::Component::Base
       # The location prop is important for SSR when using StaticRouter:
       Router(location: props.location) do
         Switch do
-          Route(path: '/my_path/:id', exact: true, component: component_fun('MyOtherComponent'))
-          Route(path: '/', strict: true, component: component_fun('MyComponent', another_prop: 'test')) # <- passing additional prop
+          Route(path: '/my_path/:id', exact: true, render: component_fun('MyOtherComponent'))
+          Route(path: '/', strict: true, render: component_fun('MyComponent', another_prop: 'test')) # <- passing additional prop
         end
       end
     end
