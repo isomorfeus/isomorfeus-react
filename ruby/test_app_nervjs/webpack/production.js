@@ -7,7 +7,7 @@ const common_config = {
     context: path.resolve(__dirname, '../isomorfeus'),
     mode: "production",
     optimization: {
-        minimize: false
+        minimize: true
     },
     performance: {
         maxAssetSize: 20000000,
