@@ -154,10 +154,6 @@ else
 
   Opal.append_path(__dir__.untaint)
 
-  if Dir.exist?('isomorfeus')
-    Opal.append_path(File.expand_path('isomorfeus')) unless Opal.paths.include?(File.expand_path('isomorfeus'))
-  end
-
   require 'concurrent'
   require 'zeitwerk'
 
