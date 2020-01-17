@@ -4,12 +4,13 @@ module React
     self.render_buffer = [];
 
     self.set_validate_prop = function(component, prop_name) {
-      if (typeof component.react_component.propTypes == "undefined") {
-        component.react_component.propTypes = {};
-        component.react_component.propValidations = {};
-        component.react_component.propValidations[prop_name] = {};
+      let core = component.react_component;
+      if (typeof core.propTypes == "undefined") {
+        core.propTypes = {};
+        core.propValidations = {};
+        core.propValidations[prop_name] = {};
       }
-      component.react_component.propTypes[prop_name] = component.react_component.prototype.validateProp;
+      core.propTypes[prop_name] = core.prototype.validateProp;
     };
 
     self.lower_camelize = function(snake_cased_word) {
@@ -62,7 +63,7 @@ module React
     };
 
     self.internal_prepare_args_and_render = function(component, args, block) {
-      let operain = Opal.React.internal_render;
+      const operain = Opal.React.internal_render;
       if (args.length > 0) {
         let last_arg = args[args.length - 1];
         if (last_arg && last_arg.constructor === String) {
@@ -73,7 +74,7 @@ module React
     };
 
     self.internal_render = function(component, props, string_child, block) {
-      let operabu = Opal.React.render_buffer;
+      const operabu = Opal.React.render_buffer;
       let children;
       let native_props = null;
       if (string_child) {
@@ -132,19 +133,20 @@ module React
 
   def self.create_element(type, props = nil, children = nil, &block)
     %x{
+      const operabu = Opal.React.render_buffer;
       let component = null;
       let native_props = null;
       if (typeof type.react_component !== 'undefined') { component = type.react_component; }
       else { component = type; }
       if (block !== nil) {
-        Opal.React.render_buffer.push([]);
+        operabu.push([]);
         // console.log("create_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call();
         if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-          Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
+          operabu[operabu.length - 1].push(block_result);
         }
         // console.log("create_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        children = Opal.React.render_buffer.pop();
+        children = operabu.pop();
         if (children.length == 1) { children = children[0]; }
         else if (children.length == 0) { children = null; }
       } else if (children === nil) { children = null; }
