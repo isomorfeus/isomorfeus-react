@@ -135,7 +135,6 @@ class MyComponent < LucidComponent::Base
   end
 
   # The block passed to while_loading will be rendered until the promise is resolved
-  # It will also be rendered in Server Side Rendering by default.  
   while_loading do
     DIV "Loading data ... Please wait ..."
   end
