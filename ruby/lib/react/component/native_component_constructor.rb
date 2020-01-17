@@ -50,7 +50,9 @@ module React
               if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
               // console.log("react component popping", oper.render_buffer, oper.render_buffer.toString());
               oper.active_components.pop();
-              return oper.render_buffer.pop();
+              let result = oper.render_buffer.pop();
+              if (result.length === 1) { return result[0]; }
+              return result;
             }
             shouldComponentUpdate(next_props, next_state) {
               if (base.should_component_update_block) {

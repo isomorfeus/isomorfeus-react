@@ -23,7 +23,9 @@ module React
             if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
             oper.active_components.pop();
             // console.log("memo popping", oper.render_buffer, oper.render_buffer.toString());
-            return oper.render_buffer.pop();
+            let result = oper.render_buffer.pop();
+            if (result.length === 1) { return result[0]; }
+            return result;
           }, base.equality_checker);
           base.react_component.displayName = #{component_name};
         }

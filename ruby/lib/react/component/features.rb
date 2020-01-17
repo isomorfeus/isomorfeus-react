@@ -26,7 +26,9 @@ module React
             }
           }
           // console.log("portal popping", operabu, operabu.toString());
-          var react_element = Opal.global.React.createPortal(operabu.pop(), element);
+          let result = operabu.pop();
+          if (result.length === 1) { result = result[0]; }
+          var react_element = Opal.global.React.createPortal(result, element);
           operabu[operabu.length - 1].push(react_element);
           // console.log("portal pushed", operabu, operabu.toString());
         }
