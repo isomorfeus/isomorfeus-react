@@ -98,6 +98,15 @@ module React
       end
       alias gre get_react_element
 
+      def method_ref(method_symbol)
+        %x{
+          if (#@native.method_refs && #@native.method_refs[#{method_symbol}]) { return #@native.method_refs[#{method_symbol}]; }
+          if (!#@native.method_refs) { #@native.method_refs = {}; }
+          #@native.method_refs[#{method_symbol}] = #{method(method_symbol)};
+          return #@native.method_refs[#{method_symbol}];
+        }
+      end
+
       def render_react_element(el)
         # push el to buffer
         `Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(el)`

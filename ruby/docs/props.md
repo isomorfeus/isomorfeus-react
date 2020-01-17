@@ -131,6 +131,27 @@ or individually, a single prop:
 MyClass.validate_prop(prop_name, prop_value)
 ```
 
+### Passing methods in props of Components
+To prevent constant rerenders when using procs during render it is recommended to define methods instead and pass them by reference.
+Isomorfeus react provides the helper `method_ref(:method_name)` for doing so. Example:
+
+```ruby
+class MyComponent < LucidComponent::Base
+
+  def my_method
+    # do something
+  end
+
+  render do
+    AnotherComponent(callback: method_ref(:my_method)) # provide access to local my_method and preventing rerender of AnotherComponent
+
+    AnotherComponent(callback: proc { my_method }) # this works too, but will rerender AnotherComponent each time,
+                                                   # as the proc is recreated for each render causing passed props to change
+  end
+
+end
+```
+ 
 ### Props Outside Components
 
 The props as above are used within the isomorfeus framework for isomorfeus-data classes and isomorfeus-operation.
