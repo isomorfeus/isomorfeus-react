@@ -111,6 +111,7 @@ module Isomorfeus
     self.add_client_option(:client_init_after_store_class_names, [])
   else
     class << self
+      attr_accessor :component_cache_class
       attr_accessor :server_side_rendering
       attr_accessor :ssr_hot_asset_url
       attr_reader :env

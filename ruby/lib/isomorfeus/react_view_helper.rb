@@ -193,7 +193,7 @@ module Isomorfeus
     private
 
     def component_cache
-      Thread.current[:component_cache] ||= {}
+      @_component_cache ||= Isomorfeus.component_cache_class.new
     end
   end
 end
