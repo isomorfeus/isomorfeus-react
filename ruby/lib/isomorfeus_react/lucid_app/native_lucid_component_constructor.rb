@@ -76,10 +76,8 @@ module LucidApp
             oper.active_redux_components.pop();
             oper.active_components.pop();
             let children = oper.render_buffer.pop();
-            if (children.length === 1) { children = children[0]; }
-            else if (children.length === 0) { children = null; }
             // console.log("lucid app popping", oper.render_buffer, oper.render_buffer.toString());
-            return Opal.global.React.createElement(Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }, children);
+            return Opal.global.React.createElement.apply(this, [Opal.global.LucidApplicationContext.Provider, { value: this.state.isomorfeus_store_state }].concat(children));
           }
           data_access() {
             this.state.isomorfeus_store_state;
