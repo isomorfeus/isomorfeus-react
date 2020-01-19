@@ -131,6 +131,7 @@ else
   require 'opal'
   require 'opal-activesupport'
   require 'opal-zeitwerk'
+  require 'opal-webpack-loader'
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'
   require 'react/version'
