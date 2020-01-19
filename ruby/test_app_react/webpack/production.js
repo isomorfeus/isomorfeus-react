@@ -4,7 +4,7 @@ const WebpackAssetsManifest = require('webpack-assets-manifest');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const common_config = {
-    context: path.resolve(__dirname, '../isomorfeus'),
+    context: path.resolve(__dirname, '../app'),
     mode: "production",
     optimization: {
         minimize: true
@@ -39,7 +39,7 @@ const common_config = {
                     {
                         loader: "sass-loader",
                         options: {
-                            includePath: [path.resolve(__dirname, '../isomorfeus/styles')],
+                            includePath: [path.resolve(__dirname, '../app/styles')],
                             sourceMap: false // set to false to speed up hot reloads
                         }
                     }
@@ -74,7 +74,7 @@ const common_config = {
 const browser_config = {
     target: 'web',
     entry: {
-        application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')]
+        application: [path.resolve(__dirname, '../app/imports/application.js')]
     },
     plugins: [
         new WebpackAssetsManifest({ publicPath: true, merge: true }), // generate manifest
@@ -85,7 +85,7 @@ const browser_config = {
 const ssr_config = {
     target: 'node',
     entry: {
-        application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')]
+        application_ssr: [path.resolve(__dirname, '../app/imports/application_ssr.js')]
     },
     plugins: [
         new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
@@ -95,7 +95,7 @@ const ssr_config = {
 const web_worker_config = {
     target: 'webworker',
     entry: {
-        web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
+        web_worker: [path.resolve(__dirname, '../app/imports/application_web_worker.js')]
     },
     plugins: [
         new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest

@@ -6,7 +6,7 @@ const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to wat
 
 const common_config = {
     target: 'web',
-    context: path.resolve(__dirname, '../isomorfeus'),
+    context: path.resolve(__dirname, '../app'),
     mode: "development",
     optimization: {
         removeAvailableModules: false,
@@ -40,7 +40,7 @@ const common_config = {
         // both for hot reloading
         new webpack.HotModuleReplacementPlugin(),
         // watch for added files in opal dir
-        new ExtraWatchWebpackPlugin({ dirs: [path.resolve(__dirname, '../isomorfeus')] }),
+        new ExtraWatchWebpackPlugin({ dirs: [path.resolve(__dirname, '../app')] }),
         new webpack.DefinePlugin({
             OPAL_DEVTOOLS_OBJECT_REGISTRY: true
         })
@@ -57,7 +57,7 @@ const common_config = {
                     {
                         loader: "sass-loader",
                         options: {
-                            includePaths: [path.resolve(__dirname, '../isomorfeus/styles')],
+                            includePaths: [path.resolve(__dirname, '../app/styles')],
                             sourceMap: true // set to false to speed up hot reloads
                         }
                     }
@@ -119,14 +119,14 @@ const common_config = {
 
 const browser_config = {
     entry: {
-        application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')]
+        application: [path.resolve(__dirname, '../app/imports/application.js')]
     }
 };
 
 // const web_worker_config = {
 //     target: 'webworker',
 //     entry: {
-//         web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')]
+//         web_worker: [path.resolve(__dirname, '../app/imports/application_web_worker.js')]
 //     }
 // };
 
