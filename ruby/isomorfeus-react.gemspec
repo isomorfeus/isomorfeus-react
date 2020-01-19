@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'isomorfeus-redux', '~> 4.0.17'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.11'
   s.add_dependency 'zeitwerk', '~> 2.2.2'
-  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.3'
+  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.4'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.8'
 end
