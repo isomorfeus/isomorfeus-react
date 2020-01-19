@@ -97,6 +97,7 @@ end
 
 task :push_ruby_packages_to_isomorfeus do
   Bundler.with_original_env do
-    system("gem inabox ruby/isomorfeus-react-#{React::VERSION}.gem --host http://localhost:5555/")
+    system("scp ruby/isomorfeus-react-#{React::VERSION}.gem iso:~/gems/")
+    system("ssh iso \"bash -l -c 'gem inabox gems/isomorfeus-react-#{React::VERSION}.gem --host http://localhost:5555/'\"")
   end
 end
