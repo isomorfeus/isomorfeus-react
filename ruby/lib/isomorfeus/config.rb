@@ -80,9 +80,6 @@ module Isomorfeus
       end
 
       def start_app!
-        if Isomorfeus.development? && Isomorfeus.on_browser?
-          Isomorfeus.zeitwerk.enable_reloading
-        end
         Isomorfeus.zeitwerk.setup
         Isomorfeus::TopLevel.mount!
       end
