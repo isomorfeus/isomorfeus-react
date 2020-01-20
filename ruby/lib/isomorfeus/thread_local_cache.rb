@@ -1,7 +1,7 @@
 module Isomorfeus
   class ThreadLocalCache
     def initialize
-      Thread.current[:local_cache] = {}
+      Thread.current[:local_cache] = {} unless Thread.current.key?(:local_cache)
     end
 
     def [](key)
