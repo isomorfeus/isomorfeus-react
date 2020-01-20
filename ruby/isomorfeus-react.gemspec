@@ -34,7 +34,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-zeitwerk', '~> 0.2.0'
   s.add_dependency 'opal-webpack-loader', '>= 0.9.10'
   s.add_dependency 'isomorfeus-redux', '~> 4.0.17'
-  s.add_dependency 'isomorfeus-speednode', '~> 0.2.11'
+  s.add_dependency 'isomorfeus-speednode', '~> 0.2.12'
   s.add_dependency 'zeitwerk', '~> 2.2.2'
   s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.4'
   s.add_development_dependency 'rake'
