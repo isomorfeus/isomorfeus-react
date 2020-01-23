@@ -25,11 +25,11 @@ class HelloComponent < LucidMaterial::Component::Base
 
   ref :form
 
-  event_handler :validate_form do
+  def validate_form
     ruby_ref(:form).current.JS.validateForm()
   end
 
-  event_handler :incr do
+  def incr
     app_store.b_value = app_store.b_value + 1
   end
 

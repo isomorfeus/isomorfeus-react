@@ -12,7 +12,7 @@ module ExampleMaterial
 
     app_store.letter = 'A'
 
-    event_handler :change_letter do |event|
+    def change_letter(event)
       letter = app_store.letter
       code = `letter.charCodeAt(0)`
       code = code + 1

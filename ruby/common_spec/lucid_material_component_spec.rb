@@ -52,7 +52,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'define a default state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = false
           end
           state.something = true
@@ -76,7 +76,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'use a uninitialized state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = true
           end
           render do
@@ -336,7 +336,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'on_click' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = true
           end
           render do
@@ -386,7 +386,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'define a default store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             store.something = false
           end
           store.something = true
@@ -415,7 +415,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'use a uninitialized state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             store.something = true
           end
           render do
@@ -470,7 +470,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'define a default class_store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             class_store.something = false
           end
           class_store.something = true
@@ -499,7 +499,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'use a uninitialized state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             class_store.something = true
           end
           render do
@@ -554,7 +554,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'define a default app_store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             app_store.something = false
           end
           app_store.something = true
@@ -583,7 +583,7 @@ RSpec.describe 'LucidMaterial::Component' do
     it 'use a uninitialized state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             app_store.something = true
           end
           render do
@@ -809,7 +809,7 @@ RSpec.describe 'LucidMaterial::Component' do
       @doc.evaluate_ruby do
         IT = { ref_received: false }
         class TestComponent < LucidMaterial::Component::Base
-          event_handler :report_ref do |event|
+          def report_ref(event)
             IT[:ref_received] = true if ruby_ref(:div_ref).current[:id] == 'test_component'
           end
           ref :div_ref

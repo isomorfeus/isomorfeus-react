@@ -8,7 +8,7 @@ class MyComponent < React::Component::Base
     element.type
   end
   
-  event_handler :report_ref do |event|
+  def report_ref(event)
     my_ref = ruby_ref(:my_ref) # ruby_ref() returns a ruby React::Ref object
     my_ref.current # is the element or component of this ref
     # if its a dom element a Browser::DOM::Element will be returned

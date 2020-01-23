@@ -106,6 +106,7 @@ module React
           return #@native.method_refs[#{method_symbol}];
         }
       end
+      alias m_ref method_ref
 
       def render_react_element(el)
         # push el to buffer

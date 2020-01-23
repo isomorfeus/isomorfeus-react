@@ -58,7 +58,7 @@ RSpec.describe 'React::Component' do
     it 'define a default state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = false
           end
           state.something = true
@@ -82,7 +82,7 @@ RSpec.describe 'React::Component' do
     it 'use a uninitialized state value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = true
           end
           render do
@@ -337,7 +337,7 @@ RSpec.describe 'React::Component' do
     it 'on_click' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             state.something = true
           end
           render do
@@ -385,7 +385,7 @@ RSpec.describe 'React::Component' do
       @doc.evaluate_ruby do
         IT = { ref_received: false }
         class TestComponent < React::Component::Base
-          event_handler :report_ref do |event|
+          def report_ref(event)
             IT[:ref_received] = true if ruby_ref(:div_ref).current[:id] == 'test_component'
           end
           ref :div_ref

@@ -47,11 +47,11 @@ The event_handler DSL can be used within the React::FunctionComponent::Creator. 
 the event handler must be applied to a element.
 ```ruby
 class MyFunctionComponent < React::FunctionComponent::Base
-  event_handler :show_red_alert do |event|
+  def show_red_alert(event)
     `alert("RED ALERT!")`
   end
 
-  event_handler :show_orange_alert do |event|
+  def show_orange_alert(event)
     `alert("ORANGE ALERT!")`
   end
 

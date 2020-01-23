@@ -1,10 +1,10 @@
 module ExampleFunction
   class AnotherFunComponent < React::FunctionComponent::Base
-    event_handler :show_red_alert do |event|
+    def show_red_alert(event)
       `alert("RED ALERT!")`
     end
 
-    event_handler :show_orange_alert do |event|
+    def show_orange_alert(event)
       `alert("ORANGE ALERT!")`
     end
 

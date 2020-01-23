@@ -4,7 +4,7 @@ module ExampleReact
 
     state.some_bool = true
 
-    event_handler :change_state do |event|
+    def change_state(event)
       state.some_bool = !state.some_bool
     end
 

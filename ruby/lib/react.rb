@@ -37,17 +37,41 @@ module React
         key = keys[i];
         if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
           let handler = ruby_style_props['$[]'](key);
-          if (typeof handler === "function") {
+          let type = typeof handler;
+          if (type === "function") {
             let active_c = self.active_component();
             result[Opal.React.lower_camelize(key)] = function(event, info) {
               let ruby_event;
               if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-              else { #{ruby_event = `event`}; }
+              else { ruby_event = event; }
               #{`active_c.__ruby_instance`.instance_exec(ruby_event, `info`, &`handler`)};
             }
-          } else {
+          } else if (type === "object" && typeof handler.$call === "function" ) {
+            if (!handler.event_handler_function) {
+              handler.react_event_handler_function = function(event, info) {
+                let ruby_event;
+                if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+                else { ruby_event = event; }
+                handler.$call(ruby_event, `info`)
+              };
+            }
+            result[Opal.React.lower_camelize(key)] = handler.react_event_handler_function;
+          } else if (type === "string" ) {
             let active_component = Opal.React.active_component();
-            result[Opal.React.lower_camelize(key)] = active_component[handler];
+            if (typeof active_component['$' + handler]) {
+              let method_ref;
+              if (active_component.__ruby_instance) { method_ref = active_component.__ruby_instance.$method_ref(handler);  }
+              else { method_ref = active_component.$method_ref(handler); }
+              if (!method_ref.event_handler_function) {
+                method_ref.react_event_handler_function = function(event, info) {
+                  let ruby_event;
+                  if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+                  else { ruby_event = event; }
+                  method_ref.$call(ruby_event, `info`)
+                };
+              }
+              result[Opal.React.lower_camelize(key)] = method_ref.react_event_handler_function;
+            }
           }
         } else if (key[0] === 'a' && key.startsWith("aria_")) {
           result[key.replace("_", "-")] = ruby_style_props['$[]'](key);

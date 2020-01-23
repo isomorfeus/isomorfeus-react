@@ -5,7 +5,7 @@ Event handlers must be declared using the `event_handler` DSL. This is to make s
 compared by reference by shouldComponentUpdate(). Use the DSL like so:
 ```ruby
 class MyComponent < React::Component::Base
-  event_handler :handle_click do |event|
+  def handle_click(event)
     state.toggler = !state.toggler
   end
   
@@ -20,7 +20,7 @@ To the event handler the event is passed as argument. The event is a ruby object
 and events as the React.Synthetic event. Methods are underscored. Example:
 ```ruby
 class MyComponent < React::Component::Base
-  event_handler :handle_click do |event|
+  def handle_click(event)
     event.prevent_default 
     event.current_target
   end

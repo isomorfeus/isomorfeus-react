@@ -16,7 +16,7 @@ class HelloComponent < LucidMaterial::Component::Base
 
   ref :form
 
-  event_handler :validate_form do
+  def validate_form
     ruby_ref(:form).current.JS.validateForm()
   end
 

@@ -76,7 +76,7 @@ RSpec.describe 'LucidFunc' do
       @doc.evaluate_ruby do
         IT = { clicked: false }
         class TestComponent < LucidFunc::Base
-          event_handler :change_hash do |event|
+          def change_hash(event)
             IT[:clicked] = true
           end
           render do
@@ -147,7 +147,7 @@ RSpec.describe 'LucidFunc' do
       skip "not valid for Func"
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             store.something = false
           end
           store.something = true
@@ -176,7 +176,7 @@ RSpec.describe 'LucidFunc' do
     it 'use a uninitialized store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             store.something = true
           end
           render do
@@ -233,7 +233,7 @@ RSpec.describe 'LucidFunc' do
       skip "not valid for Func"
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             class_store.something = false
           end
           class_store.something = true
@@ -262,7 +262,7 @@ RSpec.describe 'LucidFunc' do
     it 'use a uninitialized store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             class_store.something = true
           end
           render do
@@ -319,7 +319,7 @@ RSpec.describe 'LucidFunc' do
       skip "not valid for Func"
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             app_store.something = false
           end
           app_store.something = true
@@ -348,7 +348,7 @@ RSpec.describe 'LucidFunc' do
     it 'use a uninitialized store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidFunc::Base
-          event_handler :change_state do |event|
+          def change_state(event)
             app_store.something = true
           end
           render do

@@ -17,10 +17,6 @@ module React
                 this.state = {};
               };
               this.__ruby_instance = base.$new(this);
-              var event_handlers = #{base.event_handlers};
-              for (var i = 0; i < event_handlers.length; i++) {
-                this[event_handlers[i]] = this[event_handlers[i]].bind(this);
-              }
               var defined_refs = #{base.defined_refs};
               for (var ref in defined_refs) {
                 if (defined_refs[ref] != null) {

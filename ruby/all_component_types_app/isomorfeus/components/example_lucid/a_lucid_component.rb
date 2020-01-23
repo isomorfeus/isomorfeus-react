@@ -8,19 +8,19 @@ module ExampleLucid
     class_store.b_bool = true
     app_store.c_bool = true
 
-    event_handler :change_state do |event|
+    def change_state(event)
       state.some_bool = !state.some_bool
     end
 
-    event_handler :change_store do |event|
+    def change_store(event)
       store.a_bool = !store.a_bool
     end
 
-    event_handler :change_class_store do |event|
+    def change_class_store(event)
       class_store.b_bool = !class_store.b_bool
     end
 
-    event_handler :change_app_store do |event|
+    def change_app_store(event)
       app_store.c_bool = !app_store.c_bool
     end
 

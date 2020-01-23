@@ -6,7 +6,6 @@ module LucidMaterial
         base.include(::React::Component::Features)
         base.include(::LucidFunc::Initializer)
         base.include(::React::FunctionComponent::Api)
-        base.extend(::React::FunctionComponent::EventHandler)
         base.extend(::LucidComponent::EnvironmentSupport)
         base.include(::LucidComponent::EnvironmentSupport)
         base.extend(::LucidMaterial::Func::NativeComponentConstructor)

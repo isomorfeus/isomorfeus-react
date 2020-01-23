@@ -77,7 +77,7 @@ RSpec.describe 'React::MemoComponent' do
       @doc.evaluate_ruby do
         IT = { clicked: false }
         class TestComponent < React::FunctionComponent::Base
-          event_handler :change_hash do |event|
+          def change_hash(event)
             IT[:clicked] = true
           end
           render do
