@@ -1,8 +1,8 @@
 ### Events
 Event names are underscored in ruby: `onClick` becomes `on_click`. The conversion for React is done automatically.
 
-Event handlers must be declared using the `event_handler` DSL. This is to make sure, that they are not recreated during render and can be properly
-compared by reference by shouldComponentUpdate(). Use the DSL like so:
+Event can be simple methods, but must be referenced when passed as pros by `method_ref`. This is to make sure,
+that they are passed by reference during render to react to prevent unnecessary renders. Example:
 ```ruby
 class MyComponent < React::Component::Base
   def handle_click(event)
@@ -10,8 +10,8 @@ class MyComponent < React::Component::Base
   end
   
   render do
-    SPAN(on_click: :handle_click) { 'some more text' }
-    SPAN(on_click: :handle_click) { 'a lot more text' } # event handlers can be reused
+    SPAN(on_click: method_ref(:handle_click)) { 'some more text' }
+    SPAN(on_click: method_ref(:handle_click)) { 'a lot more text' } # event handlers can be reused
   end
 end
 ```
@@ -26,7 +26,7 @@ class MyComponent < React::Component::Base
   end
   
   render do
-    SPAN(on_click: :handle_click) { 'some more text' }
+    SPAN(on_click: method_ref(:handle_click)) { 'some more text' }
   end
 end
 ```

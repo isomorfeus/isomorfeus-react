@@ -29,38 +29,3 @@ be explicitly referred to:
 Route(path: '/a_button', strict: true, component: `Opal.global.Sem.Button`)
 ```
 Accessing javascript constants via `Opal.global` makes sure they are available in the Browser and Server Side Rendering environment.
-
-### Passing React Elements of Ruby Components via property
-
-Some Javascript components accept a React Element as property. To get the react element for a component use `get_react_element`:
-```ruby
-element = get_react_element do
-  Mui.Hidden(sm_down: true) { 'Timeline' }
-end
-# then pass the element
-Mui.Tab(label: element)
-# or reuse it later again
-Mui.Tab(label: element)
-```
-
-### Direct Rendering of React Elements
-Native React Elements can be directly rendered: 
-```ruby
-class Working < React::Component::Base
-  render do
-    # element passed in props
-    el = props.element 
-    # render the element
-    render_react_element(el)
-
-    # or create a element
-    element = get_react_element do
-      Mui.Hidden(sm_down: true) { 'Timeline' }
-    end
-    # and render it 5 times:
-    5.times do
-      render_react_element(element)
-    end
-  end
-end
-```
