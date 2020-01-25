@@ -16,16 +16,14 @@ Gem::Specification.new do |s|
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  #s.post_install_message = <<~TEXT
-  #
-  #isomorfeus-react #{React::VERSION}:
-  #  Major improvement:
-  #    Using Zeitwerk and Opal-Zeitwerk for autoloading, may break existing installations which use opal-autoloader.
-  #    - existing installations may lock isomorfeus-react to 16.11.1 or upgrade to isomorfeus 1.0.0.zeta6
-  #    - new installations with isomorfeus 1.0.0.zeta5 should lock to 16.11.1
-  #    - new installations with isomorfeus 1.0.0.zeta6 and up -> enjoy the latest isomorfeus-react
-  #
-  #TEXT
+  s.post_install_message = <<~TEXT
+
+  isomorfeus-react #{React::VERSION}:
+   Breaking change:
+     The event_handler DSL is gone. Instead use normal methods and method_ref, see:
+     https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md
+
+  TEXT
 
   s.add_dependency 'concurrent-ruby', '~> 1.1.0'
   s.add_dependency 'oj', '>= 3.10'
