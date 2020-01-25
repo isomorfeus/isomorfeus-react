@@ -22,7 +22,7 @@ module React
         if (component) {
           return Opal.React.internal_prepare_args_and_render(component, args, block);
         } else {
-          #{Isomorfeus.raise_error NameError, "No such native Component #@const_name.#{name}"};
+          #{Isomorfeus.raise_error(error_class: NameError, message: "No such native Component #@const_name.#{name}")};
         }
       }
     end

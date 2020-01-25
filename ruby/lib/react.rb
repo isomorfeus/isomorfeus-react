@@ -84,14 +84,14 @@ module React
               let component_name;
               if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
               else { component_name = active_component.$to_s(); }
-              #{Isomorfeus.raise_error("Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
+              #{Isomorfeus.raise_error(message: "Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
             }
           } else {
             let active_component = Opal.React.active_component();
             let component_name;
             if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
             else { component_name = active_component.$to_s(); }
-            #{Isomorfeus.raise_error("Received invalid value for #{`key`} with #{`handler`} within component: #{`component_name`}")}
+            #{Isomorfeus.raise_error(message: "Received invalid value for #{`key`} with #{`handler`} within component: #{`component_name`}")}
             console.error( + key + " event handler:", handler, " within component:", self.active_component());
           }
         } else if (key[0] === 'a' && key.startsWith("aria_")) {

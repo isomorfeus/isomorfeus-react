@@ -86,7 +86,7 @@ module React
             block.$call();
             // console.log("get_react_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString())
             let new_element = Opal.React.render_buffer[Opal.React.render_buffer.length - 1].pop();
-            if (last_buffer_element === new_element) { #{Isomorfeus.raise_error "Block did not create any React element!"} }
+            if (last_buffer_element === new_element) { #{Isomorfeus.raise_error(message: "Block did not create any React element!")} }
             return new_element;
           }
         else

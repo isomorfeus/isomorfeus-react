@@ -35,15 +35,15 @@ module Isomorfeus
           begin
             asset = Net::HTTP.get(URI(asset_path))
           rescue Exception => e
-            Isomorfeus.raise_error "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server. Error: #{e.message}"
+            Isomorfeus.raise_error(message: "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server. Error: #{e.message}")
           end
           if asset.strip.start_with?('<')
-            Isomorfeus.raise_error "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server, asset is not javascript. Did the webpack build succeed?"
+            Isomorfeus.raise_error(message: "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server, asset is not javascript. Did the webpack build succeed?")
           end
           begin
             Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
           rescue Exception => e
-            Isomorfeus.raise_error "Server Side Rendering: Failed creating context for #{asset_path}. Error: #{e.message}"
+            Isomorfeus.raise_error(message: "Server Side Rendering: Failed creating context for #{asset_path}. Error: #{e.message}")
           end
         else
           # initialize speednode context
@@ -61,6 +61,7 @@ module Isomorfeus
           global.Opal.React.active_components = [];
           global.Opal.React.active_redux_components = [];
           global.FirstPassFinished = false;
+          global.Exception = false;
           global.Opal.Isomorfeus['$env=']('#{Isomorfeus.env}');
           if (typeof global.Opal.Isomorfeus.$negotiated_locale === 'function') {
             global.Opal.Isomorfeus["$negotiated_locale="]('#{props[:locale]}');
@@ -77,14 +78,18 @@ module Isomorfeus
         api_ws_path = Isomorfeus.respond_to?(:api_websocket_path) ? Isomorfeus.api_websocket_path : ''
         transport_ws_url = ws_scheme + location_host + api_ws_path
         javascript << <<~JAVASCRIPT
-          var api_ws_path = '#{api_ws_path}';
+          let api_ws_path = '#{api_ws_path}';
+          let exception;
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined' && api_ws_path !== '') {
             global.Opal.Isomorfeus.TopLevel["$transport_ws_url="]("#{transport_ws_url}");
             global.Opal.send(global.Opal.Isomorfeus.Transport.$promise_connect(), 'then', [], ($$1 = function(){
               try {
                 global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
                 global.FirstPassFinished = 'transport';
-              } catch (e) { global.FirstPassFinished = 'transport'; }
+              } catch (e) {
+                global.Exception = e; 
+                global.FirstPassFinished = 'transport';               
+              }
             }, $$1.$$s = this, $$1.$$arity = 0, $$1))
           } else { return global.FirstPassFinished = true; };
         JAVASCRIPT
@@ -94,7 +99,8 @@ module Isomorfeus
 
         # wait for first pass to finish
         unless first_pass_skipped
-          first_pass_finished = Isomorfeus.ssr_contexts[thread_id_asset].exec('return global.FirstPassFinished')
+          first_pass_finished, exception = Isomorfeus.ssr_contexts[thread_id_asset].exec('return [global.FirstPassFinished, global.Exception ? { message: global.Exception.message, stack: global.Exception.stack } : false ]')
+          Isomorfeus.raise_error(message: "Server Side Rendering: #{exception['message']}", stack: exception['stack']) if exception
           unless first_pass_finished
             start_time = Time.now
             while !first_pass_finished
@@ -124,6 +130,7 @@ module Isomorfeus
           global.Opal.React.render_buffer = [];
           global.Opal.React.active_components = [];
           global.Opal.React.active_redux_components = [];
+          global.Exception = false;
           let rendered_tree;
           let ssr_styles;
           let component;
@@ -138,7 +145,7 @@ module Isomorfeus
               rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app));
               ssr_styles = sheets.toString();
             } catch (e) {
-              rendered_tree = e.message + "\\n" + e.stack;
+              global.Exception = e;
             }
           } else if (typeof global.Opal.global.ReactJSS !== 'undefined' && typeof global.Opal.global.ReactJSS.SheetsRegistry !== 'undefined') {
             component = '#{component_name}'.split(".").reduce(function(o, x) {
@@ -153,22 +160,23 @@ module Isomorfeus
               rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element);
               ssr_styles = sheets.toString();
             } catch (e) {
-              rendered_tree = e.message + "\\n" + e.stack;
+              global.Exception = e;
             }
           } else {
             try {
               rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
             } catch (e) {
-              rendered_tree = e.message + "\\n" + e.stack;
+              global.Exception = e;
             }
           }
           let application_state = global.Opal.Isomorfeus.store.native.getState();
           if (typeof global.Opal.Isomorfeus.Transport !== 'undefined') { global.Opal.Isomorfeus.Transport.$disconnect(); }
-          return [rendered_tree, application_state, ssr_styles, global.Opal.Isomorfeus['$ssr_response_status']()];
+          return [rendered_tree, application_state, ssr_styles, global.Opal.Isomorfeus['$ssr_response_status'](), global.Exception ? { message: global.Exception.message, stack: global.Exception.stack } : false];
         JAVASCRIPT
 
         # execute second render pass
-        rendered_tree, application_state, @ssr_styles, @ssr_response_status = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
+        rendered_tree, application_state, @ssr_styles, @ssr_response_status, exception = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
+        Isomorfeus.raise_error(message: "Server Side Rendering: #{exception['message']}", stack: exception['stack']) if exception
 
         # build result
         render_result << " data-iso-hydrated='true'" if rendered_tree
