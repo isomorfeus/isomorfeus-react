@@ -147,4 +147,19 @@ module Isomorfeus
       end
     end
   end
+
+  class << self
+    def raise_error(error_class_or_message, message = nil)
+      error_class = message ? error_class_or_message : RuntimeError
+      message = message || error_class_or_message
+
+      execution_environment = if on_browser? then 'on Browser'
+                              elsif on_ssr? then 'in Server Side Rendering'
+                              elsif on_server? then 'on Server'
+                              end
+
+      complete_message = "Isomorfeus in #{env} #{execution_environment}:\n#{message}"
+      raise error_class, complete_message
+    end
+  end
 end

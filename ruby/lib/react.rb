@@ -70,17 +70,29 @@ module React
               if (active_component.method_refs && active_component.method_refs[handler]) { method_ref = active_component.method_refs[handler]; }
               else { method_ref = active_component.__ruby_instance.$method_ref(handler); } // create ref for native
             }
-            if (!method_ref.react_event_handler_function) {
-              method_ref.react_event_handler_function = function(event, info) {
-                let ruby_event;
-                if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-                else { ruby_event = event; }
-                method_ref.$call(ruby_event, `info`)
-              };
+            if (method_ref) {
+              if (!method_ref.react_event_handler_function) {
+                method_ref.react_event_handler_function = function(event, info) {
+                  let ruby_event;
+                  if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+                  else { ruby_event = event; }
+                  method_ref.$call(ruby_event, `info`)
+                };
+              }
+              result[Opal.React.lower_camelize(key)] = method_ref.react_event_handler_function;
+            } else {
+              let component_name;
+              if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
+              else { component_name = active_component.$to_s(); }
+              #{Isomorfeus.raise_error("Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
             }
-            result[Opal.React.lower_camelize(key)] = method_ref.react_event_handler_function;
           } else {
-            console.error("Received invalid value for " + key + " event handler:", handler, "(", type, ") within component:", self.active_component());
+            let active_component = Opal.React.active_component();
+            let component_name;
+            if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
+            else { component_name = active_component.$to_s(); }
+            #{Isomorfeus.raise_error("Received invalid value for #{`key`} with #{`handler`} within component: #{`component_name`}")}
+            console.error( + key + " event handler:", handler, " within component:", self.active_component());
           }
         } else if (key[0] === 'a' && key.startsWith("aria_")) {
           result[key.replace("_", "-")] = ruby_style_props['$[]'](key);

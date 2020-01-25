@@ -5,7 +5,7 @@ module Isomorfeus
         Isomorfeus.init
         Isomorfeus::TopLevel.on_ready do
           root_element = `document.querySelector('div[data-iso-root]')`
-          raise "Isomorfeus root element not found!" unless root_element
+          Isomorfeus.raise_error "Isomorfeus root element not found!" unless root_element
           component_name = root_element.JS.getAttribute('data-iso-root')
           Isomorfeus.env = root_element.JS.getAttribute('data-iso-env')
           component = nil
