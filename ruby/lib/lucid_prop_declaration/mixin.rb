@@ -2,7 +2,6 @@ module LucidPropDeclaration
   module Mixin
     if RUBY_ENGINE == 'opal'
       def self.extended(base)
-
         def prop(prop_name, validate_hash = { required: true })
           validate_hash = validate_hash.to_h if validate_hash.class == Isomorfeus::Props::ValidateHashProxy
           if validate_hash.key?(:default)
@@ -61,6 +60,12 @@ module LucidPropDeclaration
 
     def declared_props
       @declared_props ||= {}
+    end
+
+    def valid_prop?(prop, value)
+      validate_prop(prop, value)
+    rescue
+      false
     end
 
     def validate
