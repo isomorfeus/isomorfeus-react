@@ -106,6 +106,11 @@ module LucidComponent
       def preloaded?
         !!state.preloaded
       end
+
+      # requires transport
+      def current_user
+        Isomorfeus.current_user
+      end
     end
   end
 end
