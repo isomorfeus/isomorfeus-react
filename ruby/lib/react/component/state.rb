@@ -20,8 +20,8 @@ module React
 
       def set_state(updater, &block)
         new_state = `{}`
-        updater.keys.each do |key|
-          new_state.JS[key] = updater[key]
+        updater.each do |key, value|
+          new_state.JS[key] = value
         end
         if block_given?
           @native.JS.setState(new_state, `function() { block.$call(); }`)
