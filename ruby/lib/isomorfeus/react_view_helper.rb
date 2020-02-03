@@ -176,7 +176,7 @@ module Isomorfeus
 
         # execute second render pass
         rendered_tree, application_state, @ssr_styles, @ssr_response_status, exception = Isomorfeus.ssr_contexts[thread_id_asset].exec(javascript)
-        Isomorfeus.raise_error(message: "Server Side Rendering: #{exception['message']}", stack: exception['stack']) if exception
+        Isomorfeus.raise_error(message: exception['message'], stack: exception['stack']) if exception
 
         # build result
         render_result << " data-iso-hydrated='true'" if rendered_tree
