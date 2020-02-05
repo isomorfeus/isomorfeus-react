@@ -1,19 +1,23 @@
 module Isomorfeus
   module ReactViewHelper
-    def cached_mount_component(component_name, props = {}, asset = 'application_ssr.js')
+    def cached_mount_component(component_name, props = {}, asset = 'application_ssr.js', static: false)
       key = "#{component_name}#{props}#{asset}"
       if Isomorfeus.production? && component_cache.key?(key)
         render_result = component_cache[key][:render_result]
         @ssr_response_status = component_cache[key][:ssr_response_status]
         @sst_styles = component_cache[key][:ssr_styles]
       else
-        render_result = mount_component(component_name, props, asset)
+        render_result = mount_component(component_name, props, asset, static: static)
         status = ssr_response_status
         if status >= 200 && status < 300
           component_cache[key] = { render_result: render_result, ssr_response_status: status, ssr_styles: ssr_styles }
         end
       end
       render_result
+    end
+
+    def cached_mount_static_component(component_name, props = {}, asset = 'application_ssr.js')
+      cached_mount_component(component_name, props, asset, static: true)
     end
 
     def mount_component(component_name, props = {}, asset = 'application_ssr.js', static: false)
