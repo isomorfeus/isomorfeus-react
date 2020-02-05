@@ -16,7 +16,7 @@ module Isomorfeus
       render_result
     end
 
-    def mount_component(component_name, props = {}, asset = 'application_ssr.js')
+    def mount_component(component_name, props = {}, asset = 'application_ssr.js', static: false)
       @ssr_response_status = nil
       @ssr_styles = nil
       thread_id_asset = "#{Thread.current.object_id}#{asset}"
@@ -84,7 +84,8 @@ module Isomorfeus
             global.Opal.Isomorfeus.TopLevel["$transport_ws_url="]("#{transport_ws_url}");
             global.Opal.send(global.Opal.Isomorfeus.Transport.$promise_connect(), 'then', [], ($$1 = function(){
               try {
-                global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+                if (#{static}) { global.Opal.Isomorfeus.TopLevel.$render_component_to_static_markup('#{component_name}', #{Oj.dump(props, mode: :strict)}); }
+                else { global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)}); }
                 global.FirstPassFinished = 'transport';
               } catch (e) {
                 global.Exception = e; 
@@ -142,7 +143,8 @@ module Isomorfeus
             try {
               let sheets = new global.Opal.global.MuiStyles.ServerStyleSheets();
               let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
-              rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app));
+              if (#{static}) { rendered_tree = global.Opal.global.ReactDOMServer.renderToStaticMarkup(sheets.collect(app)); }
+              else { rendered_tree = global.Opal.global.ReactDOMServer.renderToString(sheets.collect(app)); }
               ssr_styles = sheets.toString();
             } catch (e) {
               global.Exception = e;
@@ -157,14 +159,16 @@ module Isomorfeus
               let generate_id = global.Opal.global.ReactJSS.createGenerateId();
               let app = global.Opal.React.$create_element(component, global.Opal.Hash.$new(#{Oj.dump(props, mode: :strict)}));
               let element = global.Opal.global.React.createElement(global.Opal.global.ReactJSS.JssProvider, { registry: sheets, generateId: generate_id }, app);
-              rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element);
+              if (#{static}) { rendered_tree = global.Opal.global.ReactDOMServer.renderToStaticMarkup(element); }
+              else { rendered_tree = global.Opal.global.ReactDOMServer.renderToString(element); }
               ssr_styles = sheets.toString();
             } catch (e) {
               global.Exception = e;
             }
           } else {
             try {
-              rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)});
+              if (#{static}) { rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_static_markup('#{component_name}', #{Oj.dump(props, mode: :strict)}); } 
+              else { rendered_tree = global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)}); }
             } catch (e) {
               global.Exception = e;
             }
@@ -190,6 +194,10 @@ module Isomorfeus
         render_result = "<script type='application/javascript'>\nServerSideRenderingStateJSON = #{Oj.dump(application_state, mode: :strict)}\n</script>\n" << render_result
       end
       render_result
+    end
+
+    def mount_static_component(component_name, props = {}, asset = 'application_ssr.js', static: false)
+      mount_component(component_name, props, asset, static: true)
     end
 
     def ssr_response_status
