@@ -93,5 +93,28 @@ module LucidPropDeclaration
       end
       result
     end
+
+    def validated_prop(prop, value)
+      nil unless declared_props.key?(prop)
+      validator = Isomorfeus::Props::Validator.new(self, prop, value, declared_props[prop])
+      validator.validated_value
+    end
+
+    def validated_props(props)
+      props = {} unless props
+
+      declared_props.each_key do |prop|
+        if declared_props[prop].key?(:required) && declared_props[prop][:required] && !props.key?(prop)
+          Isomorfeus.raise_error(message: "Required prop #{prop} not given!")
+        end
+        props[prop] = nil unless props.key?(prop) # let validator handle value
+      end
+
+      result = {}
+      props.each do |p, v|
+        result[p] = validated_prop(p, v)
+      end
+      result
+    end
   end
 end

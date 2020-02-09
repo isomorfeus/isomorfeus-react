@@ -11,6 +11,7 @@ module Isomorfeus
       def validate!
         ensured = ensure!
         unless ensured
+          set_default_value
           cast!
           type!
         end
@@ -18,9 +19,19 @@ module Isomorfeus
         true
       end
 
+      def validated_value
+        validate!
+        @v
+      end
+
       private
 
       # basic tests
+
+      def set_default_value
+        return unless @v.nil?
+        @v = @o[:default] if @o.key?(:default)
+      end
 
       def cast!
         if @o.key?(:cast)
@@ -73,6 +84,7 @@ module Isomorfeus
             send('c_' + m, l)
           end
         end
+        @o[:validate_block].call(@v) if @o.key?(:validate_block)
       end
 
       # specific validations

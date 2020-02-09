@@ -57,7 +57,7 @@ class MyComponent < React::Component::Base
   prop :text, validate.String.matches(/(a|b|c).*/).length(5)
   
   render do
-    DIV { props.float }
+    DIV { props.float.to_s }
   end
 end
 ```
@@ -91,6 +91,38 @@ Examples:
 ```ruby
 prop :beer, validate.is_a(Liquid)
 prop :carpet, validate.exact_class(Carpet)
+```
+
+#### Ensuring a custom value or range
+A ensure_block can be passed. That block gets a value and is expected to return a value or raise if desired.
+If a ensure_block is given, setting a default value, the cast and type checks are skipped.
+Example:
+```ruby
+class MyComponent < React::Component::Base
+  prop :float_a, ensure_block: proc { |v| v = 1 if v < 1; v }
+  prop :float_b, validate.ensure { |v| v = 2 if v > 2; v }
+  
+  render do
+    DIV { props.float_a.to_s }
+    DIV { props.float_b.to_s }
+  end
+end
+```
+
+#### Custom validation block
+A validate_block can be passed. That block gets a value and is expected to return a value or raise if desired.
+Setting a default value, a ensure block, cast and type checks are executed before the validate_block
+Example:
+```ruby
+class MyComponent < React::Component::Base
+  prop :float_a, validate_block: proc { |v| raise 'error' unless v.is_a?(Float) }
+  prop :float_b, validate.validate_block { |v| raise 'error' unless v.is_a?(Float) }
+  
+  render do
+    DIV { props.float_a.to_s }
+    DIV { props.float_b.to_s }
+  end
+end
 ```
 
 #### validate method chain methods
@@ -159,6 +191,7 @@ These props can be used in any class simple by extending the class, example:
 ```ruby
 class MyClass
   extend LucidPropDeclaration::Mixin
+end
 ```
 This makes all of the above available.
 

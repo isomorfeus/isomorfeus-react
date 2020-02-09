@@ -124,6 +124,11 @@ module Isomorfeus
       alias_method :condition, :test
       alias_method :check, :test
 
+      def validate_block(&block)
+        @validation_hash[:validate][:validate_block] = block
+        self
+      end
+
       # types
 
       def Array
