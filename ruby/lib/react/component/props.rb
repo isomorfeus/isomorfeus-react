@@ -58,8 +58,20 @@ module React
         end
       end
 
+      def to_h
+        `Opal.Hash.$new(#@native)`
+      end
+
+      def to_json
+        JSON.dump(to_transport)
+      end
+
       def to_n
         @native.JS[:props]
+      end
+
+      def to_transport
+        {}.merge(to_h)
       end
     end
   end
