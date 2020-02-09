@@ -95,7 +95,7 @@ module LucidPropDeclaration
     end
 
     def validated_prop(prop, value)
-      nil unless declared_props.key?(prop)
+      Isomorfeus.raise_error(message: "No such prop #{prop} declared!") unless declared_props.key?(prop)
       validator = Isomorfeus::Props::Validator.new(self, prop, value, declared_props[prop])
       validator.validated_value
     end
