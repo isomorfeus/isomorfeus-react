@@ -8,6 +8,8 @@ module Isomorfeus
           Isomorfeus.raise_error(message: "Isomorfeus root element not found!") unless root_element
           component_name = root_element.JS.getAttribute('data-iso-root')
           Isomorfeus.env = root_element.JS.getAttribute('data-iso-env')
+          user_sid = root_element.JS.getAttribute('data-iso-usid')
+          Isomorfeus.current_user_sid =`JSON.parse(user_sid)` if user_sid
           component = nil
           begin
             component = component_name.constantize

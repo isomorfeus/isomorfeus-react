@@ -66,6 +66,7 @@ module Isomorfeus
           global.Opal.React.active_redux_components = [];
           global.FirstPassFinished = false;
           global.Exception = false;
+          global.IsomorfeusSessionId = '#{Thread.current[:isomorfeus_session_id]}';
           global.Opal.Isomorfeus['$env=']('#{Isomorfeus.env}');
           if (typeof global.Opal.Isomorfeus.$negotiated_locale === 'function') {
             global.Opal.Isomorfeus["$negotiated_locale="]('#{props[:locale]}');
@@ -188,6 +189,9 @@ module Isomorfeus
 
         # build result
         render_result << " data-iso-hydrated='true'" if rendered_tree
+        if Isomorfeus.respond_to?(:current_user) && Isomorfeus.current_user && !Isomorfeus.current_user.anonymous?
+          render_result << " data-iso-usid=#{Oj.dump(Isomorfeus.current_user.to_sid, mode: :strict)}"
+        end
         render_result << " data-iso-nloc='#{props[:locale]}'>"
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
