@@ -28,6 +28,12 @@ module React
       return element;
     };
 
+    self.native_to_ruby_event = function(event) {
+       if (event.hasOwnProperty('target')) { return #{::React::SyntheticEvent.new(`event`)}; }
+       else if (Array.isArray(event)) { return event; }
+       else { return Opal.Hash.$new(event); }
+    };
+
     self.to_native_react_props = function(ruby_style_props) {
       let result = {};
       let keys = ruby_style_props.$keys();
@@ -41,20 +47,14 @@ module React
           if (type === "function") {
             let active_c = self.active_component();
             result[Opal.React.lower_camelize(key)] = function(event, info) {
-              let ruby_event;
-              if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-              else if (Array.isArray(event)) { ruby_event = event; }
-              else { ruby_event = ruby_event = Opal.Hash.$new(event); }
-              #{`active_c.__ruby_instance`.instance_exec(ruby_event, `info`, &`handler`)};
+              let ruby_event = Opal.React.native_to_ruby_event(event);
+              #{`active_c.__ruby_instance`.instance_exec(`ruby_event`, `info`, &`handler`)};
             }
           } else if (type === "object" && typeof handler.$call === "function" ) {
             if (!handler.react_event_handler_function) {
               handler.react_event_handler_function = function(event, info) {
-                let ruby_event;
-                if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-                else if (Array.isArray(event)) { ruby_event = event; }
-                else { ruby_event = Opal.Hash.$new(event); }
-                handler.$call(ruby_event, `info`)
+                let ruby_event = Opal.React.native_to_ruby_event(event);
+                handler.$call(ruby_event, info)
               };
             }
             result[Opal.React.lower_camelize(key)] = handler.react_event_handler_function;
@@ -75,11 +75,8 @@ module React
             if (method_ref) {
               if (!method_ref.react_event_handler_function) {
                 method_ref.react_event_handler_function = function(event, info) {
-                  let ruby_event;
-                  if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-                  else if (Array.isArray(event)) { ruby_event = event; }
-                  else { ruby_event = ruby_event = Opal.Hash.$new(event); }
-                  method_ref.$call(ruby_event, `info`)
+                  let ruby_event = Opal.React.native_to_ruby_event(event);
+                  method_ref.$call(ruby_event, info)
                 };
               }
               result[Opal.React.lower_camelize(key)] = method_ref.react_event_handler_function;
