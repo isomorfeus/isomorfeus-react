@@ -16,14 +16,14 @@ Gem::Specification.new do |s|
   #s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
-  s.post_install_message = <<~TEXT
-
-  isomorfeus-react #{React::VERSION}:
-   Breaking change:
-     The event_handler DSL is gone. Instead use normal methods and method_ref, see:
-     https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md
-
-  TEXT
+  # s.post_install_message = <<~TEXT
+  #
+  # isomorfeus-react #{React::VERSION}:
+  #  Breaking change:
+  #    The event_handler DSL is gone. Instead use normal methods and method_ref, see:
+  #    https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md
+  #
+  # TEXT
 
   s.add_dependency 'concurrent-ruby', '~> 1.1.0'
   s.add_dependency 'oj', '>= 3.10'
