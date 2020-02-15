@@ -42,16 +42,18 @@ module React
             let active_c = self.active_component();
             result[Opal.React.lower_camelize(key)] = function(event, info) {
               let ruby_event;
-              if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-              else { ruby_event = event; }
+              if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+              else if (Array.isArray(event)) { ruby_event = event; }
+              else { ruby_event = ruby_event = Opal.Hash.$new(event); }
               #{`active_c.__ruby_instance`.instance_exec(ruby_event, `info`, &`handler`)};
             }
           } else if (type === "object" && typeof handler.$call === "function" ) {
             if (!handler.react_event_handler_function) {
               handler.react_event_handler_function = function(event, info) {
                 let ruby_event;
-                if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-                else { ruby_event = event; }
+                if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+                else if (Array.isArray(event)) { ruby_event = event; }
+                else { ruby_event = Opal.Hash.$new(event); }
                 handler.$call(ruby_event, `info`)
               };
             }
@@ -74,8 +76,9 @@ module React
               if (!method_ref.react_event_handler_function) {
                 method_ref.react_event_handler_function = function(event, info) {
                   let ruby_event;
-                  if (typeof event === "object") { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
-                  else { ruby_event = event; }
+                  if (event.hasOwnProperty('target')) { #{ruby_event = ::React::SyntheticEvent.new(`event`)}; }
+                  else if (Array.isArray(event)) { ruby_event = event; }
+                  else { ruby_event = ruby_event = Opal.Hash.$new(event); }
                   method_ref.$call(ruby_event, `info`)
                 };
               }
