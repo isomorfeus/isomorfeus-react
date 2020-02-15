@@ -29,6 +29,8 @@ class MyComponent < React::Component::Base
   prop :cool, default: 'yet some more text' # a optional prop with a default value
   prop :even_cooler, class: String, required: false # a optional prop, which when given, must be of class String
   prop :super # a required prop of any type
+  prop :email_address, type: :email # special email type
+  prop :website, type: :uri # special uri type, must contain uri scheme
   
   render do
     DIV { props.text }
@@ -72,6 +74,8 @@ Checked for exact class:
 - Integer
 - String
 - Boolean (checked for TrueClass or FalseClass)
+- Email
+- Uri
 
 Checked for superclass or module containing:
 - Enumerable
@@ -152,15 +156,19 @@ end
 These methods are helper methods to express more clearly in language.
 Example: `prop :wine, validate.String.with.length(5).and.matches(/(a|b}.*/)`
 
-#### validating props
+#### Validating props
 
 Props can be validated by calling:
 ```ruby
-MyClass.validate_props(props_hash)
+MyClass.valid_props?(props_hash) # returns a boolean
+MyClass.validate_props(props_hash) # returns true or will raise
+MyClass.validated_props(props_hash) # returns a hash of validated and ensured props values or will raise
 ```
 or individually, a single prop:
 ```ruby
-MyClass.validate_prop(prop_name, prop_value)
+MyClass.valid_prop?(prop_name, prop_value) # returns a boolean
+MyClass.validate_prop(prop_name, prop_value) # returns true or will raise
+MyClass.validated_prop(prop_name, prop_value) # returns the validated and ensured value of prop or will raise
 ```
 
 ### Passing methods in props of Components

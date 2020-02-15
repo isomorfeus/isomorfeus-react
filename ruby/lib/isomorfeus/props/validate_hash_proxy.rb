@@ -169,14 +169,12 @@ module Isomorfeus
       # sub types
 
       def Email
-        @validation_hash[:type] = :string
-        @validation_hash[:validate][:sub_type] = :email
+        @validation_hash[:type] = :email
         self
       end
 
       def Url
-        @validation_hash[:type] = :string
-        @validation_hash[:validate][:sub_type] = :url
+        @validation_hash[:type] = :uri
         self
       end
 

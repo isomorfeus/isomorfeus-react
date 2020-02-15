@@ -72,6 +72,8 @@ module Isomorfeus
           case @o[:type]
           when :boolean
             Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a boolean") unless @v.class == TrueClass || @v.class == FalseClass
+          else
+            c_string_sub_types
           end
         end
       end
@@ -133,10 +135,34 @@ module Isomorfeus
         Isomorfeus.raise_error(message: "#{@c}: #{@p} test condition check failed") unless @o[:test].call(@v)
       end
 
-      def c_sub_type(v)
-        case v
+      def c_string_sub_types
+        Isomorfeus.raise_error(message: "#{@c}: #{@p} must be a String") unless @v.class == String
+        case @o[:type]
         when :email
-        when :url
+          Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid email address") unless @v.match? /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+        when :uri
+          if RUBY_ENGINE == 'opal'
+            %x{
+              try {
+                new URL(#@v);
+              } catch {
+                #{Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid uri")}
+              }
+            }
+          else
+            unless @v.match? /\A([a-zA-Z][\-+.a-zA-Z\d]*):(?:((?:[\-_.!~*'()a-zA-Z\d;?:@&=+$,]|%[a-fA-F\d]{2})(?:[\-_.!~*'()a-zA-Z\d;\/?:@&=+$,\[\]]|
+                              %[a-fA-F\d]{2})*)|(?:(?:\/\/(?:(?:(?:((?:[\-_.!~*'()a-zA-Z\d;:&=+$,]|%[a-fA-F\d]{2})*)@)?(?:((?:(?:[a-zA-Z0-9\-.]|
+                              %\h\h)+|\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}|\[(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|
+                              \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})|
+                              (?:(?:[a-fA-F\d]{1,4}:)*[a-fA-F\d]{1,4})?::(?:(?:[a-fA-F\d]{1,4}:)*(?:[a-fA-F\d]{1,4}|
+                              \d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))?)\]))(?::(\d*))?))?|((?:[\-_.!~*'()a-zA-Z\d$,;:@&=+]|%[a-fA-F\d]{2})+))|
+                              (?!\/\/))(\/(?:[\-_.!~*'()a-zA-Z\d:@&=+$,]|%[a-fA-F\d]{2})*(?:;(?:[\-_.!~*'()a-zA-Z\d:@&=+$,]|
+                              %[a-fA-F\d]{2})*)*(?:\/(?:[\-_.!~*'()a-zA-Z\d:@&=+$,]|%[a-fA-F\d]{2})*(?:;(?:[\-_.!~*'()a-zA-Z\d:@&=+$,]|
+                              %[a-fA-F\d]{2})*)*)*)?)(?:\?((?:[\-_.!~*'()a-zA-Z\d;\/?:@&=+$,\[\]]|
+                              %[a-fA-F\d]{2})*))?)(?:\#((?:[\-_.!~*'()a-zA-Z\d;\/?:@&=+$,\[\]]|%[a-fA-F\d]{2})*))?\z/x
+              Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid uri")
+            end
+          end
         end
       end
     end

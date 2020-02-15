@@ -68,6 +68,12 @@ module LucidPropDeclaration
       false
     end
 
+    def valid_props?(props)
+      validate_props(props)
+    rescue
+      false
+    end
+
     def validate
       Isomorfeus::Props::ValidateHashProxy.new
     end
