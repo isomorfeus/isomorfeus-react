@@ -126,6 +126,7 @@ if RUBY_ENGINE == 'opal'
 
   Isomorfeus.zeitwerk.push_dir('components')
 else
+  require 'uri'
   require 'oj'
   require 'opal'
   require 'opal-activesupport'
