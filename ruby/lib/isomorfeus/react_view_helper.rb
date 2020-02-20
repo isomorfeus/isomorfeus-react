@@ -198,7 +198,7 @@ module Isomorfeus
         render_result << " data-iso-nloc='#{props[:locale]}'>"
       end
       render_result << '</div>'
-      if Isomorfeus.server_side_rendering
+      if Isomorfeus.server_side_rendering && !static
         render_result = "<script type='application/javascript'>\nServerSideRenderingStateJSON = #{Oj.dump(application_state, mode: :strict)}\n</script>\n" << render_result
       end
       render_result
