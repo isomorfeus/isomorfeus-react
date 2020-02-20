@@ -12,7 +12,7 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.9'
+gem 'opal-webpack-loader', '~> 0.9.10'
 gem 'isomorfeus-react', '>= 16.12.0'
 ```
 
@@ -34,15 +34,15 @@ When using Preact:
 
 For package.json:
 ```json
-    "preact": "^10.1.0",
-    "preact-render-to-string": "^5.1.2",
+    "preact": "^10.3.2",
+    "preact-render-to-string": "^5.1.4",
 ```
 
 When using Nervjs:
 ```json
-    "nerv-devtools": "^1.5.1",
-    "nerv-server": "^1.5.1",
-    "nervjs": "^1.5.1",
+    "nerv-devtools": "^1.5.6",
+    "nerv-server": "^1.5.6",
+    "nervjs": "^1.5.6",
 ```
 
 And these are required:
