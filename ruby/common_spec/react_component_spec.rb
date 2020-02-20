@@ -215,7 +215,7 @@ RSpec.describe 'React::Component' do
       expect(node.all_text).to include('nothinghere')
     end
 
-    it 'uses a default value for a missing, optional prop' do
+    it 'use a default value for a missing, optional prop' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
           prop :a_prop, class: String, default: 'Prop not passed!'
@@ -229,7 +229,7 @@ RSpec.describe 'React::Component' do
       expect(node.all_text).to include('Prop not passed!')
     end
 
-    it 'uses a default value for a missing, optional prop, new style' do
+    it 'use a default value for a missing, optional prop, new style' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
           prop :a_prop, validate.String.default('Prop not passed!')
@@ -241,6 +241,20 @@ RSpec.describe 'React::Component' do
       end
       node = @doc.wait_for('#test_component')
       expect(node.all_text).to include('Prop not passed!')
+    end
+
+    it 'convert props to hash' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::Component::Base
+          prop :a_prop, class: String, required: false
+          render do
+            DIV(id: :test_component) { props.to_h[:a_prop] }
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, { a_prop: 'heyho' }, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('heyho')
     end
   end
 

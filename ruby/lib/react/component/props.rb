@@ -59,7 +59,7 @@ module React
       end
 
       def to_h
-        `Opal.Hash.$new(#@native)`
+        `Opal.Hash.$new(#@native.props)`.transform_keys!(&:underscore)
       end
 
       def to_json
