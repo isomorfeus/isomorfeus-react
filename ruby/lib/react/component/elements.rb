@@ -47,12 +47,29 @@ module React
         view vkern
       ]
 
-      SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
-        define_method(element) do |*args, &block|
-          `Opal.React.internal_prepare_args_and_render(element, args, block)`
+      def self.on_native?
+        result = `typeof global.nativeModuleProxy !== "undefined"`
+        `console.log("On Native?", result)`
+        result
+      end
+
+      if on_native?
+        SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
+          define_method(element) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(Opal.global.Text, args, block)`
+          end
+          define_method(`element.toUpperCase()`) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(Opal.global.Text, args, block)`
+          end
         end
-        define_method(`element.toUpperCase()`) do |*args, &block|
-          `Opal.React.internal_prepare_args_and_render(element, args, block)`
+      else
+        SUPPORTED_HTML_AND_SVG_ELEMENTS.each do |element|
+          define_method(element) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(element, args, block)`
+          end
+          define_method(`element.toUpperCase()`) do |*args, &block|
+            `Opal.React.internal_prepare_args_and_render(element, args, block)`
+          end
         end
       end
     end
