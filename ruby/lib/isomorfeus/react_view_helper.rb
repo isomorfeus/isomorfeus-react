@@ -24,7 +24,11 @@ module Isomorfeus
       @ssr_response_status = nil
       @ssr_styles = nil
       thread_id_asset = "#{Thread.current.object_id}#{asset}"
-      render_result = "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
+      render_result = if static
+                        '<div>'
+                      else
+                        "<div data-iso-env=\"#{Isomorfeus.env}\" data-iso-root=\"#{component_name}\" data-iso-props='#{Oj.dump(props, mode: :strict)}'"
+                      end
       if Isomorfeus.server_side_rendering
 
         if Isomorfeus.development?
@@ -188,14 +192,16 @@ module Isomorfeus
         Isomorfeus.raise_error(message: exception['message'], stack: exception['stack']) if exception
 
         # build result
-        render_result << " data-iso-hydrated='true'" if rendered_tree
-        if Isomorfeus.respond_to?(:current_user) && Isomorfeus.current_user && !Isomorfeus.current_user.anonymous?
-          render_result << " data-iso-usid=#{Oj.dump(Isomorfeus.current_user.to_sid, mode: :strict)}"
+        unless static
+          render_result << " data-iso-hydrated='true'" if rendered_tree
+          if Isomorfeus.respond_to?(:current_user) && Isomorfeus.current_user && !Isomorfeus.current_user.anonymous?
+            render_result << " data-iso-usid=#{Oj.dump(Isomorfeus.current_user.to_sid, mode: :strict)}"
+          end
+          render_result << " data-iso-nloc='#{props[:locale]}'>"
         end
-        render_result << " data-iso-nloc='#{props[:locale]}'>"
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
-        render_result << " data-iso-nloc='#{props[:locale]}'>"
+        render_result << " data-iso-nloc='#{props[:locale]}'>" unless static
       end
       render_result << '</div>'
       if Isomorfeus.server_side_rendering && !static
