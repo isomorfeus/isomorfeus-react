@@ -46,20 +46,20 @@ module React
           let type = typeof handler;
           if (type === "function") {
             let active_c = self.active_component();
-            result[Opal.React.lower_camelize(key)] = function(event, info) {
-              let ruby_event = Opal.React.native_to_ruby_event(event);
+            result[self.lower_camelize(key)] = function(event, info) {
+              let ruby_event = self.native_to_ruby_event(event);
               #{`active_c.__ruby_instance`.instance_exec(`ruby_event`, `info`, &`handler`)};
             }
           } else if (type === "object" && typeof handler.$call === "function" ) {
             if (!handler.react_event_handler_function) {
               handler.react_event_handler_function = function(event, info) {
-                let ruby_event = Opal.React.native_to_ruby_event(event);
+                let ruby_event = self.native_to_ruby_event(event);
                 handler.$call(ruby_event, info)
               };
             }
-            result[Opal.React.lower_camelize(key)] = handler.react_event_handler_function;
+            result[self.lower_camelize(key)] = handler.react_event_handler_function;
           } else if (type === "string" ) {
-            let active_component = Opal.React.active_component();
+            let active_component = self.active_component();
             let method_ref;
             let method_name = '$' + handler;
             if (typeof active_component[method_name] === "function") {
@@ -75,11 +75,11 @@ module React
             if (method_ref) {
               if (!method_ref.react_event_handler_function) {
                 method_ref.react_event_handler_function = function(event, info) {
-                  let ruby_event = Opal.React.native_to_ruby_event(event);
+                  let ruby_event = self.native_to_ruby_event(event);
                   method_ref.$call(ruby_event, info)
                 };
               }
-              result[Opal.React.lower_camelize(key)] = method_ref.react_event_handler_function;
+              result[self.lower_camelize(key)] = method_ref.react_event_handler_function;
             } else {
               let component_name;
               if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
@@ -87,7 +87,7 @@ module React
               #{Isomorfeus.raise_error(message: "Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
             }
           } else {
-            let active_component = Opal.React.active_component();
+            let active_component = self.active_component();
             let component_name;
             if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
             else { component_name = active_component.$to_s(); }
@@ -101,14 +101,14 @@ module React
           if (typeof val.$to_n === "function") { val = val.$to_n() }
           result["style"] = val;
         } else {
-          result[key.indexOf('_') > 0 ? Opal.React.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
+          result[key.indexOf('_') > 0 ? self.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
         }
       }
       return result;
     };
 
     self.internal_prepare_args_and_render = function(component, args, block) {
-      const operain = Opal.React.internal_render;
+      const operain = self.internal_render;
       if (args.length > 0) {
         let last_arg = args[args.length - 1];
         if (last_arg && last_arg.constructor === String) {
@@ -119,7 +119,7 @@ module React
     };
 
     self.internal_render = function(component, props, string_child, block) {
-      const operabu = Opal.React.render_buffer;
+      const operabu = self.render_buffer;
       let children;
       let native_props = null;
       if (string_child) {
@@ -134,24 +134,24 @@ module React
         // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         children = operabu.pop();
       }
-      if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
+      if (props && props !== nil) { native_props = self.to_native_react_props(props); }
       operabu[operabu.length - 1].push(Opal.global.React.createElement.apply(this, [component, native_props].concat(children)));
     };
 
     self.active_components = [];
 
     self.active_component = function() {
-      let length = Opal.React.active_components.length;
+      let length = self.active_components.length;
       if (length === 0) { return null; };
-      return Opal.React.active_components[length-1];
+      return self.active_components[length-1];
     };
 
     self.active_redux_components = [];
 
     self.active_redux_component = function() {
-      let length = Opal.React.active_redux_components.length;
+      let length = self.active_redux_components.length;
       if (length === 0) { return null; };
-      return Opal.React.active_redux_components[length-1];
+      return self.active_redux_components[length-1];
     };
   }
 
@@ -176,7 +176,7 @@ module React
 
   def self.create_element(type, props = nil, children = nil, &block)
     %x{
-      const operabu = Opal.React.render_buffer;
+      const operabu = self.render_buffer;
       let component = null;
       let native_props = null;
       if (typeof type.react_component !== 'undefined') { component = type.react_component; }
@@ -192,7 +192,7 @@ module React
         children = operabu.pop();
       } else if (children === nil) { children = []; }
       else if (typeof children === 'string') { children = [children]; }
-      if (props && props !== nil) { native_props = Opal.React.to_native_react_props(props); }
+      if (props && props !== nil) { native_props = self.to_native_react_props(props); }
       return Opal.global.React.createElement.apply(this, [component, native_props].concat(children));
     }
   end
