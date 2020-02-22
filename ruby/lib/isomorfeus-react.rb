@@ -136,7 +136,7 @@ else
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'
   require 'react/version'
-  require 'isomorfeus/config'
+  require 'isomorfeus/react_config'
 
   # props
   require 'isomorfeus/props/validate_hash_proxy'
