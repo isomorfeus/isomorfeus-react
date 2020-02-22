@@ -1,5 +1,5 @@
-module LucidComponent
-  module EnvironmentSupport
+module Isomorfeus
+  module ExecutionEnvironmentHelpers
     def on_browser?;  Isomorfeus.on_browser?;  end
     def on_ssr?;      Isomorfeus.on_ssr?;      end
     def on_desktop?;  Isomorfeus.on_desktop?;  end

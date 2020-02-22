@@ -5,8 +5,8 @@ module LucidFunc
       base.include(::React::Component::Features)
       base.include(::LucidFunc::Initializer)
       base.include(::React::FunctionComponent::Api)
-      base.extend(::LucidComponent::EnvironmentSupport)
-      base.include(::LucidComponent::EnvironmentSupport)
+      base.extend(::Isomorfeus::ExecutionEnvironmentHelpers)
+      base.include(::Isomorfeus::ExecutionEnvironmentHelpers)
       base.extend(::LucidFunc::NativeComponentConstructor)
       base.include(::LucidComponent::Api)
     end

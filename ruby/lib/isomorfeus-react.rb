@@ -14,7 +14,8 @@ if RUBY_ENGINE == 'opal'
     require 'browser/element'
   end
 
-  require 'isomorfeus/config'
+  require 'isomorfeus/react_config'
+  require 'isomorfeus/execution_environment_helpers'
 
   # allow mounting of components
   if Isomorfeus.on_browser?
