@@ -43,7 +43,7 @@ module Isomorfeus
           begin
             asset = Net::HTTP.get(URI(asset_path))
           rescue Exception => e
-            Isomorfeus.raise_error(message: "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server. Error: #{e.message}")
+            Isomorfeus.raise_error(message: "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server. Error: #{e.message}", stack: e.backtrace )
           end
           if asset.strip.start_with?('<')
             Isomorfeus.raise_error(message: "Server Side Rendering: Failed loading asset #{asset_path} from webpack dev server, asset is not javascript. Did the webpack build succeed?")
@@ -51,7 +51,7 @@ module Isomorfeus
           begin
             Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(asset)
           rescue Exception => e
-            Isomorfeus.raise_error(message: "Server Side Rendering: Failed creating context for #{asset_path}. Error: #{e.message}")
+            Isomorfeus.raise_error(message: "Server Side Rendering: Failed creating context for #{asset_path}. Error: #{e.message}", stack: e.backtrace)
           end
         else
           # initialize speednode context
