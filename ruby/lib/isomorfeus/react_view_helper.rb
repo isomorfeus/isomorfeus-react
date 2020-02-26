@@ -201,6 +201,9 @@ module Isomorfeus
         end
         render_result << (rendered_tree ? rendered_tree : "SSR didn't work")
       else
+        if Isomorfeus.respond_to?(:current_user) && Isomorfeus.current_user && !Isomorfeus.current_user.anonymous?
+          render_result << " data-iso-usid=#{Oj.dump(Isomorfeus.current_user.to_sid, mode: :strict)}"
+        end
         render_result << " data-iso-nloc='#{props[:locale]}'>" unless static
       end
       render_result << '</div>'
