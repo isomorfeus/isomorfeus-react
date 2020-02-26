@@ -4,8 +4,8 @@ module LucidApp
       base.instance_exec do
         def theme(theme_hash = nil, &block)
           if block_given?
+            result = block.call(React::Component::Styles.new(`base.jss_theme`))
             %x{
-              let result = block.$call(Opal.Hash.$new(base.jss_theme));
               if (typeof result.$to_n === 'function') { base.jss_theme = result.$to_n(); }
               else { base.jss_theme = result; }
               return result;
