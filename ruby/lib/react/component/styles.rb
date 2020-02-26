@@ -16,26 +16,22 @@ module React
       end
 
       %x{
-        const isObject = function(obj) { obj && typeof obj === 'object'; }
+        function isObject(obj) { return (obj && typeof obj === 'object'); }
 
         function mergeDeep(one, two) {
-          return [one, two].reduce((prev, obj) => {
-            Object.keys(obj).forEach(key => {
-              const pVal = prev[key];
-              const oVal = obj[key];
-
+          return [one, two].reduce(function(pre, obj) {
+            Object.keys(obj).forEach(function(key){
+              let pVal = pre[key];
+              let oVal = obj[key];
               if (Array.isArray(pVal) && Array.isArray(oVal)) {
-                prev[key] = pVal.concat,apply(this, oVal);
-              }
-              else if (isObject(pVal) && isObject(oVal)) {
-                prev[key] = mergeDeep(pVal, oVal);
-              }
-              else {
-                prev[key] = oVal;
+                pre[key] = pVal.concat.apply(this, oVal);
+              } else if (isObject(pVal) && isObject(oVal)) {
+                pre[key] = mergeDeep(pVal, oVal);
+              } else {
+                pre[key] = oVal;
               }
             });
-
-            return prev;
+            return pre;
           }, {});
         }
       }
