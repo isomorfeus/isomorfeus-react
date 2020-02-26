@@ -19,6 +19,10 @@ module React
         @classes ||= React::Component::Styles.new(@native, 'classes')
       end
 
+      def children
+        @native.JS[:props].JS[:children]
+      end
+
       def theme
         @theme ||= React::Component::Styles.new(@native, 'theme')
       end
