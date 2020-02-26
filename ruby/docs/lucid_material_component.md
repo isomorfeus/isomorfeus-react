@@ -12,7 +12,7 @@ class MyApp < LucidMaterial::App::Base # is a React::Context provider
   # LucidMaterial::App can provide a styles theme, it can be referred to by the LucidMaterial::Component styles DSL, see below
   # For the Mui Components to work, the default theme must be used:
   theme do |default_theme|
-    default_theme.deep_merge({ master: { width: 200 }})
+    default_theme.deep_merge!({ master: { width: 200 }})
   end
 
   render do
