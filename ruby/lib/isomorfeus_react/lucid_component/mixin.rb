@@ -5,8 +5,6 @@ module LucidComponent
       base.extend(::LucidComponent::NativeLucidComponentConstructor)
       base.extend(::LucidComponent::NativeComponentConstructor)
       base.extend(::LucidPropDeclaration::Mixin)
-      base.extend(::Isomorfeus::ExecutionEnvironmentHelpers)
-      base.include(::Isomorfeus::ExecutionEnvironmentHelpers)
       base.include(::React::Component::Elements)
       base.include(::React::Component::Api)
       base.include(::React::Component::Callbacks)

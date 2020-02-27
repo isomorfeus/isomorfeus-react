@@ -18,20 +18,15 @@ module LucidApp
             };
             this.state.isomorfeus_store_state = Opal.Isomorfeus.store.native.getState();
             var current_store_state = this.state.isomorfeus_store_state;
-            if (typeof current_store_state.component_class_state[#{component_name}] !== "undefined") {
-              this.state.component_class_state = {};
-              this.state.component_class_state[#{component_name}] = current_store_state.component_class_state[#{component_name}];
+            if (typeof current_store_state.class_state[#{component_name}] !== "undefined") {
+              this.state.class_state = {};
+              this.state.class_state[#{component_name}] = current_store_state.class_state[#{component_name}];
             } else {
-              this.state.component_class_state = {};
-              this.state.component_class_state[#{component_name}] = {};
+              this.state.class_state = {};
+              this.state.class_state[#{component_name}] = {};
             };
             this.__ruby_instance = base.$new(this);
-            this.__object_id = this.__ruby_instance.$object_id().$to_s();
             if (Opal.Isomorfeus.$top_component() == nil) { Opal.Isomorfeus['$top_component='](this); }
-            if (!this.state.component_state) {
-              this.state.component_state = {};
-              this.state.component_state[this.__object_id] = {};
-            };
             var defined_refs = #{base.defined_refs};
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {

@@ -123,56 +123,6 @@ RSpec.describe 'LucidMaterial::Func' do
       @doc = visit('/')
     end
 
-    it 'define a default store value and access it' do
-      skip "not valid for Func"
-      @doc.evaluate_ruby do
-        class TestComponent < LucidMaterial::Func::Base
-          store.something = 'Something state intialized!'
-          render do
-            DIV(id: :test_component) { store.something }
-          end
-        end
-        class OuterApp < LucidMaterial::App::Base
-          render do
-            TestComponent()
-          end
-        end
-        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
-      end
-      node = @doc.wait_for('#test_component')
-      expect(node.all_text).to include('Something state intialized!')
-    end
-
-    it 'define a default store value and change it' do
-      skip "not valid for Func"
-      @doc.evaluate_ruby do
-        class TestComponent < LucidMaterial::Func::Base
-          def change_state(event)
-            store.something = false
-          end
-          store.something = true
-          render do
-            if store.something
-              DIV(id: :test_component, on_click: :change_state) { "#{store.something}" }
-            else
-              DIV(id: :changed_component, on_click: :change_state) { "#{store.something}" }
-            end
-          end
-        end
-        class OuterApp < LucidMaterial::App::Base
-          render do
-            TestComponent()
-          end
-        end
-        Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
-      end
-      node = @doc.wait_for('#test_component')
-      expect(node.all_text).to include('true')
-      node.click
-      node = @doc.wait_for('#changed_component')
-      expect(node.all_text).to include('false')
-    end
-
     it 'use a uninitialized store value and change it' do
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Func::Base
@@ -210,14 +160,13 @@ RSpec.describe 'LucidMaterial::Func' do
     end
 
     it 'define a default class_store value and access it' do
-      skip "not valid for Func"
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Func::Base
-          class_store.something = 'Something state intialized!'
           render do
             DIV(id: :test_component) { class_store.something }
           end
         end
+        TestComponent.class_store.something = 'Something state intialized!'
         class OuterApp < LucidMaterial::App::Base
           render do
             TestComponent()
@@ -230,13 +179,11 @@ RSpec.describe 'LucidMaterial::Func' do
     end
 
     it 'define a default class_store value and change it' do
-      skip "not valid for Func"
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Func::Base
           def change_state(event)
             class_store.something = false
           end
-          class_store.something = true
           render do
             if class_store.something
               DIV(id: :test_component, on_click: :change_state) { "#{class_store.something}" }
@@ -250,6 +197,11 @@ RSpec.describe 'LucidMaterial::Func' do
             TestComponent()
           end
         end
+      end
+      @doc.evaluate_ruby do
+        TestComponent.class_store.something = true
+      end
+      @doc.evaluate_ruby do
         Isomorfeus::TopLevel.mount_component(OuterApp, {}, '#test_anchor')
       end
       node = @doc.wait_for('#test_component')
@@ -296,10 +248,11 @@ RSpec.describe 'LucidMaterial::Func' do
     end
 
     it 'define a default app_store value and access it' do
-      skip "not valid for Func"
+      @doc.evaluate_ruby do
+        AppStore.something = 'Something state intialized!'
+      end
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Func::Base
-          app_store.something = 'Something state intialized!'
           render do
             DIV(id: :test_component) { app_store.something }
           end
@@ -316,13 +269,14 @@ RSpec.describe 'LucidMaterial::Func' do
     end
 
     it 'define a default app_store value and change it' do
-      skip "not valid for Func"
+      @doc.evaluate_ruby do
+        AppStore.something = true
+      end
       @doc.evaluate_ruby do
         class TestComponent < LucidMaterial::Func::Base
           def change_state(event)
             app_store.something = false
           end
-          app_store.something = true
           render do
             if app_store.something
               DIV(id: :test_component, on_click: :change_state) { "#{app_store.something}" }

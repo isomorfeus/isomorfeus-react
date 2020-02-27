@@ -57,6 +57,7 @@ module Isomorfeus
           # initialize speednode context
           unless Isomorfeus.ssr_contexts.key?(thread_id_asset)
             asset_file_name = OpalWebpackLoader::Manifest.lookup_path_for(asset)
+            Isomorfeus.raise_error(message: "Server Side Rendering: Build asset file not found for #{asset}. Has it been build?") unless asset_file_name
             asset_path = File.join('public', asset_file_name)
             Isomorfeus.ssr_contexts[thread_id_asset] = ExecJS.permissive_compile(File.read(asset_path))
           end
@@ -97,8 +98,8 @@ module Isomorfeus
                 else { global.Opal.Isomorfeus.TopLevel.$render_component_to_string('#{component_name}', #{Oj.dump(props, mode: :strict)}); }
                 global.FirstPassFinished = 'transport';
               } catch (e) {
-                global.Exception = e; 
-                global.FirstPassFinished = 'transport';               
+                global.Exception = e;
+                global.FirstPassFinished = 'transport';
               }
             }, $$1.$$s = this, $$1.$$arity = 0, $$1))
           } else { return global.FirstPassFinished = true; };

@@ -3,10 +3,12 @@ module LucidComponent
     def initialize(native_component)
       @native = native_component
       @app_store = LucidComponent::AppStoreProxy.new(self)
-      @class_store = LucidComponent::ClassStoreProxy.new(self)
+      @class_store = LucidComponent::ClassStoreProxy.new(self.class.to_s, self, @native)
+      # @iso_store = Isomorfeus::IsomorphicStoreProxy.new(self)
+      # @local_store = Isomorfeus::LocalStoreProxy.new(self)
+      @store = LucidComponent::InstanceStoreProxy.new(self)
       @props = `Opal.React.Component.Props.$new(#@native)`
       @state = `Opal.React.Component.State.$new(#@native)`
-      @store = LucidComponent::InstanceStoreProxy.new(self)
     end
   end
 end

@@ -14,11 +14,6 @@ class MemoTest < LucidMaterial::Func::Base
 end
 
 class HelloComponent < LucidMaterial::Component::Base
-  class_store.a_value = 'component class store works'
-  store.a_value = 'component store works'
-  app_store.a_value = 'application store works'
-  app_store.b_value = 0
-
   styles do
     { test: { color: 'red' }}
   end
@@ -30,7 +25,7 @@ class HelloComponent < LucidMaterial::Component::Base
   end
 
   def incr
-    app_store.b_value = app_store.b_value + 1
+    app_store.b_value = (app_store.b_value || 0) + 1
   end
 
   render do

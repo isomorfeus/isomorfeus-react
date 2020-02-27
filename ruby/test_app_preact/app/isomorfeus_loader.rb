@@ -1,5 +1,7 @@
 require 'opal'
+start = Time.now
 require 'isomorfeus-redux'
+IX_REQUIRE_TIME = (Time.now - start) * 1000
 start = Time.now
 require 'isomorfeus-react'
 require 'isomorfeus-react-material-ui'

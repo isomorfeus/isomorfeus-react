@@ -26,7 +26,7 @@ RSpec.describe 'Execution Environment' do
     expect(result).to be false
   end
 
-  it 'detects browser' do
+  it 'detects execution environment' do
     node = @doc.wait_for('#test_anchor')
     expect(node).to be_truthy
     result = @doc.evaluate_ruby do
@@ -35,6 +35,22 @@ RSpec.describe 'Execution Environment' do
     expect(result).to be true
     result = @doc.evaluate_ruby do
       Isomorfeus.on_ssr?
+    end
+    expect(result).to be false
+    result = @doc.evaluate_ruby do
+      Isomorfeus.on_mobile?
+    end
+    expect(result).to be false
+    result = @doc.evaluate_ruby do
+      on_browser?
+    end
+    expect(result).to be true
+    result = @doc.evaluate_ruby do
+      on_ssr?
+    end
+    expect(result).to be false
+    result = @doc.evaluate_ruby do
+      on_mobile?
     end
     expect(result).to be false
   end

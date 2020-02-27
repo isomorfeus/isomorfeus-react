@@ -25,16 +25,16 @@ Gem::Specification.new do |s|
   #
   # TEXT
 
-  s.add_dependency 'concurrent-ruby', '~> 1.1.0'
-  s.add_dependency 'oj', '>= 3.10'
+  s.add_dependency 'concurrent-ruby', '~> 1.1.6'
+  s.add_dependency 'oj', '>= 3.10.2'
   s.add_dependency 'opal', '>= 1.0.0'
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'opal-zeitwerk', '~> 0.2.0'
   s.add_dependency 'opal-webpack-loader', '>= 0.9.10'
-  s.add_dependency 'isomorfeus-redux', '~> 4.0.21'
+  s.add_dependency 'isomorfeus-redux', '~> 4.0.22'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.12'
   s.add_dependency 'zeitwerk', '~> 2.2.2'
-  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.4'
+  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.5'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.8'
 end

@@ -11,9 +11,8 @@ Therefore a LucidComponent needs a LucidApp as outer component.
 LucidApp sets up a React::Context Provider, LucidComponent works as a React::Context Consumer.
 
 ```ruby
+
 class MyComponent < LucidComponent::Base # is a React::Context Consumer
-  store.a_var = 100 # set a initial value for the instance
-  class_store.another_var = 200 # set a initial value for the class
 
   render do
     # in a LucidComponent state can be used for local state managed by react:

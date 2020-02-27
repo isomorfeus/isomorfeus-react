@@ -14,18 +14,18 @@ RSpec.describe 'Server Side Rendering' do
     state_json = @doc.evaluate_script('JSON.stringify(ServerSideRenderingStateJSON)')
     state = Oj.load(state_json, mode: :strict)
     expect(state).to have_key('application_state')
-    expect(state).to have_key('component_state')
-    expect(state).to have_key('component_class_state')
+    expect(state).to have_key('instance_state')
+    expect(state).to have_key('class_state')
 
     # does not work like this when autoloading
     #expect(state['application_state']).to have_key('a_value')
     #expect(state['application_state']['a_value']).to eq('application store works')
-    #expect(state['component_class_state']).to have_key('HelloComponent')
-    #expect(state['component_class_state']['HelloComponent'])
-    #expect(state['component_class_state']['HelloComponent']['a_value']).to eq('component class store works')
-    #expect(state['component_class_state']['HelloComponent']).to have_key('instance_defaults')
-    #expect(state['component_class_state']['HelloComponent']['instance_defaults']).to have_key('a_value')
-    #expect(state['component_class_state']['HelloComponent']['instance_defaults']['a_value']).to eq('component store works')
+    #expect(state['class_state']).to have_key('HelloComponent')
+    #expect(state['class_state']['HelloComponent'])
+    #expect(state['class_state']['HelloComponent']['a_value']).to eq('component class store works')
+    #expect(state['class_state']['HelloComponent']).to have_key('instance_defaults')
+    #expect(state['class_state']['HelloComponent']['instance_defaults']).to have_key('a_value')
+    #expect(state['class_state']['HelloComponent']['instance_defaults']['a_value']).to eq('component store works')
   end
 
   it 'save the application state for the client, also on subsequent renders' do
@@ -34,18 +34,18 @@ RSpec.describe 'Server Side Rendering' do
     state_json = @doc.evaluate_script('JSON.stringify(ServerSideRenderingStateJSON)')
     state = Oj.load(state_json, mode: :strict)
     expect(state).to have_key('application_state')
-    expect(state).to have_key('component_state')
-    expect(state).to have_key('component_class_state')
+    expect(state).to have_key('instance_state')
+    expect(state).to have_key('class_state')
 
     # does not work like this when autoloading
     #expect(state['application_state']).to have_key('a_value')
     #expect(state['application_state']['a_value']).to eq('application store works')
-    #expect(state['component_class_state']).to have_key('HelloComponent')
-    #expect(state['component_class_state']['HelloComponent'])
-    #expect(state['component_class_state']['HelloComponent']['a_value']).to eq('component class store works')
-    #expect(state['component_class_state']['HelloComponent']).to have_key('instance_defaults')
-    #expect(state['component_class_state']['HelloComponent']['instance_defaults']).to have_key('a_value')
-    #expect(state['component_class_state']['HelloComponent']['instance_defaults']['a_value']).to eq('component store works')
+    #expect(state['class_state']).to have_key('HelloComponent')
+    #expect(state['class_state']['HelloComponent'])
+    #expect(state['class_state']['HelloComponent']['a_value']).to eq('component class store works')
+    #expect(state['class_state']['HelloComponent']).to have_key('instance_defaults')
+    #expect(state['class_state']['HelloComponent']['instance_defaults']).to have_key('a_value')
+    #expect(state['class_state']['HelloComponent']['instance_defaults']['a_value']).to eq('component store works')
   end
 
   it 'it returns 404 if page not found' do

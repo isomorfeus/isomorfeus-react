@@ -17,11 +17,6 @@ module LucidComponent
               this.state = {};
             };
             this.__ruby_instance = base.$new(this);
-            this.__object_id = this.__ruby_instance.$object_id().$to_s();
-            if (!this.state.component_state) {
-              this.state.component_state = {};
-              this.state.component_state[this.__object_id] = {};
-            };
             var defined_refs = #{base.defined_refs};
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {
