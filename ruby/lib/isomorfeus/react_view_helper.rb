@@ -1,26 +1,22 @@
 module Isomorfeus
   module ReactViewHelper
-    def cached_mount_component(component_name, props = {}, asset = 'application_ssr.js', static = false)
+    def cached_mount_component(component_name, props = {}, asset = 'web_ssr.js', static = false)
       key = "#{component_name}#{props}#{asset}"
-      if Isomorfeus.production? && component_cache.key?(key)
-        render_result = component_cache[key][:render_result]
-        @ssr_response_status = component_cache[key][:ssr_response_status]
-        @sst_styles = component_cache[key][:ssr_styles]
-      else
-        render_result = mount_component(component_name, props, asset, static)
-        status = ssr_response_status
-        if status >= 200 && status < 300
-          component_cache[key] = { render_result: render_result, ssr_response_status: status, ssr_styles: ssr_styles }
-        end
+      if Isomorfeus.production?
+        render_result, @ssr_response_status, @ssr_styles = component_cache.fetch(key)
+        return render_result if render_result
       end
+      render_result = mount_component(component_name, props, asset, static)
+      status = ssr_response_status
+      component_cache.set(key, render_result, status, ssr_styles) if status >= 200 && status < 300
       render_result
     end
 
-    def cached_mount_static_component(component_name, props = {}, asset = 'application_ssr.js')
+    def cached_mount_static_component(component_name, props = {}, asset = 'web_ssr.js')
       cached_mount_component(component_name, props, asset, true)
     end
 
-    def mount_component(component_name, props = {}, asset = 'application_ssr.js', static = false)
+    def mount_component(component_name, props = {}, asset = 'web_ssr.js', static = false)
       @ssr_response_status = nil
       @ssr_styles = nil
       thread_id_asset = "#{Thread.current.object_id}#{asset}"
@@ -214,7 +210,7 @@ module Isomorfeus
       render_result
     end
 
-    def mount_static_component(component_name, props = {}, asset = 'application_ssr.js')
+    def mount_static_component(component_name, props = {}, asset = 'web_ssr.js')
       mount_component(component_name, props, asset, true)
     end
 
@@ -229,7 +225,7 @@ module Isomorfeus
     private
 
     def component_cache
-      @_component_cache ||= Isomorfeus.component_cache_class.new
+      @_component_cache ||= Isomorfeus.component_cache.call
     end
   end
 end
