@@ -9,7 +9,7 @@ class TestAppApp < Roda
   plugin :public, root: 'public'
 
   def page_content(host, location)
-    rendered_tree = mount_component('TestAppApp', location_host: host, location: location)
+    rendered_tree = mount_component('TestAppApp', { location_host: host, location: location }, 'application_ssr.js')
     <<~HTML
       <html>
         <head>
@@ -37,7 +37,7 @@ class TestAppApp < Roda
     end
 
     r.get 'ssr' do
-      rendered_tree = mount_component('TestAppApp', location_host: env['HTTP_HOST'],  location: env['PATH_INFO'])
+      rendered_tree = mount_component('TestAppApp', { location_host: env['HTTP_HOST'],  location: env['PATH_INFO'] }, 'application_ssr.js')
       content = <<~HTML
       <html>
         <head>
