@@ -5,7 +5,7 @@ const TerserPlugin = require('terser-webpack-plugin'); // for minifying the pack
 const WebpackAssetsManifest = require('webpack-assets-manifest');
 
 const common_config = {
-    context: path.resolve(__dirname, '../isomorfeus'),
+    context: path.resolve(__dirname, '../app'),
     mode: "production",
     optimization: {
         minimize: true, // minimize
@@ -29,7 +29,7 @@ const common_config = {
                     {
                         loader: "sass-loader",
                         options: {
-                            includePath: [path.resolve(__dirname, '../isomorfeus/styles')],
+                            includePath: [path.resolve(__dirname, '../app/styles')],
                             sourceMap: false
                         }
                     }
@@ -58,9 +58,9 @@ const common_config = {
 
 const browser_config = {
     target: 'web',
-    entry: { application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')] },
+    entry: { application: [path.resolve(__dirname, '../app/imports/web.js')] },
     plugins: [
-        new CompressionPlugin({ test: /^((?!application_ssr).)*$/, cache: true }), // gzip compress, exclude application_ssr.js
+        new CompressionPlugin({ test: /^((?!web_ssr).)*$/, cache: true }), // gzip compress, exclude application_ssr.js
         new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
     ],
     externals: { crypto: 'Crypto' }
@@ -68,24 +68,14 @@ const browser_config = {
 
 const ssr_config = {
     target: 'node',
-    entry: { application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')] },
+    entry: { application_ssr: [path.resolve(__dirname, '../app/imports/web_ssr.js')] },
     plugins: [
         new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
     ]
 };
 
-const web_worker_config = {
-    target: 'webworker',
-    entry: { web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')] },
-    plugins: [
-        new CompressionPlugin({ test: /^((?!application_ssr).)*$/, cache: true }), // gzip compress, exclude application_ssr.js
-        new WebpackAssetsManifest({ publicPath: true, merge: true }) // generate manifest
-    ],
-    externals: { crypto: 'Crypto' }
-};
 
 const browser = Object.assign({}, common_config, browser_config);
 const ssr = Object.assign({}, common_config, ssr_config);
-const web_worker = Object.assign({}, common_config, web_worker_config);
 
 module.exports = [ browser, ssr ];

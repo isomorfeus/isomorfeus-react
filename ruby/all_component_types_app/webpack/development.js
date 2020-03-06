@@ -5,7 +5,7 @@ const OwlResolver = require('opal-webpack-loader/resolver'); // to resolve ruby 
 const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to watch for added ruby files
 
 const common_config = {
-    context: path.resolve(__dirname, '../isomorfeus'),
+    context: path.resolve(__dirname, '../app'),
     mode: "development",
     optimization: {
         removeAvailableModules: false,
@@ -27,7 +27,7 @@ const common_config = {
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         // watch for added files in opal dir
-        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../isomorfeus') ] })
+        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../app') ] })
     ],
     module: {
         rules: [
@@ -37,7 +37,7 @@ const common_config = {
                     {
                         loader: "sass-loader",
                         options: {
-                            includePaths: [path.resolve(__dirname, '../isomorfeus/styles')],
+                            includePaths: [path.resolve(__dirname, '../app/styles')],
                             sourceMap: false
                         }
                     }
@@ -94,17 +94,10 @@ const common_config = {
 
 const browser_config = {
     target: 'web',
-    entry: { application: [path.resolve(__dirname, '../isomorfeus/imports/application.js')] },
-    externals: { crypto: 'Crypto' }
-};
-
-const web_worker_config = {
-    target: 'webworker',
-    entry: { web_worker: [path.resolve(__dirname, '../isomorfeus/imports/application_web_worker.js')] },
+    entry: { application: [path.resolve(__dirname, '../app/imports/web.js')] },
     externals: { crypto: 'Crypto' }
 };
 
 const browser = Object.assign({}, common_config, browser_config);
-const web_worker = Object.assign({}, common_config, web_worker_config);
 
 module.exports = [ browser ];

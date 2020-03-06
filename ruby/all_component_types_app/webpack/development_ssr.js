@@ -6,7 +6,7 @@ const ExtraWatchWebpackPlugin = require('extra-watch-webpack-plugin'); // to wat
 
 const common_config = {
     target: 'node',
-    context: path.resolve(__dirname, '../isomorfeus'),
+    context: path.resolve(__dirname, '../app'),
     mode: "development",
     optimization: {
         removeAvailableModules: false,
@@ -34,7 +34,7 @@ const common_config = {
         // dont split ssr asset in chunks
         new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
         // watch for added files in opal dir
-        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../isomorfeus') ] })
+        new ExtraWatchWebpackPlugin({ dirs: [ path.resolve(__dirname, '../app') ] })
     ],
     module: {
         rules: [
@@ -45,7 +45,7 @@ const common_config = {
                 use: [ "style-loader", "css-loader",
                     {
                         loader: "sass-loader",
-                        options: { includePaths: [path.resolve(__dirname, '../isomorfeus/styles')] }
+                        options: { includePaths: [path.resolve(__dirname, '../app/styles')] }
                     }
                 ]
             },
@@ -100,7 +100,7 @@ const common_config = {
 };
 
 const ssr_config = {
-    entry: { application_ssr: [path.resolve(__dirname, '../isomorfeus/imports/application_ssr.js')] }
+    entry: { application_ssr: [path.resolve(__dirname, '../app/imports/web_ssr.js')] }
 };
 
 const ssr = Object.assign({}, common_config, ssr_config);

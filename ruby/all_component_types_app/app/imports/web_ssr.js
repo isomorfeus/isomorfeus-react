@@ -14,10 +14,10 @@ import WebSocket from 'ws';
 global.WebSocket = WebSocket;
 // import modules common to browser and server side rendering (ssr)
 // environments from application_common.js
-import './application_common.js';
+import './web_common.js';
 
-import init_app from 'isomorfeus_loader.rb';
+import init_app from 'web_loader.rb';
 init_app();
-global.Opal.load('isomorfeus_loader');
+global.Opal.load('web_loader');
 
 if (module.hot) { module.hot.accept(); }
