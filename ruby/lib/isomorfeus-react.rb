@@ -100,10 +100,12 @@ else
   Isomorfeus.server_side_rendering = true
 
   # cache
-  require 'isomorfeus/thread_local_cache'
+  require 'isomorfeus/thread_local_component_cache'
   require 'isomorfeus/react_view_helper'
 
-  Isomorfeus.component_cache_class = Isomorfeus::ThreadLocalCache
+  Isomorfeus.component_cache do
+    Isomorfeus::ThreadLocalComponentCache.new
+  end
 
   Opal.append_path(__dir__.untaint)
 
