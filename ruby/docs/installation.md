@@ -12,23 +12,23 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.10'
-gem 'isomorfeus-react', '>= 16.12.0'
+gem 'opal-webpack-loader', '~> 0.9.11'
+gem 'isomorfeus-react', '>= 16.13.0'
 ```
 
 Required Javascript Npms:
 
-When using React:
+#### When using React
 - react
 - react-dom
 
 For package.json:
 ```json
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
 ```
 
-When using Preact:
+#### When using Preact
 - preact
 - preact-render-to-string
 
@@ -38,15 +38,15 @@ For package.json:
     "preact-render-to-string": "^5.1.4",
 ```
 
-When using Nervjs:
+#### When using Nervjs
 ```json
     "nerv-devtools": "^1.5.6",
     "nerv-server": "^1.5.6",
     "nervjs": "^1.5.6",
 ```
 
-And these are required:
-- opal-webpack-laoder
+#### Common requirements
+- opal-webpack-loader
 - react-router
 - react-router-dom
 - redux
@@ -54,22 +54,22 @@ And these are required:
 For LucidComponent styling support, required when using LucidComponents:
 - react-jss
 
-For the optional MaterialUI support:
+For package.json:
+```json
+    "opal-webpack-loader": "^0.9.11",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-jss": "^10.0.4",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.5",
+```
+
+#### Optional MaterialUI support
 - @material-ui/core
 - @material-ui/styles
 
 For package.json:
-```json
-    "opal-webpack-loader": "^0.9.9",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-jss": "^10.0.0",
-    "react-router": "^5.1.1",
-    "react-router-dom": "^5.1.1",
-    "redux": "^4.0.1",
-```
-
-For the optional MaterialUI support:
 ```json
     "@material-ui/core": "^4.5.0",
     "@material-ui/styles": "^4.5.0",
