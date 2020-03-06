@@ -109,12 +109,16 @@ module Isomorfeus
     self.add_client_option(:client_init_after_store_class_names, [])
   else
     class << self
-      attr_accessor :component_cache_class
+      attr_reader :component_cache
       attr_accessor :server_side_rendering
       attr_accessor :ssr_hot_asset_url
       attr_reader :env
       attr_accessor :zeitwerk
       attr_accessor :zeitwerk_lock
+
+      def component_cache(&block)
+        @component_cache = block
+      end
 
       def configuration(&block)
         block.call(self)
@@ -146,6 +150,12 @@ module Isomorfeus
       def version
         Isomorfeus::VERSION
       end
+
+      def load_configuration
+        Dir.glob("config/*.rf").sort.each do |file|
+          require_relative file
+        end
+      end
     end
   end
 
@@ -155,9 +165,24 @@ module Isomorfeus
       execution_environment = if on_browser? then 'on Browser'
                               elsif on_ssr? then 'in Server Side Rendering'
                               elsif on_server? then 'on Server'
+                              elsif on_mobile? then 'on Mobile'
+                              elsif on_database? then 'on Database'
+                              else
+                                'on Client'
                               end
       error = error_class.new("Isomorfeus in #{env} #{execution_environment}:\n#{message}")
       error.set_backtrace(stack) if stack
+
+      if Isomorfeus.development?
+        if RUBY_ENGINE == 'opal'
+          ecn = error_class ? error_class.name : ''
+          m = message ? message : ''
+          s = stack ? stack : ''
+          `console.error(ecn, m, s)`
+        else
+          STDERR.puts "#{ecn}: #{m}\n #{s}"
+        end
+      end
       raise error
     end
   end
