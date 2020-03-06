@@ -34,7 +34,7 @@ For package.json:
 
 For package.json:
 ```json
-    "preact": "^10.3.2",
+    "preact": "^10.3.3",
     "preact-render-to-string": "^5.1.4",
 ```
 
@@ -71,8 +71,8 @@ For package.json:
 
 For package.json:
 ```json
-    "@material-ui/core": "^4.5.0",
-    "@material-ui/styles": "^4.5.0",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/styles": "^4.9.0",
 ```
 
 Then the usual:
