@@ -13,7 +13,7 @@ For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
 gem 'opal-webpack-loader', '~> 0.9.11'
-gem 'isomorfeus-react', '>= 16.13.0'
+gem 'isomorfeus-react', '>= 16.13.2'
 ```
 
 Required Javascript Npms:
