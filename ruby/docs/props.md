@@ -28,9 +28,10 @@ class MyComponent < React::Component::Base
   prop :other, is_a: Enumerable # a required prop, which can be a Array for example, but at least must be a Enumerable
   prop :cool, default: 'yet some more text' # a optional prop with a default value
   prop :even_cooler, class: String, required: false # a optional prop, which when given, must be of class String
+  prop :is_it, type: :boolean # ruby has no Boolean class, for validating a boolean the type: :boolean must be used.
   prop :super # a required prop of any type
-  prop :email_address, type: :email # special email type
-  prop :website, type: :uri # special uri type, must contain uri scheme
+  prop :email_address, type: :email # special email type, email must be a string
+  prop :website, type: :uri # special uri type, must contain uri scheme. uri must be a string
   
   render do
     DIV { props.text }
@@ -66,7 +67,7 @@ end
 
 A validate method chain must start with the `validate` method.
 
-#### Supported types
+#### Supported types methods for the validate method style
 Checked for exact class:
 - Array
 - Float
@@ -74,8 +75,8 @@ Checked for exact class:
 - Integer
 - String
 - Boolean (checked for TrueClass or FalseClass)
-- Email
-- Uri
+- Email (must be a String, validated via regexp)
+- Uri (must be a String, validated via method call)
 
 Checked for superclass or module containing:
 - Enumerable
@@ -86,7 +87,7 @@ prop :beer, validate.Float
 prop :carpet, validate.Float
 ```
 
-#### Other types
+#### Other types for validate method style
 Any other type can be supported with the following methods:
 - `is_a(class)` checks for superclass or module containing class: `prop :some, validate.is_a(Rabbit)`
 - `exact_class(class)`, checks for exact class: `prop :car, validate.exact_class(MercedesBenzSClass)`
@@ -105,22 +106,6 @@ Example:
 class MyComponent < React::Component::Base
   prop :float_a, ensure_block: proc { |v| v = 1 if v < 1; v }
   prop :float_b, validate.ensure { |v| v = 2 if v > 2; v }
-  
-  render do
-    DIV { props.float_a.to_s }
-    DIV { props.float_b.to_s }
-  end
-end
-```
-
-#### Custom validation block
-A validate_block can be passed. That block gets a value and is expected to return a value or raise if desired.
-Setting a default value, a ensure block, cast and type checks are executed before the validate_block
-Example:
-```ruby
-class MyComponent < React::Component::Base
-  prop :float_a, validate_block: proc { |v| raise 'error' unless v.is_a?(Float) }
-  prop :float_b, validate.validate_block { |v| raise 'error' unless v.is_a?(Float) }
   
   render do
     DIV { props.float_a.to_s }
@@ -155,6 +140,22 @@ end
     
 These methods are helper methods to express more clearly in language.
 Example: `prop :wine, validate.String.with.length(5).and.matches(/(a|b}.*/)`
+
+#### Custom validation block
+A validate_block can be passed. That block gets a value and is expected to return a value or raise if desired.
+Setting a default value, a ensure block, cast and type checks are executed before the validate_block
+Example:
+```ruby
+class MyComponent < React::Component::Base
+  prop :float_a, validate_block: proc { |v| raise 'error' unless v.is_a?(Float) }
+  prop :float_b, validate.validate_block { |v| raise 'error' unless v.is_a?(Float) }
+  
+  render do
+    DIV { props.float_a.to_s }
+    DIV { props.float_b.to_s }
+  end
+end
+```
 
 #### Validating props
 
