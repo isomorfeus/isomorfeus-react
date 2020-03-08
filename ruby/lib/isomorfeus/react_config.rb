@@ -151,8 +151,8 @@ module Isomorfeus
         Isomorfeus::VERSION
       end
 
-      def load_configuration
-        Dir.glob("config/*.rb").sort.each do |file|
+      def load_configuration(directory)
+        Dir.glob(File.join(directory, '*.rb')).sort.each do |file|
           require File.expand_path(file)
         end
       end
