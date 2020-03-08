@@ -12,5 +12,4 @@ class MyFunctionComponent < LucidMaterial::Func::Base
 ```
 
 #### Restrictions
-As restriction LucidFunc and LucidMaterial::Func cannot set default values for app_store, class_store or instance_store.
-Also prop validation is not applied to these component types.
+Automatic prop validation is not applied to these component types. Props can be manually validated if desired.
