@@ -8,7 +8,7 @@ module Isomorfeus
       end
       render_result = mount_component(component_name, props, asset, static)
       status = ssr_response_status
-      component_cache.set(key, render_result, status, ssr_styles) if status >= 200 && status < 300
+      component_cache.store(key, render_result, status, ssr_styles) if status >= 200 && status < 300
       render_result
     end
 
