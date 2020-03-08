@@ -4,7 +4,7 @@
   "dependencies": {
     "@material-ui/core": "^4.9.5",
     "@material-ui/styles": "^4.9.0",
-    "formik": "^1.5.8",
+    "formik": "^2.1.4",
     "opal-webpack-loader": "^0.9.11",
     "preact": "^10.3.3",
     "preact-render-to-string": "^5.1.4",
