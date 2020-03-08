@@ -103,7 +103,7 @@ else
   require 'isomorfeus/thread_local_component_cache'
   require 'isomorfeus/react_view_helper'
 
-  Isomorfeus.component_cache do
+  Isomorfeus.component_cache_init do
     Isomorfeus::ThreadLocalComponentCache.new
   end
 

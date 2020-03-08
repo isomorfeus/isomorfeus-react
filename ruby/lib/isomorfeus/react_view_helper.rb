@@ -225,7 +225,7 @@ module Isomorfeus
     private
 
     def component_cache
-      @_component_cache ||= Isomorfeus.component_cache.call
+      @_component_cache ||= Isomorfeus.component_cache_init.call
     end
   end
 end

@@ -116,8 +116,8 @@ module Isomorfeus
       attr_accessor :zeitwerk
       attr_accessor :zeitwerk_lock
 
-      def component_cache(&block)
-        @component_cache = block
+      def component_cache_init(&block)
+        @component_cache_init = block
       end
 
       def configuration(&block)
