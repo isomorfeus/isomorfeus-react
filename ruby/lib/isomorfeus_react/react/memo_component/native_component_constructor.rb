@@ -20,7 +20,7 @@ module React
             __ruby_instance.props = props;
             oper.active_components.push(__ruby_instance);
             let block_result = #{`__ruby_instance`.instance_exec(&`base.render_block`)};
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+            if (block_result && block_result !== nil) { oper.render_block_result(block_result); }
             oper.active_components.pop();
             // console.log("memo popping", oper.render_buffer, oper.render_buffer.toString());
             let result = oper.render_buffer.pop();

@@ -42,7 +42,7 @@ module LucidFunc
           oper.active_components.push(__ruby_instance);
           oper.active_redux_components.push(__ruby_instance);
           let block_result = #{`__ruby_instance`.instance_exec(&`base.render_block`)};
-          if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+          if (block_result && block_result !== nil) { oper.render_block_result(block_result); }
           oper.active_redux_components.pop();
           oper.active_components.pop();
           // console.log("function popping", oper.render_buffer, oper.render_buffer.toString());

@@ -2,7 +2,11 @@ module React
   module MemoComponent
     module Mixin
       def self.included(base)
-        base.include(::React::Component::Elements)
+        if on_browser? || on_ssr?
+          base.include(::React::Component::Elements)
+        elsif on_mobile?
+          base.include(::ReactNative::Component::Elements)
+        end
         base.include(::React::Component::Features)
         base.include(::React::FunctionComponent::Initializer)
         base.include(::React::FunctionComponent::Api)

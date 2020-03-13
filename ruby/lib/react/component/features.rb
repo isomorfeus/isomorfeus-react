@@ -21,9 +21,7 @@ module React
             let block_result = block.$call()
             let last_buffer_length = operabu[operabu.length - 1].length;
             let last_buffer_element = operabu[operabu.length - 1][last_buffer_length - 1];
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-              operabu[operabu.length - 1].push(block_result);
-            }
+            if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
           }
           // console.log("portal popping", operabu, operabu.toString());
           let result = operabu.pop();

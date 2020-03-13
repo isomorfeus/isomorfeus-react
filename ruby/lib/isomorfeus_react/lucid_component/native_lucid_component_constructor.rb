@@ -51,7 +51,7 @@ module LucidComponent
             let block_result;
             if (base.while_loading_block && !this.state.preloaded) { block_result = #{`this.__ruby_instance`.instance_exec(&`base.while_loading_block`)}; }
             else { block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)}; }
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+            if (block_result && block_result !== nil) { oper.render_block_result(block_result); }
             oper.active_redux_components.pop();
             oper.active_components.pop();
             // console.log("lucid component popping", oper.render_buffer, oper.render_buffer.toString());

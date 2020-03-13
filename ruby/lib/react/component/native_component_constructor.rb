@@ -43,7 +43,7 @@ module React
               // console.log("react component pushed", oper.render_buffer, oper.render_buffer.toString());
               oper.active_components.push(this);
               let block_result = #{`this.__ruby_instance`.instance_exec(&`base.render_block`)};
-              if (block_result && (block_result.constructor === String || block_result.constructor === Number)) { oper.render_buffer[oper.render_buffer.length - 1].push(block_result); }
+              if (block_result && block_result !== nil) { oper.render_block_result(block_result); }
               // console.log("react component popping", oper.render_buffer, oper.render_buffer.toString());
               oper.active_components.pop();
               let result = oper.render_buffer.pop();

@@ -20,9 +20,7 @@ module React
             operabu.push([]);
             // console.log("consumer pushed", operabu, operabu.toString());
             let block_result = block.$call();
-            if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-              operabu[operabu.length - 1].push(block_result);
-            }
+            if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
             // console.log("consumer popping", operabu, operabu.toString());
             children = operabu.pop();
             if (children.length == 1) { children = children[0]; }

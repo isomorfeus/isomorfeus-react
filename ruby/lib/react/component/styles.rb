@@ -15,35 +15,14 @@ module React
         method_missing(prop, val)
       end
 
-      %x{
-        function isObject(obj) { return (obj && typeof obj === 'object'); }
-
-        function mergeDeep(one, two) {
-          return [one, two].reduce(function(pre, obj) {
-            Object.keys(obj).forEach(function(key){
-              let pVal = pre[key];
-              let oVal = obj[key];
-              if (Array.isArray(pVal) && Array.isArray(oVal)) {
-                pre[key] = pVal.concat.apply(this, oVal);
-              } else if (isObject(pVal) && isObject(oVal)) {
-                pre[key] = mergeDeep(pVal, oVal);
-              } else {
-                pre[key] = oVal;
-              }
-            });
-            return pre;
-          }, {});
-        }
-      }
-
       def deep_merge(a_hash)
         native_hash = a_hash.to_n
-        React::Component::Styles.new(`mergeDeep(#@native, native_hash)`)
+        React::Component::Styles.new(`Opal.React.merge_deep(#@native, native_hash)`)
       end
 
       def deep_merge!(a_hash)
         native_hash = a_hash.to_n
-        `#@native = mergeDeep(#@native, native_hash)`
+        `#@native = Opal.React.merge_deep(#@native, native_hash)`
         self
       end
 

@@ -1,5 +1,4 @@
 module React
-  # language=JS
   %x{
     self.render_buffer = [];
 
@@ -34,79 +33,6 @@ module React
        else { return Opal.Hash.$new(event); }
     };
 
-    self.to_native_react_props = function(ruby_style_props) {
-      let result = {};
-      let keys = ruby_style_props.$keys();
-      let keys_length = keys.length;
-      let key = '';
-      for (let i = 0; i < keys_length; i++) {
-        key = keys[i];
-        if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
-          let handler = ruby_style_props['$[]'](key);
-          let type = typeof handler;
-          if (type === "function") {
-            let active_c = self.active_component();
-            result[self.lower_camelize(key)] = function(event, info) {
-              let ruby_event = self.native_to_ruby_event(event);
-              #{`active_c.__ruby_instance`.instance_exec(`ruby_event`, `info`, &`handler`)};
-            }
-          } else if (type === "object" && typeof handler.$call === "function" ) {
-            if (!handler.react_event_handler_function) {
-              handler.react_event_handler_function = function(event, info) {
-                let ruby_event = self.native_to_ruby_event(event);
-                handler.$call(ruby_event, info)
-              };
-            }
-            result[self.lower_camelize(key)] = handler.react_event_handler_function;
-          } else if (type === "string" ) {
-            let active_component = self.active_component();
-            let method_ref;
-            let method_name = '$' + handler;
-            if (typeof active_component[method_name] === "function") {
-              // got a ruby instance
-              if (active_component.native && active_component.native.method_refs && active_component.native.method_refs[handler]) { method_ref = active_component.native.method_refs[handler]; } // ruby instance with native
-              else if (active_component.method_refs && active_component.method_refs[handler]) { method_ref = active_component.method_refs[handler]; } // ruby function component
-              else { method_ref = active_component.$method_ref(handler); } // create the ref
-            } else if (typeof active_component.__ruby_instance[method_name] === "function") {
-              // got a native instance
-              if (active_component.method_refs && active_component.method_refs[handler]) { method_ref = active_component.method_refs[handler]; }
-              else { method_ref = active_component.__ruby_instance.$method_ref(handler); } // create ref for native
-            }
-            if (method_ref) {
-              if (!method_ref.react_event_handler_function) {
-                method_ref.react_event_handler_function = function(event, info) {
-                  let ruby_event = self.native_to_ruby_event(event);
-                  method_ref.$call(ruby_event, info)
-                };
-              }
-              result[self.lower_camelize(key)] = method_ref.react_event_handler_function;
-            } else {
-              let component_name;
-              if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
-              else { component_name = active_component.$to_s(); }
-              #{Isomorfeus.raise_error(message: "Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
-            }
-          } else {
-            let active_component = self.active_component();
-            let component_name;
-            if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
-            else { component_name = active_component.$to_s(); }
-            #{Isomorfeus.raise_error(message: "Received invalid value for #{`key`} with #{`handler`} within component: #{`component_name`}")}
-            console.error( + key + " event handler:", handler, " within component:", self.active_component());
-          }
-        } else if (key[0] === 'a' && key.startsWith("aria_")) {
-          result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
-        } else if (key === "style") {
-          let val = ruby_style_props['$[]'](key);
-          if (typeof val.$to_n === "function") { val = val.$to_n() }
-          result["style"] = val;
-        } else {
-          result[key.indexOf('_') > 0 ? self.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
-        }
-      }
-      return result;
-    };
-
     self.internal_prepare_args_and_render = function(component, args, block) {
       const operain = self.internal_render;
       if (args.length > 0) {
@@ -116,26 +42,6 @@ module React
           else { operain(component, args[0], last_arg, null); }
         } else { operain(component, args[0], null, block); }
       } else { operain(component, null, null, block); }
-    };
-
-    self.internal_render = function(component, props, string_child, block) {
-      const operabu = self.render_buffer;
-      let children;
-      let native_props = null;
-      if (string_child) {
-        children = [string_child];
-      } else if (block && block !== nil) {
-        operabu.push([]);
-        // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        let block_result = block.$call();
-        if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-          operabu[operabu.length - 1].push(block_result);
-        }
-        // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-        children = operabu.pop();
-      }
-      if (props && props !== nil) { native_props = self.to_native_react_props(props); }
-      operabu[operabu.length - 1].push(Opal.global.React.createElement.apply(this, [component, native_props].concat(children)));
     };
 
     self.active_components = [];
@@ -153,7 +59,127 @@ module React
       if (length === 0) { return null; };
       return self.active_redux_components[length-1];
     };
+
+    function isObject(obj) { return (obj && typeof obj === 'object'); }
+
+    self.merge_deep = function(one, two) {
+      return [one, two].reduce(function(pre, obj) {
+        Object.keys(obj).forEach(function(key){
+          let pVal = pre[key];
+          let oVal = obj[key];
+          if (Array.isArray(pVal) && Array.isArray(oVal)) {
+            pre[key] = pVal.concat.apply(this, oVal);
+          } else if (isObject(pVal) && isObject(oVal)) {
+            pre[key] = mergeDeep(pVal, oVal);
+          } else {
+            pre[key] = oVal;
+          }
+        });
+        return pre;
+      }, {});
+    };
   }
+
+  if on_browser? || on_ssr?
+    %x{
+      self.to_native_react_props = function(ruby_style_props) {
+        let result = {};
+        let keys = ruby_style_props.$keys();
+        let keys_length = keys.length;
+        let key = '';
+        for (let i = 0; i < keys_length; i++) {
+          key = keys[i];
+          if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
+            let handler = ruby_style_props['$[]'](key);
+            let type = typeof handler;
+            if (type === "function") {
+              let active_c = self.active_component();
+              result[self.lower_camelize(key)] = function(event, info) {
+                let ruby_event = self.native_to_ruby_event(event);
+                #{`active_c.__ruby_instance`.instance_exec(`ruby_event`, `info`, &`handler`)};
+              }
+            } else if (type === "object" && typeof handler.$call === "function" ) {
+              if (!handler.react_event_handler_function) {
+                handler.react_event_handler_function = function(event, info) {
+                  let ruby_event = self.native_to_ruby_event(event);
+                  handler.$call(ruby_event, info)
+                };
+              }
+              result[self.lower_camelize(key)] = handler.react_event_handler_function;
+            } else if (type === "string" ) {
+              let active_component = self.active_component();
+              let method_ref;
+              let method_name = '$' + handler;
+              if (typeof active_component[method_name] === "function") {
+                // got a ruby instance
+                if (active_component.native && active_component.native.method_refs && active_component.native.method_refs[handler]) { method_ref = active_component.native.method_refs[handler]; } // ruby instance with native
+                else if (active_component.method_refs && active_component.method_refs[handler]) { method_ref = active_component.method_refs[handler]; } // ruby function component
+                else { method_ref = active_component.$method_ref(handler); } // create the ref
+              } else if (typeof active_component.__ruby_instance[method_name] === "function") {
+                // got a native instance
+                if (active_component.method_refs && active_component.method_refs[handler]) { method_ref = active_component.method_refs[handler]; }
+                else { method_ref = active_component.__ruby_instance.$method_ref(handler); } // create ref for native
+              }
+              if (method_ref) {
+                if (!method_ref.react_event_handler_function) {
+                  method_ref.react_event_handler_function = function(event, info) {
+                    let ruby_event = self.native_to_ruby_event(event);
+                    method_ref.$call(ruby_event, info)
+                  };
+                }
+                result[self.lower_camelize(key)] = method_ref.react_event_handler_function;
+              } else {
+                let component_name;
+                if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
+                else { component_name = active_component.$to_s(); }
+                #{Isomorfeus.raise_error(message: "Is #{`handler`} a valid method of #{`component_name`}? If so then please use: #{`key`}: method_ref(:#{`handler`}) within component: #{`component_name`}")}
+              }
+            } else {
+              let active_component = self.active_component();
+              let component_name;
+              if (active_component.__ruby_instance) { component_name = active_component.__ruby_instance.$to_s(); }
+              else { component_name = active_component.$to_s(); }
+              #{Isomorfeus.raise_error(message: "Received invalid value for #{`key`} with #{`handler`} within component: #{`component_name`}")}
+              console.error( + key + " event handler:", handler, " within component:", self.active_component());
+            }
+          } else if (key[0] === 'a' && key.startsWith("aria_")) {
+            result[key.replace("_", "-")] = ruby_style_props['$[]'](key);
+          } else if (key === "style") {
+            let val = ruby_style_props['$[]'](key);
+            if (typeof val.$to_n === "function") { val = val.$to_n() }
+            result["style"] = val;
+          } else {
+            result[key.indexOf('_') > 0 ? self.lower_camelize(key) : key] = ruby_style_props['$[]'](key);
+          }
+        }
+        return result;
+      };
+    
+      self.render_block_result = function(block_result) {
+        if (block_result.constructor === String || block_result.constructor === Number) {
+          Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
+        }
+      };
+
+      self.internal_render = function(component, props, string_child, block) {
+        const operabu = self.render_buffer;
+        let children;
+        let native_props = null;
+        if (string_child) {
+          children = [string_child];
+        } else if (block && block !== nil) {
+          operabu.push([]);
+          // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+          let block_result = block.$call();
+          if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
+          // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
+          children = operabu.pop();
+        }
+        if (props && props !== nil) { native_props = self.to_native_react_props(props); }
+        operabu[operabu.length - 1].push(Opal.global.React.createElement.apply(this, [component, native_props].concat(children)));
+      };
+    }
+  end
 
   def self.clone_element(ruby_react_element, props = nil, children = nil, &block)
     block_result = `null`
@@ -185,9 +211,7 @@ module React
         operabu.push([]);
         // console.log("create_element pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         let block_result = block.$call();
-        if (block_result && (block_result.constructor === String || block_result.constructor === Number)) {
-          operabu[operabu.length - 1].push(block_result);
-        }
+        if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
         // console.log("create_element popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
         children = operabu.pop();
       } else if (children === nil) { children = []; }
