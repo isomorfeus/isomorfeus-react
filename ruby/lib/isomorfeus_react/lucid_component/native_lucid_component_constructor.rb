@@ -56,8 +56,7 @@ module LucidComponent
             oper.active_components.pop();
             // console.log("lucid component popping", oper.render_buffer, oper.render_buffer.toString());
             let result = oper.render_buffer.pop();
-            if (result.length === 1) { return result[0]; }
-            return result;
+            return (result.length === 1) ? result[0] : result;
           }
           data_access() {
             return this.props.store;

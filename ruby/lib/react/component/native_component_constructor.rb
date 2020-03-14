@@ -47,8 +47,7 @@ module React
               // console.log("react component popping", oper.render_buffer, oper.render_buffer.toString());
               oper.active_components.pop();
               let result = oper.render_buffer.pop();
-              if (result.length === 1) { return result[0]; }
-              return result;
+              return (result.length === 1) ? result[0] : result;
             }
             shouldComponentUpdate(next_props, next_state) {
               if (base.should_component_update_block) {

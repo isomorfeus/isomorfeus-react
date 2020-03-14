@@ -47,8 +47,7 @@ module LucidFunc
           oper.active_components.pop();
           // console.log("function popping", oper.render_buffer, oper.render_buffer.toString());
           let result = oper.render_buffer.pop();
-          if (result.length === 1) { return result[0]; }
-          return result;
+          return (result.length === 1) ? result[0] : result;
         }, base.equality_checker);
         base.react_component.displayName = #{component_name};
       }

@@ -23,8 +23,8 @@ module React
             if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
             // console.log("consumer popping", operabu, operabu.toString());
             children = operabu.pop();
-            if (children.length == 1) { children = children[0]; }
-            else if (children.length == 0) { children = null; }
+            if (children.length === 1) { children = children[0]; }
+            else if (children.length === 0) { children = null; }
           }
           return children;
         });
