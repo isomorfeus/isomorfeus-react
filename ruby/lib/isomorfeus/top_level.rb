@@ -72,13 +72,6 @@ module Isomorfeus
           }
           ready_fun(run);
         }
-        # %x{
-        #   function run() { block.$call() };
-        #   function ready_fun() {
-        #     /in/.test(document.readyState) ? setTimeout(ready_fun,5) : run();
-        #   }
-        #   ready_fun();
-        # }
       end
 
       def on_ready_mount(component, props = nil, element_query = nil)
