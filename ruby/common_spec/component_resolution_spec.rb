@@ -217,8 +217,6 @@ RSpec.describe 'Component Resolution' do
     expect(html).to include('NestedNative.AnotherComponent')
   end
 
-  # not sure if this should work. It works with ExampleFunction::AComponent().
-  #
   # it 'can resolve function components from within the same module' do
   #   @doc.evaluate_ruby do
   #     module ExampleFunction
@@ -244,4 +242,8 @@ RSpec.describe 'Component Resolution' do
   #   expect(html).to include('AnotherComponent')
   #   expect(html).to include('AComponent')
   # end
+
+  it "can resolve a ruby component in favor of a native component even when they have have the same name" do
+    expect(@doc.html).to include('YetAnother::Switch rendered')
+  end
 end
