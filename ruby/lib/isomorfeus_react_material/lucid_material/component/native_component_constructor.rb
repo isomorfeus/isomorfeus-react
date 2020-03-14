@@ -14,7 +14,7 @@ module LucidMaterial
             if (base.store_updates) { store = Opal.global.React.useContext(Opal.global.LucidApplicationContext); }
             let theme = Opal.global.MuiStyles.useTheme();
             if (base.jss_styles) {
-              if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
+              if (!base.use_styles || (Opal.Isomorfeus.development === true)) {
                 let styles;
                 if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
                 else { styles = base.jss_styles; }

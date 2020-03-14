@@ -26,7 +26,6 @@ module LucidApp
               this.state.class_state[#{component_name}] = {};
             };
             this.__ruby_instance = base.$new(this);
-            if (Opal.Isomorfeus.$top_component() == nil) { Opal.Isomorfeus['$top_component='](this); }
             var defined_refs = #{base.defined_refs};
             for (var ref in defined_refs) {
               if (defined_refs[ref] != null) {

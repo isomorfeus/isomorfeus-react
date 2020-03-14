@@ -14,7 +14,7 @@ module LucidApp
           let classes = null;
           let theme = opag.ReactJSS.useTheme();
           if (base.jss_styles) {
-            if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
+            if (!base.use_styles || (Opal.Isomorfeus.development === true)) {
               let styles;
               if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
               else { styles = base.jss_styles; }
@@ -24,13 +24,25 @@ module LucidApp
           }
           let themed_classes_props = Object.assign({}, props, { classes: classes, theme: theme });
           return opag.React.createElement(base.lucid_react_component, themed_classes_props);
-        }
+        };
         base.themed_react_component.displayName = #{theme_component_name};
-        base.react_component = function(props) {
-          let themed_component = Opal.global.React.createElement(base.themed_react_component, props);
-          return Opal.global.React.createElement(Opal.global.ReactJSS.ThemeProvider, { theme: base.jss_theme }, themed_component);
+        base.react_component = class extends Opal.global.React.Component {
+          constructor(props) {
+            super(props);
+            if (Opal.Isomorfeus.$top_component() == nil) { Opal.Isomorfeus['$top_component='](this); }
+          }
+          static get displayName() {
+            return "IsomorfeusTopLevelComponent";
+          }
+          static set displayName(new_name) {
+            // dont do anything here except returning the set value
+            return new_name;
+          }
+          render() {
+            let themed_component = Opal.global.React.createElement(base.themed_react_component, this.props);
+            return Opal.global.React.createElement(Opal.global.ReactJSS.ThemeProvider, { theme: base.jss_theme }, themed_component);
+          }
         }
-        base.react_component.displayName = #{component_name};
       }
     end
   end

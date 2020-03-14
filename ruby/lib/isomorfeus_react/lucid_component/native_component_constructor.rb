@@ -9,12 +9,12 @@ module LucidComponent
       %x{
         base.react_component = function(props) {
           let opag = Opal.global;
-          let classes = null;
+          let classes;
           let store;
           if (base.store_updates) { store = opag.React.useContext(opag.LucidApplicationContext); }
           let theme = opag.ReactJSS.useTheme();
           if (base.jss_styles) {
-            if (!base.use_styles || (Opal.Isomorfeus.development && Opal.Isomorfeus.development !== nil)) {
+            if (!base.use_styles || (Opal.Isomorfeus.development === true)) {
               let styles;
               if (typeof base.jss_styles === 'function') { styles = base.jss_styles(theme); }
               else { styles = base.jss_styles; }
@@ -27,7 +27,7 @@ module LucidComponent
           new_props.theme = theme;
           new_props.store = store;
           return opag.React.createElement(base.lucid_react_component, new_props);
-        }
+        };
         base.react_component.displayName = #{component_name};
       }
     end
