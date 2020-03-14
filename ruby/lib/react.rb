@@ -70,7 +70,7 @@ module React
           if (Array.isArray(pVal) && Array.isArray(oVal)) {
             pre[key] = pVal.concat.apply(this, oVal);
           } else if (isObject(pVal) && isObject(oVal)) {
-            pre[key] = mergeDeep(pVal, oVal);
+            pre[key] = self.merge_deep(pVal, oVal);
           } else {
             pre[key] = oVal;
           }
@@ -154,7 +154,7 @@ module React
         }
         return result;
       };
-    
+
       self.render_block_result = function(block_result) {
         if (block_result.constructor === String || block_result.constructor === Number) {
           Opal.React.render_buffer[Opal.React.render_buffer.length - 1].push(block_result);
