@@ -217,31 +217,31 @@ RSpec.describe 'Component Resolution' do
     expect(html).to include('NestedNative.AnotherComponent')
   end
 
-  # it 'can resolve function components from within the same module' do
-  #   @doc.evaluate_ruby do
-  #     module ExampleFunction
-  #       class AComponent < React::FunctionComponent::Base
-  #         render do
-  #           DIV "AComponent"
-  #         end
-  #       end
-  #     end
-  #
-  #     module ExampleFunction
-  #       class AnotherComponent < React::FunctionComponent::Base
-  #         render do
-  #           DIV "AnotherComponent"
-  #           AComponent()
-  #         end
-  #       end
-  #     end
-  #     Isomorfeus::TopLevel.mount_component(ExampleFunction::AnotherComponent, {}, '#test_anchor')
-  #   end
-  #
-  #   html = @test_anchor.html
-  #   expect(html).to include('AnotherComponent')
-  #   expect(html).to include('AComponent')
-  # end
+  it 'can resolve function components from within the same module' do
+    @doc.evaluate_ruby do
+      module ExampleFunction
+        class AComponent < React::FunctionComponent::Base
+          render do
+            DIV "AComponent"
+          end
+        end
+      end
+
+      module ExampleFunction
+        class AnotherComponent < React::FunctionComponent::Base
+          render do
+            DIV "AnotherComponent"
+            AComponent()
+          end
+        end
+      end
+      Isomorfeus::TopLevel.mount_component(ExampleFunction::AnotherComponent, {}, '#test_anchor')
+    end
+
+    html = @test_anchor.html
+    expect(html).to include('AnotherComponent')
+    expect(html).to include('AComponent')
+  end
 
   it "can resolve a ruby component in favor of a native component even when they have have the same name" do
     expect(@doc.html).to include('YetAnother::Switch rendered')

@@ -3,7 +3,9 @@ module React
     module Resolution
       def self.included(base)
         base.instance_exec do
-          alias _react_component_class_resolution_original_const_missing const_missing
+          unless method_defined?(:_react_component_class_resolution_original_const_missing)
+            alias _react_component_class_resolution_original_const_missing const_missing
+          end
 
           def const_missing(const_name)
             %x{
@@ -52,27 +54,41 @@ module React
       end
 
       def method_missing(component_name, *args, &block)
-        # html tags are defined as methods, so they will not end up here.
-        # first check for native component and render it, we want to be fast for native components
-        # second check for ruby component and render it, they are a bit slower anyway
-        # third pass on method missing
+        # Further on it must check for modules, because $const_get does not take
+        # the full nesting into account, as usually its called via $$ with the
+        # nesting provided by the compiler.
         %x{
           var constant;
           if (typeof self.iso_react_const_cache === 'undefined') { self.iso_react_const_cache = {}; }
-          try {
-            if (typeof self.iso_react_const_cache[component_name] !== 'undefined') {
-              constant = self.iso_react_const_cache[component_name]
-            } else if (typeof self.$$is_module !== 'undefined') {
+
+          if (typeof self.iso_react_const_cache[component_name] !== 'undefined') {
+            constant = self.iso_react_const_cache[component_name]
+          } else if (typeof self.$$is_a_module !== 'undefined') {
+            try {
               constant = self.$const_get(component_name);
               self.iso_react_const_cache[component_name] = constant;
-            } else {
-              constant = self.$class().$const_get(component_name);
+            } catch(err) { }
+          } else {
+            let sc = self.$class();
+            try {
+              constant = sc.$const_get(component_name);
               self.iso_react_const_cache[component_name] = constant;
+            } catch(err) {
+              var module_names = sc.$to_s().split("::");
+              var module_name;
+              for (var i = module_names.length - 1; i > 0; i--) {
+                module_name = module_names.slice(0, i).join('::');
+                try {
+                  constant = sc.$const_get(module_name).$const_get(component_name, false);
+                  self.iso_react_const_cache[component_name] = constant;
+                  break;
+                } catch(err) { }
+              }
             }
-            if (typeof constant.react_component !== 'undefined') {
-              return Opal.React.internal_prepare_args_and_render(constant.react_component, args, block);
-            }
-          } catch(err) { }
+          }
+          if (constant && typeof constant.react_component !== 'undefined') {
+            return Opal.React.internal_prepare_args_and_render(constant.react_component, args, block);
+          }
           return #{_react_component_resolution_original_method_missing(component_name, *args, block)};
         }
       end
