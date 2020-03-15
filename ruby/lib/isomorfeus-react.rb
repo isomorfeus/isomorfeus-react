@@ -3,7 +3,7 @@ if RUBY_ENGINE == 'opal'
   require 'active_support/core_ext/string'
   require 'zeitwerk'
 
-  if Isomorfeus.on_browser?
+  if on_browser?
     require 'browser/event'
     require 'browser/event_target'
     require 'browser/delegate_native'
@@ -13,7 +13,7 @@ if RUBY_ENGINE == 'opal'
   require 'isomorfeus/react_config'
 
   # allow mounting of components
-  if Isomorfeus.on_browser?
+  if on_browser?
     require 'isomorfeus/top_level'
   else
     require 'isomorfeus/top_level_ssr'
@@ -25,7 +25,7 @@ if RUBY_ENGINE == 'opal'
   require 'react/synthetic_event'
   require 'react/ref'
   require 'react/children'
-  if Isomorfeus.on_browser?
+  if on_browser?
     require 'react_dom'
   else
     require 'react_dom_server'
