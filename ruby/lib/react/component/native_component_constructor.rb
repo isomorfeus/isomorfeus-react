@@ -54,30 +54,32 @@ module React
                 return #{!!`this.__ruby_instance`.instance_exec(React::Component::Props.new(`{props: next_props}`), React::Component::State.new(`{state: next_state }`), &`base.should_component_update_block`)};
               }
               let counter = 0;
+              const this_props = this.props;
               for (var property in next_props) {
                 counter++;
                 if (next_props.hasOwnProperty(property)) {
-                  if (!this.props.hasOwnProperty(property)) { return true; };
-                  if (property === "children") { if (next_props.children !== this.props.children) { return true; }}
-                  else if (typeof next_props[property] !== "undefined" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
-                           typeof this.props[property] !== "undefined" && this.props[property] !== null ) {
-                    if (#{ !! (`next_props[property]` != `this.props[property]`) }) { return true; }
-                  } else if (next_props[property] !== this.props[property]) { return true; }
+                  if (!this_props.hasOwnProperty(property)) { return true; };
+                  if (property === "children") { if (next_props.children !== this_props.children) { return true; }}
+                  else if (typeof next_props[property] === "object" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
+                           typeof this_props[property] !== "undefined" && this_props[property] !== null ) {
+                    if (#{ !! (`next_props[property]` != `this_props[property]`) }) { return true; }
+                  } else if (next_props[property] !== this_props[property]) { return true; }
                 }
               }
-              if (counter !== Object.keys(this.props).length) { return true; }
+              if (counter !== Object.keys(this_props).length) { return true; }
               counter = 0;
+              const this_state = this.state;
               for (var property in next_state) {
                 counter++;
                 if (next_state.hasOwnProperty(property)) {
-                  if (!this.state.hasOwnProperty(property)) { return true; };
-                  if (typeof next_state[property] !== "undefined" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
-                      typeof this.state[property] !== "undefined" && this.state[property] !== null) {
-                    if (#{ !! (`next_state[property]` != `this.state[property]`) }) { return true }
-                  } else if (next_state[property] !== this.state[property]) { return true }
+                  if (!this_state.hasOwnProperty(property)) { return true; };
+                  if (typeof next_state[property] === "object" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
+                      typeof this_state[property] !== "undefined" && this_state[property] !== null) {
+                    if (#{ !! (`next_state[property]` != `this_state[property]`) }) { return true }
+                  } else if (next_state[property] !== this_state[property]) { return true }
                 }
               }
-              if (counter !== Object.keys(this.state).length) { return true; }
+              if (counter !== Object.keys(this_state).length) { return true; }
               return false;
             }
             validateProp(props, propName, componentName) {
