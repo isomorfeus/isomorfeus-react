@@ -8,7 +8,7 @@ module LucidMaterial
         component_name = base.to_s + 'Wrapper'
         # language=JS
         %x{
-          base.react_component = function(props) {
+          base.react_component = Opal.global.React.memo(function(props) {
             let classes = null;
             let store;
             if (base.store_updates) { store = Opal.global.React.useContext(Opal.global.LucidApplicationContext); }
@@ -27,7 +27,7 @@ module LucidMaterial
             new_props.theme = theme;
             new_props.store = store;
             return Opal.global.React.createElement(base.lucid_react_component, new_props);
-          }
+          }, null);
           base.react_component.displayName = #{component_name};
         }
       end
