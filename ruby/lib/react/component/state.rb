@@ -13,8 +13,10 @@ module React
             @native.JS.setState(new_state, `null`)
           end
         else
-          return nil if `typeof #@native.state[key] === "undefined"`
-          @native.JS[:state].JS[key]
+          %x{
+            if (typeof #@native.state[key] === 'undefined') { return nil; }
+            return #@native.state[key];
+          }
         end
       end
 
