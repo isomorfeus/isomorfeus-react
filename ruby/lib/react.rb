@@ -13,11 +13,13 @@ module React
     };
 
     self.lower_camelize = function(snake_cased_word) {
+      if (self.prop_dictionary[snake_cased_word]) { return self.prop_dictionary[snake_cased_word]; }
       let parts = snake_cased_word.split('_');
       let res = parts[0];
       for (let i = 1; i < parts.length; i++) {
         res += parts[i][0].toUpperCase() + parts[i].slice(1);
       }
+      self.prop_dictionary[snake_cased_word] = res;
       return res;
     };
 
@@ -82,6 +84,8 @@ module React
 
   if on_browser? || on_ssr?
     %x{
+      self.prop_dictionary = {};
+      
       self.to_native_react_props = function(ruby_style_props) {
         let result = {};
         let keys = ruby_style_props.$$keys;
@@ -148,7 +152,7 @@ module React
             if (typeof value.$to_n === "function") { value = value.$to_n() }
             result["style"] = value;
           } else {
-            result[key.indexOf('_') > 0 ? self.lower_camelize(key) : key] = value;
+            result[self.lower_camelize(key)] = value;
           }
         }
         return result;
