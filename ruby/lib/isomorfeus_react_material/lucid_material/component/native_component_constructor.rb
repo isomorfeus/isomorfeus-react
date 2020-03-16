@@ -27,7 +27,7 @@ module LucidMaterial
             new_props.theme = theme;
             new_props.store = store;
             return Opal.global.React.createElement(base.lucid_react_component, new_props);
-          }, null);
+          }, Opal.React.props_are_equal);
           base.react_component.displayName = #{component_name};
         }
       end
