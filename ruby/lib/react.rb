@@ -85,7 +85,7 @@ module React
   if on_browser? || on_ssr?
     %x{
       self.prop_dictionary = {};
-      
+
       self.to_native_react_props = function(ruby_style_props) {
         let result = {};
         let keys = ruby_style_props.$$keys;
@@ -166,20 +166,21 @@ module React
 
       self.internal_render = function(component, props, string_child, block) {
         const operabu = self.render_buffer;
-        let children;
-        let native_props = null;
+        let native_props;
+        if (props && props !== nil) { native_props = self.to_native_react_props(props); }
         if (string_child) {
-          children = [string_child];
+          operabu[operabu.length - 1].push(Opal.global.React.createElement(component, native_props, string_child));
         } else if (block && block !== nil) {
           operabu.push([]);
           // console.log("internal_render pushed", Opal.React.render_buffer, Opal.React.render_buffer.toString());
           let block_result = block.$call();
           if (block_result && block_result !== nil) { Opal.React.render_block_result(block_result); }
           // console.log("internal_render popping", Opal.React.render_buffer, Opal.React.render_buffer.toString());
-          children = operabu.pop();
+          let children = operabu.pop();
+          operabu[operabu.length - 1].push(Opal.global.React.createElement.apply(this, [component, native_props].concat(children)));
+        } else {
+          operabu[operabu.length - 1].push(Opal.global.React.createElement(component, native_props));
         }
-        if (props && props !== nil) { native_props = self.to_native_react_props(props); }
-        operabu[operabu.length - 1].push(Opal.global.React.createElement.apply(this, [component, native_props].concat(children)));
       };
     }
   end
