@@ -62,33 +62,8 @@ module LucidComponent
             return this.props.store;
           }
           shouldComponentUpdate(next_props, next_state) {
-            let counter = 0;
-            const this_props = this.props;
-            for (var property in next_props) {
-              counter++;
-              if (next_props.hasOwnProperty(property)) {
-                if (!this_props.hasOwnProperty(property)) { return true; };
-                if (property === "children") { if (next_props.children !== this_props.children) { return true; }}
-                else if (typeof next_props[property] === "object" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
-                         typeof this_props[property] !== "undefined" && this_props[property] !== null ) {
-                  if (#{ !! (`next_props[property]` != `this_props[property]`) }) { return true; }
-                } else if (next_props[property] !== this_props[property]) { return true; }
-              }
-            }
-            if (counter !== Object.keys(this_props).length) { return true; }
-            counter = 0;
-            const this_state = this.state;
-            for (var property in next_state) {
-              counter++;
-              if (next_state.hasOwnProperty(property)) {
-                if (!this_state.hasOwnProperty(property)) { return true; };
-                if (typeof next_state[property] === "object" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
-                    typeof this_state[property] !== "undefined" && this_state[property] !== null) {
-                  if (#{ !! (`next_state[property]` != `this_state[property]`) }) { return true }
-                } else if (next_state[property] !== this_state[property]) { return true }
-              }
-            }
-            if (counter !== Object.keys(this_state).length) { return true; }
+            if (!Opal.React.props_are_equal(this.props, next_props)) { return true; }
+            if (Opal.React.state_is_not_equal(this.state, next_state)) { return true; }
             return false;
           }
           validateProp(props, propName, componentName) {

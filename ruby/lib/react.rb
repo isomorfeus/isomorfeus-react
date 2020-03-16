@@ -12,6 +12,39 @@ module React
       core.propTypes[prop_name] = core.prototype.validateProp;
     };
 
+    self.props_are_equal = function(this_props, next_props) {
+      let counter = 0;
+      for (var property in next_props) {
+        counter++;
+        if (next_props.hasOwnProperty(property)) {
+          if (!this_props.hasOwnProperty(property)) { return false; };
+          if (property === "children") { if (next_props.children !== this_props.children) { return false; }}
+          else if (typeof next_props[property] === "object" && next_props[property] !== null && typeof next_props[property]['$!='] === "function" &&
+                   typeof this_props[property] !== "undefined" && this_props[property] !== null ) {
+            if (#{ !! (`next_props[property]` != `this_props[property]`) }) { return false; }
+          } else if (next_props[property] !== this_props[property]) { return false; }
+        }
+      }
+      if (counter !== Object.keys(this_props).length) { return false; }
+      return true;
+    };
+
+    self.state_is_not_equal = function(this_state, next_state) {
+      let counter = 0;
+      for (var property in next_state) {
+        counter++;
+        if (next_state.hasOwnProperty(property)) {
+          if (!this_state.hasOwnProperty(property)) { return true; };
+          if (typeof next_state[property] === "object" && next_state[property] !== null && typeof next_state[property]['$!='] === "function" &&
+              typeof this_state[property] !== "undefined" && this_state[property] !== null) {
+            if (#{ !! (`next_state[property]` != `this_state[property]`) }) { return true }
+          } else if (next_state[property] !== this_state[property]) { return true }
+        }
+      }
+      if (counter !== Object.keys(this_state).length) { return true; }
+      return false;
+    };
+
     self.lower_camelize = function(snake_cased_word) {
       if (self.prop_dictionary[snake_cased_word]) { return self.prop_dictionary[snake_cased_word]; }
       let parts = snake_cased_word.split('_');
