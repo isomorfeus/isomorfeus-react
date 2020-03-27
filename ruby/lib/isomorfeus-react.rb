@@ -10,7 +10,7 @@ if RUBY_ENGINE == 'opal'
     require 'browser/element'
   end
 
-  require 'isomorfeus/react_config'
+  require 'isomorfeus/react/config'
 
   # allow mounting of components
   if on_browser?
@@ -83,7 +83,7 @@ else
   require 'isomorfeus-redux'
   require 'isomorfeus-speednode'
   require 'react/version'
-  require 'isomorfeus/react_config'
+  require 'isomorfeus/react/config'
 
   # props
   require 'isomorfeus/props/validate_hash_proxy'
@@ -99,8 +99,10 @@ else
 
   Isomorfeus.server_side_rendering = true
 
-  # cache
-  require 'isomorfeus/thread_local_component_cache'
+  # caches
+  require 'isomorfeus/react/thread_local_component_cache'
+  require 'isomorfeus/react/memcached_component_cache'
+  require 'isomorfeus/react/redis_component_cache'
   require 'isomorfeus/react_view_helper'
 
   Isomorfeus.component_cache_init do
