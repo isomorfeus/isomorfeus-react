@@ -33,6 +33,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-webpack-loader', '>= 0.9.11'
   s.add_dependency 'isomorfeus-redux', '~> 4.0.23'
   s.add_dependency 'isomorfeus-speednode', '~> 0.2.12'
+  s.add_dependency 'dalli', '>= 2.7.0'
+  s.add_dependency 'redis', '>= 4.1.0'
   s.add_dependency 'zeitwerk', '~> 2.2.2'
   s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.3.5'
   s.add_development_dependency 'rake'
