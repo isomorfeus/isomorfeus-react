@@ -4,12 +4,15 @@ RSpec.describe 'Component benchmarks' do
   it 'Load Time' do
     doc = visit('/')
     doc.wait_for('#test_anchor')
-    react_lt, react_rt, redux_rt, app_lt = doc.evaluate_ruby do
-      [IR_LOAD_TIME, IR_REQUIRE_TIME, IX_REQUIRE_TIME, APP_LOAD_TIME]
+    react_lt, react_rt, material_rt, paper_rt, redux_rt, app_lt = doc.evaluate_ruby do
+      [IR_LOAD_TIME, IR_REACT_REQUIRE_TIME, IR_MATERIAL_REQUIRE_TIME, IR_PAPER_REQUIRE_TIME, IX_REQUIRE_TIME, APP_LOAD_TIME]
     end
+    puts "opal load time: #{app_lt - (redux_rt + react_rt + material_rt + paper_rt + react_lt)}ms"
     puts "isomorfeus-redux require time: #{redux_rt}ms"
     puts "isomorfeus-react require time: #{react_rt}ms"
-    puts "isomorfeus-react load time: #{react_lt}ms"
+    puts "isomorfeus-react-material-ui require time: #{material_rt}ms"
+    puts "isomorfeus-react-paper require time: #{paper_rt}ms"
+    puts "isomorfeus-react start_app! time: #{react_lt}ms"
     puts "application load_time: #{app_lt}ms"
     expect(app_lt < 500).to be true
   end
