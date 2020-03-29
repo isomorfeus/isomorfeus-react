@@ -86,12 +86,13 @@ module React
       end
       alias rre render_react_element
 
-      def method_ref(method_symbol)
+      def method_ref(method_symbol, *args)
+        method_key = "#{method_symbol}#{args}"
         %x{
-          if (#{self}.method_refs && #{self}.method_refs[#{method_symbol}]) { return #{self}.method_refs[#{method_symbol}]; }
+          if (#{self}.method_refs && #{self}.method_refs[#{method_key}]) { return #{self}.method_refs[#{method_key}]; }
           if (!#{self}.method_refs) { #{self}.method_refs = {}; }
-          #{self}.method_refs[#{method_symbol}] = #{method(method_symbol)};
-          return #{self}.method_refs[#{method_symbol}];
+          #{self}.method_refs[#{method_key}] = { m: #{method(method_symbol)}, a: args };
+          return #{self}.method_refs[#{method_key}];
         }
       end
       alias m_ref method_ref

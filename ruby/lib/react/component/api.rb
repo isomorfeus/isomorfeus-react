@@ -98,12 +98,13 @@ module React
       end
       alias gre get_react_element
 
-      def method_ref(method_symbol)
+      def method_ref(method_symbol, *args)
+        method_key = "#{method_symbol}#{args}"
         %x{
-          if (#@native.method_refs && #@native.method_refs[#{method_symbol}]) { return #@native.method_refs[#{method_symbol}]; }
+          if (#@native.method_refs && #@native.method_refs[#{method_key}]) { return #@native.method_refs[#{method_key}]; }
           if (!#@native.method_refs) { #@native.method_refs = {}; }
-          #@native.method_refs[#{method_symbol}] = #{method(method_symbol)};
-          return #@native.method_refs[#{method_symbol}];
+          #@native.method_refs[#{method_key}] = { m: #{method(method_symbol)}, a: args };
+          return #@native.method_refs[#{method_key}];
         }
       end
       alias m_ref method_ref

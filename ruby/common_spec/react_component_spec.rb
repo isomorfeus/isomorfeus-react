@@ -348,7 +348,7 @@ RSpec.describe 'React::Component' do
       @doc = visit('/')
     end
 
-    it 'on_click' do
+    it 'on_click by symbol' do
       @doc.evaluate_ruby do
         class TestComponent < React::Component::Base
           def change_state(event)
@@ -359,6 +359,52 @@ RSpec.describe 'React::Component' do
               DIV(id: :changed_component, on_click: :change_state) { "#{state.something}" }
             else
               DIV(id: :test_component, on_click: :change_state) { "nothing#{state.something}here" }
+            end
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+
+    it 'on_click by method_ref' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::Component::Base
+          def change_state(event)
+            state.something = true
+          end
+          render do
+            if state.something
+              DIV(id: :changed_component, on_click: method_ref(:change_state)) { "#{state.something}" }
+            else
+              DIV(id: :test_component, on_click: method_ref(:change_state)) { "nothing#{state.something}here" }
+            end
+          end
+        end
+        Isomorfeus::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
+      end
+      node = @doc.wait_for('#test_component')
+      expect(node.all_text).to include('nothinghere')
+      node.click
+      node = @doc.wait_for('#changed_component')
+      expect(node.all_text).to include('true')
+    end
+
+    it 'on_click by method_ref and can pass additional args' do
+      @doc.evaluate_ruby do
+        class TestComponent < React::Component::Base
+          def change_state(event, info, arg)
+            state.something = arg
+          end
+          render do
+            if state.something
+              DIV(id: :changed_component, on_click: method_ref(:change_state)) { "#{state.something}" }
+            else
+              DIV(id: :test_component, on_click: method_ref(:change_state, true)) { "nothing#{state.something}here" }
             end
           end
         end

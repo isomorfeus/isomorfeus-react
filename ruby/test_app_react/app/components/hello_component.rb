@@ -24,7 +24,7 @@ class HelloComponent < LucidMaterial::Component::Base
     ruby_ref(:form).current.JS.validateForm()
   end
 
-  def incr
+  def incr(event, info, arg)
     app_store.b_value = (app_store.b_value || 0) + 1
   end
 
@@ -55,7 +55,7 @@ class HelloComponent < LucidMaterial::Component::Base
     MemoTest()
     # keep, was a BUG: component resolution
     YetAnother::Switch()
-    DIV(on_click: :incr) { "incr b_value" }
+    DIV(on_click: method_ref(:incr, 'hello')) { "incr b_value" }
     NavigationLinks()
   end
 end

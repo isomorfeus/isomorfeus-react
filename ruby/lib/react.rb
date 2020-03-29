@@ -135,11 +135,12 @@ module React
                 let ruby_event = self.native_to_ruby_event(event);
                 #{`active_c.__ruby_instance`.instance_exec(`ruby_event`, `info`, &`value`)};
               }
-            } else if (type === "object" && typeof value.$call === "function" ) {
+            } else if (type === "object" && typeof value.m === "object" && typeof value.m.$call === "function" ) {
               if (!value.react_event_handler_function) {
                 value.react_event_handler_function = function(event, info) {
                   let ruby_event = self.native_to_ruby_event(event);
-                  value.$call(ruby_event, info)
+                  if (value.a.length > 0) { value.m.$call.apply(value.m, [ruby_event, info].concat(value.a)); }
+                  else { value.m.$call(ruby_event, info); }
                 };
               }
               result[self.lower_camelize(key)] = value.react_event_handler_function;
@@ -161,7 +162,7 @@ module React
                 if (!method_ref.react_event_handler_function) {
                   method_ref.react_event_handler_function = function(event, info) {
                     let ruby_event = self.native_to_ruby_event(event);
-                    method_ref.$call(ruby_event, info)
+                    method_ref.m.$call(ruby_event, info)
                   };
                 }
                 result[self.lower_camelize(key)] = method_ref.react_event_handler_function;
