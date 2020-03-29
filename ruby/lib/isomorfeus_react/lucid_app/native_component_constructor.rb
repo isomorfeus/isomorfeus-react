@@ -4,7 +4,6 @@ module LucidApp
     # to do so, we convert the props to ruby hashes and then compare
     # this makes sure, that for example rubys Nil object gets handled properly
     def self.extended(base)
-      component_name = base.to_s + 'Wrapper'
       theme_component_name = base.to_s + 'ThemeWrapper'
       # language=JS
       %x{
