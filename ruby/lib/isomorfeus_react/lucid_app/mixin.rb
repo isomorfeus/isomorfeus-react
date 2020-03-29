@@ -14,6 +14,7 @@ module LucidApp
       base.include(::React::Component::Api)
       base.include(::React::Component::Callbacks)
       base.include(::LucidComponent::Api)
+      base.include(::LucidComponent::StylesApi)
       base.include(::LucidApp::Api)
       base.include(::LucidComponent::Initializer)
       base.include(::React::Component::Features)

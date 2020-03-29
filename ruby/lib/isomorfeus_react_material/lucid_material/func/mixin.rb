@@ -8,6 +8,7 @@ module LucidMaterial
         base.include(::React::FunctionComponent::Api)
         base.extend(::LucidMaterial::Func::NativeComponentConstructor)
         base.include(::LucidComponent::Api)
+        base.include(::LucidComponent::StylesApi)
       end
     end
   end

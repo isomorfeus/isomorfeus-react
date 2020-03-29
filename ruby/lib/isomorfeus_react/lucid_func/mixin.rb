@@ -12,6 +12,7 @@ module LucidFunc
         base.include(::ReactNative::Component::Elements)
       end
       base.include(::LucidComponent::Api)
+      base.include(::LucidComponent::StylesApi)
     end
   end
 end
