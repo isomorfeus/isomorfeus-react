@@ -5,8 +5,7 @@ require 'isomorfeus-react-material-ui'
 ```
 Also the MaterialUI imports must be present, see the installation.md doc.
 
-LucidMaterial::App and LucidMaterial::Component works just like LucidApp and LucidComponent and provide in addition to them
-support for styling.
+LucidMaterial::App and LucidMaterial::Component works just like LucidApp and LucidComponent and provide support for styling.
 ```ruby
 class MyApp < LucidMaterial::App::Base # is a React::Context provider
   # LucidMaterial::App can provide a styles theme, it can be referred to by the LucidMaterial::Component styles DSL, see below
@@ -32,7 +31,7 @@ class MyComponent < LucidMaterial::Component::Base # is a React::Context Consume
         height: 100
     }}
   end
-  
+
   # or styles can be set using a hash:
   styles(root: { width: 100, height: 100 })
 
@@ -47,8 +46,7 @@ class MyComponent < LucidMaterial::Component::Base # is a React::Context Consume
     # during render styles can be accessed with `styles`, which is equivalent to the `classes` in the MaterialUI documentation.
     DIV(class_name: styles.root) { 'Some text' }
     # the theme from LucidMaterial::App can be accessed directly too:
-    DIV(styles: { width: theme.master.width }.to_n) { 'Some text' }
-    # note the .to_n, the styles property requires a native object
+    DIV(style: { width: theme.master.width }) { 'Some text' }
   end
 end
 ```

@@ -62,7 +62,7 @@ Then the usual:
 - `yarn install`
 - `bundle install`
 
-### In the Application
+### Importing Javascript Dependencies
 React, Redux and accompanying libraries must be imported and made available in the global namespace in the application javascript entry file,
 with webpack this can be ensured by assigning them to the global namespace:
 ```javascript
@@ -76,15 +76,16 @@ global.ReactDOM = ReactDOM;
 global.ReactJSS = ReactJSS;
 
 // for routing support
-import { BrowserRouter, Link, NavLink, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Link, NavLink, Redirect, Route, Switch } from 'react-router-dom';
 global.Router = BrowserRouter; // import and assign StaticRouter instead for Server Side Rendering
 global.Link = Link;
 global.NavLink = NavLink;
+global.Redirect = Redirect;
 global.Route = Route;
 global.Switch = Switch;
 ```
 
-For the optional MaterialUI support:
+#### For the optional MaterialUI support:
 ```javascript
 import * as Mui from '@material-ui/core'
 import * as MuiStyles from '@material-ui/styles'
@@ -97,3 +98,17 @@ Loading the opal code:
 require 'isomorfeus-react'
 require 'isomorfeus-react-material-ui' # optional, for MaterialUI support
 ```
+
+#### For the optional Paper support:
+```javascript
+import * as Paper from 'react-native-paper';
+global.Paper = Paper;
+```
+
+Loading the opal code:
+```ruby
+require 'isomorfeus-react'
+require 'isomorfeus-react-paper' # optional, for MaterialUI support
+```
+
+Additional steps are required to configure webpack properly, please see [Using Paper on the Web](https://callstack.github.io/react-native-paper/using-on-the-web.html)
