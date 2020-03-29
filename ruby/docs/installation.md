@@ -28,23 +28,6 @@ For package.json:
     "react-dom": "^16.13.0",
 ```
 
-#### When using Preact
-- preact
-- preact-render-to-string
-
-For package.json:
-```json
-    "preact": "^10.3.3",
-    "preact-render-to-string": "^5.1.4",
-```
-
-#### When using Nervjs
-```json
-    "nerv-devtools": "^1.5.6",
-    "nerv-server": "^1.5.6",
-    "nervjs": "^1.5.6",
-```
-
 #### Common requirements
 - opal-webpack-loader
 - react-router
@@ -113,73 +96,4 @@ Loading the opal code:
 ```ruby
 require 'isomorfeus-react'
 require 'isomorfeus-react-material-ui' # optional, for MaterialUI support
-```
-
-### Configuration
-
-#### Preact
-Things to change when switching from the default React configuration to Preact
-
-##### Webpack
-React is resolved with Preact in the webpack configs resolvers:
-```javascript
-    resolve: {
-        alias: {
-            "react": "preact/compat",
-            "react-dom": "preact/compat"
-        }
-    }
-```
-
-##### Server Side Rendering
-The javascript must be directed to the correct renderer in the applications SSR imports:
-```javascript
-import render from 'preact-render-to-string';
-const ReactDOMServer = { renderToString: render };
-global.ReactDOMServer = ReactDOMServer;
-```
-
-##### Devtools Support
-To support React Devtools add this to the applications imports:
-```javascript
-if (process.env.NODE_ENV==='development') {
-    // Must use require here as import statements are only allowed
-    // to exist at the top of a file.
-    require("preact/debug");
-}
-```
-
-#### Nervjs
-
-##### Webpack
-React is resolved with Nervjs in the webpack configs resolvers:
-```javascript
-    resolve: {
-        alias: {
-            'react': 'nervjs',
-            'react-dom': 'nervjs',
-            'react-dom/server': 'nerv-server'
-        }
-    }
-```
-
-##### Fix for Nervjs with styled components
-In javascript imports, after importing React add this line:
-```javascript
-// Fix for nervjs 1.5.1
-global.React.useDebugValue = function(val) { return; };
-```
-
-##### Server Side Rendering
-Currently doesn't work. `renderToString` from nerv-server v 1.4.6 unfortunately returns just `null`.
-If SSR is needed, for the moment use React or Preact.
-
-##### Devtools Support
-To support React Devtools add this to the applications imports:
-```javascript
-if (process.env.NODE_ENV==='development') {
-    // Must use require here as import statements are only allowed
-    // to exist at the top of a file.
-    require('nerv-devtools');
-}
 ```

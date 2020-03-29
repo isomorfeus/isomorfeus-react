@@ -11,13 +11,6 @@ isomorfeus-react version follows the React version which features and API it imp
 ### React
 Isomorfeus-react 16.13.x implements features and the API of React 16.13 and should be used with React 16.13
 
-### Preact
-isomorfeus-react works with preact version 10.x.x. There are performance issues.
-
-### Nerv
-isomorfeus-react works in general with nervjs 1.5.x. with some issues:
- - Server Side Rendering does currently not work at all.
-
 ## Documentation
 
 - [Installation](https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/installation.md)
