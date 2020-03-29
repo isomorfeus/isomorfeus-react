@@ -30,10 +30,7 @@ const common_config = {
     },
     resolve: {
         plugins: [new OwlResolver('resolve', 'resolved')], // this makes it possible for webpack to find ruby files
-        alias: {
-            'react-dom': 'react-dom/profiling',
-            'schedule/tracing': 'schedule/tracing-profiling',
-        }
+        alias: { 'react-native$': require.resolve('react-native-web') }
     },
     plugins: [
         // both for hot reloading
@@ -46,6 +43,29 @@ const common_config = {
     ],
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: [/node_modules[/\\](?!react-native-vector-icons|react-native-safe-area-view)/, /.*\/opal\/corelib\/runtime.js$/],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        // Disable reading babel configuration
+                        babelrc: false,
+                        configFile: false,
+                        // The configuration for compilation
+                        presets: [
+                            ['@babel/preset-env', { corejs: 3, useBuiltIns: 'usage' }],
+                            '@babel/preset-react',
+                            '@babel/preset-flow',
+                            '@babel/preset-typescript'
+                            ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                            '@babel/plugin-proposal-object-rest-spread'
+                        ],
+                    },
+                },
+            },
             {
                 test: /.scss$/,
                 use: [ "style-loader",
@@ -122,15 +142,7 @@ const browser_config = {
     }
 };
 
-// const web_worker_config = {
-//     target: 'webworker',
-//     entry: {
-//         web_worker: [path.resolve(__dirname, '../app/imports/application_web_worker.js')]
-//     }
-// };
-
 const browser = Object.assign({}, common_config, browser_config);
 // const ssr = Object.assign({}, common_config, ssr_config);
-// const web_worker = Object.assign({}, common_config, web_worker_config);
 
 module.exports = [ browser ];

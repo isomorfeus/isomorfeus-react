@@ -69,11 +69,11 @@ module React
           }
         } else if (key[0] === 'a' && key.startsWith("aria_")) {
           result[key.replace("_", "-")] = value;
-        } else if (key === "style") {
+        } else if (key === "style" || key === "theme") {
           if (typeof value.$to_n === "function") { value = value.$to_n() }
-          result["style"] = value;
+          result[key] = value;
         } else {
-          result[key.indexOf('_') > 0 ? self.lower_camelize(key) : key] = value;
+          result[self.lower_camelize(key)] = value;
         }
       }
       return result;

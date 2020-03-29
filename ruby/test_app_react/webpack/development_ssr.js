@@ -25,10 +25,8 @@ const common_config = {
         publicPath: 'http://localhost:3036/assets/'
     },
     resolve: {
-        plugins: [
-            // this makes it possible for webpack to find ruby files
-            new OwlResolver('resolve', 'resolved')
-        ]
+        plugins: [new OwlResolver('resolve', 'resolved') ], // this makes it possible for webpack to find ruby files
+        alias: { 'react-native$': 'react-native-web' }
     },
     plugins: [
         // dont split ssr asset in chunks
@@ -39,8 +37,29 @@ const common_config = {
     module: {
         rules: [
             {
-                // loader for .scss files
-                // test means "test for for file endings"
+                test: /\.js$/,
+                exclude: [/node_modules[/\\](?!react-native-vector-icons|react-native-safe-area-view)/, /.*\/opal\/corelib\/runtime.js$/],
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        // Disable reading babel configuration
+                        babelrc: false,
+                        configFile: false,
+                        // The configuration for compilation
+                        presets: [
+                            ['@babel/preset-env', { corejs: 3, useBuiltIns: 'usage' }],
+                            '@babel/preset-react',
+                            '@babel/preset-flow',
+                            '@babel/preset-typescript'
+                            ],
+                        plugins: [
+                            '@babel/plugin-proposal-class-properties',
+                            '@babel/plugin-proposal-object-rest-spread'
+                        ],
+                    },
+                },
+            },
+            {
                 test: /.scss$/,
                 use: [ "style-loader", "css-loader",
                     {
@@ -50,7 +69,6 @@ const common_config = {
                 ]
             },
             {
-                // loader for .css files
                 test: /.css$/,
                 use: [ "style-loader", "css-loader" ]
             },
@@ -59,7 +77,6 @@ const common_config = {
                 use: [ "file-loader" ]
             },
             {
-                // opal-webpack-loader will compile and include ruby files in the pack
                 test: /(\.js)?\.rb$/,
                 use: [
                     {

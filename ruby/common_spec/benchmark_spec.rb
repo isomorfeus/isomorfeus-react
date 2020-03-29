@@ -404,4 +404,112 @@ RSpec.describe 'Component benchmarks' do
     puts "10000 Themed and Styled Lucid Material Components took: #{time}ms"
     expect(time > 0 && time < 2000).to be_truthy
   end
+
+  it 'LucidPaper Func' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Fun < LucidPaper::Func::Base
+        render do
+          DIV 'A'
+        end
+      end
+      class BenchmarkComponent < LucidPaper::App::Base
+        render do
+          Fragment do
+            10000.times do
+              Fun()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Lucid Paper Funcs took: #{time}ms"
+    expect(time > 0 && time < 1000).to be_truthy
+  end
+
+
+  it 'Lucid Paper Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidPaper::Component::Base
+        render do
+          DIV 'A'
+        end
+      end
+      class BenchmarkComponent < LucidPaper::App::Base
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Lucid Paper Components took: #{time}ms"
+    expect(time > 0 && time < 1000).to be_truthy
+  end
+
+  it 'Styled Lucid Paper Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidPaper::Component::Base
+        render do
+          DIV(theme: { color: 'black' }) { 'A' }
+        end
+      end
+      class BenchmarkComponent < LucidPaper::App::Base
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Styled Lucid Paper Components took: #{time}ms"
+    expect(time > 0 && time < 1500).to be_truthy
+  end
+
+  it 'Themed and Styled Lucid Paper Component' do
+    doc = visit('/')
+    time = doc.evaluate_ruby do
+      class Lucy < LucidPaper::Component::Base
+        render do
+          DIV(theme: { color: theme.root.color }) { 'A' }
+        end
+      end
+      class BenchmarkComponent < LucidPaper::App::Base
+        theme do
+          { root: { color: 'black' }}
+        end
+        render do
+          Fragment do
+            10000.times do
+              Lucy()
+            end
+          end
+        end
+      end
+
+      start = Time.now
+      Isomorfeus::TopLevel.mount_component(BenchmarkComponent, {}, '#test_anchor')
+      (Time.now - start) * 1000
+    end
+    puts "10000 Themed and Styled Lucid Paper Components took: #{time}ms"
+    expect(time > 0 && time < 2000).to be_truthy
+  end
 end

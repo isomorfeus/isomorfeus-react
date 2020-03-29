@@ -15,5 +15,7 @@ global.Mui = Mui;
 global.MuiStyles = MuiStyles;
 import * as Formik from 'formik';
 global.Formik = Formik;
+import * as Paper from 'react-native-paper';
+global.Paper = Paper;
 
 if (module.hot) { module.hot.accept(); }
