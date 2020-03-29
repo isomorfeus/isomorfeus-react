@@ -53,7 +53,7 @@ class HelloComponent < LucidMaterial::Component::Base
       end
     end
     MemoTest()
-    # BUG: component resolution
+    # keep, was a BUG: component resolution
     YetAnother::Switch()
     DIV(on_click: :incr) { "incr b_value" }
     NavigationLinks()
