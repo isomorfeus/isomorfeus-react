@@ -2,11 +2,15 @@ module React
   %x{
     self.prop_dictionary = {
       on_click: 'onPress',
-      onClick:  'onPress',
+      onClick: 'onPress',
       on_touch: 'onPress',
-      onTouch:  'onPress'
+      onTouch: 'onPress',
+      on_change: 'onChangeText',
+      onChange: 'onChangeText',
+      on_blur: 'onSubmitText',
+      onBlur: 'onSubmitText',
     };
-
+    
     self.to_native_react_props = function(ruby_style_props) {
       let result = {};
       let keys = ruby_style_props.$$keys;
