@@ -34,13 +34,13 @@ This can improve overall render performance:
 ```ruby
 class MyComponent < LucidComponent::Base
   store_updates :off
-  
+
   render do
     DIV app_store.some_text # store access is still possible,
     # but when app_store.some_text get changed, the component will not render
-    
+
     DIV props.some_text # data changes that require a render must then be passed in props.
-    # This is useful for table rows for example or other props that get all data in props. 
+    # This is useful for table rows for example or other props that get all data in props.
   end
 end
 ```
@@ -56,13 +56,13 @@ class MyApp < LucidApp::Base # is a React::Context Consumer
   end
 
   # styles can be set using a block that returns a hash, the theme gets passed to the block as hash:
-  styles do 
+  styles do
     { root: {
         width: 200,
         height: 100
-    }} 
+    }}
   end
-  
+
   # or styles can be set using a hash:
   styles(root: { width: 100, height: 100 })
 
@@ -88,9 +88,9 @@ class MyComponent < LucidComponent::Base # is a React::Context Consumer
         width: theme.master.width, # access the theme provided by LucidApp
         height: 100
       }
-    } 
+    }
   end
-  
+
   # or styles can be set using a hash:
   styles(root: { width: 100, height: 100 })
 
@@ -128,9 +128,9 @@ Overwriting should_component_update is also not supported.
 Data or anything else that returns a promise can be preloaded before rendering from within LucidComponents
 ```ruby
 class MyComponent < LucidComponent::Base
-  # Use preload to define what needs to be loaded. The block result must be a promise. 
+  # Use preload to define what needs to be loaded. The block result must be a promise.
   preload do
-    MyGraph.promise_load
+     MyGraph.promise_load.then { |g| @graph = g }
   end
 
   # The block passed to while_loading will be rendered until the promise is resolved
@@ -140,7 +140,7 @@ class MyComponent < LucidComponent::Base
 
   # the usual render block is shown when the data has been loaded
   render do
-    MyGraph.all_nodes.each do |node|
+    @graph.all_nodes.each do |node|
       DIV node.name
     end
   end
@@ -157,10 +157,10 @@ class MyComponent < LucidComponent::Base
   # use preload to define what needs to be loaded. The block result must be a promise.
   preload do
     if on_browser?
-      MyGraph.promise_load # load the graph only on the browser
+      MyGraph.promise_load.then { |g| @graph = g } # load the graph only on the browser
     else
       Promise.new
-    end 
+    end
   end
 
   # the block passed to while_loading wil be rendered until the data is loaded
@@ -176,7 +176,7 @@ class MyComponent < LucidComponent::Base
         # a canvas cannot be drawn to in Server Side Rendering, so paint the canvas only on the browser
       end
     end
-    MyGraph.all_nodes.each do |node|
+    @graph.all_nodes.each do |node|
       DIV node.name
     end
   end
