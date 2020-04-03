@@ -19,7 +19,7 @@ module React
       end
 
       def use_effect(*args, &block)
-        `Opal.global.React.useEffect.apply(this, [function() { #{block.call} }].concat(args))`
+        `Opal.global.React.useEffect(function() { #{block.call} }, args)`
       end
 
       def use_imperative_handle(ref, *deps, &block)
