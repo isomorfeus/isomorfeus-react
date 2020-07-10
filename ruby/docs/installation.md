@@ -108,7 +108,7 @@ global.Paper = Paper;
 Loading the opal code:
 ```ruby
 require 'isomorfeus-react'
-require 'isomorfeus-react-paper' # optional, for MaterialUI support
+require 'isomorfeus-react-paper' # optional, for Paper support
 ```
 
 Additional steps are required to configure webpack properly, please see [Using Paper on the Web](https://callstack.github.io/react-native-paper/using-on-the-web.html)
