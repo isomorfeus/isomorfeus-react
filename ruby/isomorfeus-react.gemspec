@@ -31,7 +31,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'opal-zeitwerk', '~> 0.2.0'
   s.add_dependency 'opal-webpack-loader', '>= 0.10.1'
-  s.add_dependency 'isomorfeus-redux', '~> 4.1.0'
+  s.add_dependency 'isomorfeus-redux', '~> 4.1.1'
   s.add_dependency 'isomorfeus-speednode', '~> 0.3.1'
   s.add_dependency 'dalli', '>= 2.7.0'
   s.add_dependency 'redis', '>= 4.2.0'
