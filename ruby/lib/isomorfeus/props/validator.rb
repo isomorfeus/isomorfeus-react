@@ -139,7 +139,7 @@ module Isomorfeus
         Isomorfeus.raise_error(message: "#{@c}: #{@p} must be a String") unless @v.class == String
         case @o[:type]
         when :email
-          Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid email address") unless @v.match? /\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/
+          Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid email address") unless @v.match?(/\A[^@\s]+@([^@\s]+\.)+[^@\s]+\z/)
         when :uri
           if RUBY_ENGINE == 'opal'
             %x{
@@ -150,7 +150,7 @@ module Isomorfeus
               }
             }
           else
-            Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid uri") unless @v.match? /\A#{URI.regexp}\z/
+            Isomorfeus.raise_error(message: "#{@c}: #{@p} is not a valid uri") unless @v.match?(/\A#{URI.regexp}\z/)
           end
         end
       end
