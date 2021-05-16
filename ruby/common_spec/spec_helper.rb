@@ -10,7 +10,7 @@ ASSETS_COMPILED ||= system('yarn run production_build')
 
 Isomorfeus::Puppetmaster.download_path = File.join(Dir.pwd, 'download_path_tmp')
 Isomorfeus::Puppetmaster.driver = :chromium
-Isomorfeus::Puppetmaster.server = :iodine
+Isomorfeus::Puppetmaster.server = :puma
 Isomorfeus::Puppetmaster.app = TestAppApp
 Isomorfeus::Puppetmaster.boot_app
 
