@@ -12,8 +12,8 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.11'
-gem 'isomorfeus-react', '>= 16.13.2'
+gem 'opal-webpack-loader', '~> 0.10.2'
+gem 'isomorfeus-react', '>= 16.13.11'
 ```
 
 Required Javascript Npms:
@@ -39,7 +39,7 @@ For LucidComponent styling support, required when using LucidComponents:
 
 For package.json:
 ```json
-    "opal-webpack-loader": "^0.9.11",
+    "opal-webpack-loader": "^0.10.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-jss": "^10.0.4",

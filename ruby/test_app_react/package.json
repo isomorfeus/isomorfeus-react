@@ -6,7 +6,7 @@
     "@material-ui/styles": "^4.11.4",
     "core-js": "3",
     "formik": "^2.2.6",
-    "opal-webpack-loader": "^0.10.1",
+    "opal-webpack-loader": "^0.10.2",
     "react": "16.14.0",
     "react-dom": "16.14.0",
     "react-jss": "^10.6.0",
