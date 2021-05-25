@@ -12,7 +12,7 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.10.2'
+gem 'opal-webpack-loader', '~> 0.11.0'
 gem 'isomorfeus-react', '>= 16.13.11'
 ```
 
@@ -39,7 +39,7 @@ For LucidComponent styling support, required when using LucidComponents:
 
 For package.json:
 ```json
-    "opal-webpack-loader": "^0.10.2",
+    "opal-webpack-loader": "^0.11.0",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
     "react-jss": "^10.0.4",
