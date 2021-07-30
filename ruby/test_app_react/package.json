@@ -38,7 +38,6 @@
     "file-loader": "^6.2.0",
     "node-sass": "^6.0.0",
     "parallel-webpack": "^2.6.0",
-    "puppeteer": "^9.1.1",
     "sass-loader": "^10.0.5",
     "style-loader": "^2.0.0",
     "webpack": "^4.46.0",
