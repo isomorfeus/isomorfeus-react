@@ -39,10 +39,10 @@ For LucidComponent styling support, required when using LucidComponents:
 
 For package.json:
 ```json
-    "opal-webpack-loader": "^0.11.0",
+    "opal-webpack-loader": "^0.11.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-jss": "^10.0.4",
+    "react-jss": "^10.7.1",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "redux": "^4.1.0",
@@ -54,8 +54,8 @@ For package.json:
 
 For package.json:
 ```json
-    "@material-ui/core": "^4.9.5",
-    "@material-ui/styles": "^4.9.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/styles": "^4.11.4",
 ```
 
 Then the usual:
