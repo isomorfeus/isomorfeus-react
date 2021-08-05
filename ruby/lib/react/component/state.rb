@@ -3,6 +3,10 @@ module React
     class State
       include ::Native::Wrapper
 
+      def initialize(native)
+        @native = native
+      end
+      
       def method_missing(key, *args, &block)
         if `args.length > 0`
           new_state = `{}`

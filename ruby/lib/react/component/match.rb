@@ -3,6 +3,10 @@ module React
     class Match
       include ::Native::Wrapper
 
+      def initialize(native)
+        @native = native
+      end
+
       def method_missing(prop, *args, &block)
         @native.JS[:props].JS[:match].JS[:params].JS[prop]
       end

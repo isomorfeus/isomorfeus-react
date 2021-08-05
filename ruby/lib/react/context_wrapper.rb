@@ -2,6 +2,10 @@ module React
   class ContextWrapper
     include ::Native::Wrapper
 
+    def initialize(native)
+      @native = native
+    end
+    
     def is_wrapped_context
       true
     end
