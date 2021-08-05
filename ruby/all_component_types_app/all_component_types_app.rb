@@ -2,7 +2,6 @@ require_relative 'app_loader'
 require_relative 'owl_init'
 require_relative 'iodine_config'
 
-
 class AllComponentTypesApp < Roda
   include OpalWebpackLoader::ViewHelper
   include Isomorfeus::ReactViewHelper
