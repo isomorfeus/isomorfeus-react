@@ -23,7 +23,7 @@ class MyComponent < LucidComponent::Base # is a React::Context Consumer
     class_store.another_var
     # and for managing application wide state:
     app_store.yet_another_var
-    # during render styles can be accessed with `styles`.
+    #
     DIV { 'Some text' }
   end
 end
