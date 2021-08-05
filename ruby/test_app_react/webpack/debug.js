@@ -132,7 +132,7 @@ const common_config = {
             ignored: /\bnode_modules\b/
             }
         },
-        host: 'local-ip'
+        host: 'localhost'
     }
 };
 
