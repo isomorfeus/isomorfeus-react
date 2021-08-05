@@ -10,8 +10,6 @@ module ExampleMaterial
 
     prop :letter, default: 'prop not passed'
 
-    app_store.letter = 'A'
-
     def change_letter(event)
       letter = app_store.letter
       code = `letter.charCodeAt(0)`
@@ -21,7 +19,12 @@ module ExampleMaterial
     end
 
     render do
-      SPAN(on_click: :change_letter, class_name: styles.master) { app_store.letter + props.letter + ' ' }
+      letter = app_store.letter
+      if letter
+        SPAN(on_click: :change_letter, class_name: styles.master) { letter + props.letter + ' ' }
+      else
+        app_store.letter = 'A'
+      end
     end
   end
 end

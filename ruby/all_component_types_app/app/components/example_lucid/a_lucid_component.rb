@@ -4,9 +4,7 @@ module ExampleLucid
 
     state.some_bool = true
 
-    store.a_bool = true
     class_store.b_bool = true
-    app_store.c_bool = true
 
     def change_state(event)
       state.some_bool = !state.some_bool

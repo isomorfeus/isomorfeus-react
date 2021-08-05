@@ -2,8 +2,6 @@ module ExampleLucidSyntax
   class SimplyLucid < LucidComponent::Base
     prop :letter, default: 'prop not passed'
 
-    app_store.letter = 'A'
-
     def change_letter(event)
       letter = app_store.letter
       code = `letter.charCodeAt(0)`
@@ -13,7 +11,12 @@ module ExampleLucidSyntax
     end
 
     render do
-      SPAN({ on_click: :change_letter }, app_store.letter + props.letter + ' ')
+      letter = app_store.letter
+      if letter
+        SPAN({ on_click: :change_letter }, letter + props.letter + ' ')
+      else
+        app_store.letter = 'A'
+      end
     end
   end
 end
