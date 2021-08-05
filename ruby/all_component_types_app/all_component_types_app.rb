@@ -17,7 +17,7 @@ class AllComponentTypesApp < Roda
           #{owl_script_tag 'application.js'}
         </head>
         <body>
-          #{mount_component('AllComponentTypesApp', location_host: env['HTTP_HOST'], location: location)}
+          #{mount_component('AllComponentTypesApp', { location_host: env['HTTP_HOST'], location: location }, 'application_ssr.js')}
         </body>
       </html>
     HTML
