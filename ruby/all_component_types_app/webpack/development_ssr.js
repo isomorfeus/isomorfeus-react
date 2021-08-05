@@ -77,25 +77,25 @@ const common_config = {
     // configuration for webpack-dev-server
     devServer: {
         open: false,
-        lazy: true,
         port: 3036,
         hot: false,
-        inline: true,
         https: false,
-        disableHostCheck: true,
+        allowedHosts: 'all',
         headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
             "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization"
         },
-        watchOptions: {
-            // in case of problems with hot reloading uncomment the following two lines:
-            // aggregateTimeout: 250,
-            // poll: 50,
+        static: {
+            directory: path.resolve(__dirname, 'public'),
+            watch: {
+                // in case of problems with hot reloading uncomment the following two lines:
+                // aggregateTimeout: 250,
+                // poll: 50,
             ignored: /\bnode_modules\b/
+            }
         },
-        contentBase: path.resolve(__dirname, 'public'),
-        useLocalIp: false
+        host: 'localhost'
     }
 };
 
