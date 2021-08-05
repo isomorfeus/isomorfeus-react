@@ -12,7 +12,7 @@ Ruby Gems:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.11.1'
+gem 'opal-webpack-loader', '~> 0.11.4'
 gem 'isomorfeus-react', '>= 17.0.0'
 ```
 
