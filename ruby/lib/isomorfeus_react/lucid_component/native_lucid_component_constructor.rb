@@ -5,7 +5,6 @@ module LucidComponent
     # this makes sure, that for example rubys Nil object gets handled properly
     def self.extended(base)
       component_name = base.to_s
-      # language=JS
       %x{
         base.lucid_react_component = class extends Opal.global.React.Component {
           constructor(props) {
