@@ -8,7 +8,7 @@ module LucidMaterial
         theme_component_name = base.to_s + 'ThemeWrapper'
         # language=JS
         %x{
-          base.jss_theme = Opal.global.Mui.createMuiTheme();
+          base.jss_theme = Opal.global.Mui.createTheme();
           base.themed_react_component = function(props) {
             let opag = Opal.global;
             let classes = null;
