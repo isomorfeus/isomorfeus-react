@@ -6,7 +6,6 @@ module React
       # this makes sure, that for example rubys Nil object gets handled properly
       def self.extended(base)
         component_name = base.to_s
-        # language=JS
         %x{
           base.react_component = class extends Opal.global.React.Component {
             constructor(props) {
