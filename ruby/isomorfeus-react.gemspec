@@ -8,21 +8,20 @@ Gem::Specification.new do |s|
   s.authors       = ['Jan Biedermann']
   s.email         = ['jan@kursator.com']
   s.homepage      = 'http://isomorfeus.com'
-  s.summary       = 'React for Opal Ruby.'
+  s.summary       = 'Isomorfeus-react is obsolete, superseded by isomorfeus-preact https://github.com/isomorfeus/isomorfeus-preact'
   s.license       = 'MIT'
   s.description   = 'Write React Components in Ruby.'
   s.metadata      = { "github_repo" => "ssh://github.com/isomorfeus/gems" }
   s.files         = `git ls-files -- lib LICENSE README.md`.split("\n")
   s.require_paths = ['lib']
 
-  # s.post_install_message = <<~TEXT
-  #
-  # isomorfeus-react #{React::VERSION}:
-  #  Breaking change:
-  #    The event_handler DSL is gone. Instead use normal methods and method_ref, see:
-  #    https://github.com/isomorfeus/isomorfeus-react/blob/master/ruby/docs/events.md
-  #
-  # TEXT
+  s.post_install_message = <<~TEXT
+
+  isomorfeus-react #{React::VERSION}:
+
+  Isomorfeus-react is obsolete, superseded by isomorfeus-preact https://github.com/isomorfeus/isomorfeus-preact
+
+  TEXT
 
   s.add_dependency 'concurrent-ruby', '~> 1.1.9'
   s.add_dependency 'oj', '>= 3.12.3'

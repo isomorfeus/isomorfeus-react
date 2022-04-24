@@ -1,5 +1,7 @@
 # isomorfeus-react
 
+Isomorfeus-react is obsolete, superseded by [isomorfeus-preact](https://github.com/isomorfeus/isomorfeus-preact)
+leo.or
 Develop React components for Opal Ruby along with very easy to use and advanced React-Redux Components.
 
 ## Community and Support

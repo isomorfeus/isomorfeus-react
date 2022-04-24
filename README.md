@@ -1,5 +1,7 @@
 # isomorfeus-react
 
+Isomorfeus-react is obsolete, superseded by [isomorfeus-preact](https://github.com/isomorfeus/isomorfeus-preact)
+
 Develop React Components along with very easy to use styled Components with store access in Ruby.
 
 Currently there is a Opal/Ruby implementation:
