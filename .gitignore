@@ -23,7 +23,6 @@
 
 node_modules
 /yarn-error.log
-/.owl_cache
 
 /ruby/test_app*/public/assets
 /ruby/test_app*/spec

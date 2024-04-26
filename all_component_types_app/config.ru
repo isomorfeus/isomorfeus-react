@@ -1,0 +1,2 @@
+require_relative 'all_component_types_app'
+run AllComponentTypesApp.app
