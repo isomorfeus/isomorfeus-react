@@ -113,12 +113,12 @@ module React
 
       self.to_native_react_props = function(ruby_style_props) {
         let result = {};
-        let keys = ruby_style_props.$$keys;
+        let keys = Array.from(ruby_style_props.keys());
         let keys_length = keys.length;
         let key = '';
         for (let i = 0; i < keys_length; i++) {
           key = keys[i];
-          let value = ruby_style_props.$$smap[key];
+          let value = ruby_style_props.get(key);
           if (key[0] === 'o' && key[1] === 'n' && key[2] === '_') {
             let type = typeof value;
             if (type === "function") {

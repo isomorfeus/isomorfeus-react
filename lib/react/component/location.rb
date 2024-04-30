@@ -1,12 +1,12 @@
 module React
-  module Component
+  class Component
     class Location
       include ::Native::Wrapper
 
       def initialize(native)
         @native = native
       end
-      
+
       def method_missing(prop, *args, &block)
         @native.JS[:props].JS[:location].JS[prop]
       end

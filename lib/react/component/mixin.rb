@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Mixin
       def self.included(base)
         base.include(::Native::Wrapper)

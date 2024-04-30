@@ -1,5 +1,8 @@
+require 'react/core_ext/kernel'
+
 if RUBY_ENGINE == 'opal'
   require 'active_support/core_ext/string'
+  require 'native'
 
   if on_browser?
     require 'browser/event'
@@ -24,9 +27,9 @@ if RUBY_ENGINE == 'opal'
   require 'react/ref'
   require 'react/children'
   if on_browser?
-    require 'react_dom'
+    require 'browser/react/dom'
   else
-    require 'react_dom_server'
+    require 'server/react/dom'
   end
 
   # props
@@ -57,6 +60,18 @@ if RUBY_ENGINE == 'opal'
   require 'react/component/mixin'
   require 'react/component/base'
 
+  # React::FunctionComponent
+  require 'react/function_component/api'
+  require 'react/function_component/initializer'
+  require 'react/function_component/native_component_constructor'
+  require 'react/function_component/mixin'
+  require 'react/function_component/base'
+
+  # React::MemoComponent
+  require 'react/memo_component/native_component_constructor'
+  require 'react/memo_component/mixin'
+  require 'react/memo_component/base'
+
   class Object
     include React::Component::Resolution
   end
@@ -75,12 +90,9 @@ else
   require 'react/component/props/declaration'
   require 'react/component/props'
 
-  React.server_side_rendering = true
+  React.server_side_rendering = false
 
-  # caches
   require 'server/react/view_helper'
 
-  Opal.append_path(__dir__.untaint)
-
-  require 'concurrent'
+  Opal.append_path(__dir__)
 end

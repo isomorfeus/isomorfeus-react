@@ -15,12 +15,10 @@ Gem::Specification.new do |s|
   s.files         = `git ls-files -- lib LICENSE README.md`.split("\n")
   s.require_paths = ['lib']
 
-  s.add_dependency 'concurrent-ruby', '~> 1.2.3'
   s.add_dependency 'json', '~> 2.7.2'
-  s.add_dependency 'opal', '~> 1.8.2'
+  s.add_dependency 'opal', '>= 1.8.2'
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
   s.add_dependency 'speednode', '~> 0.8.2'
-  s.add_development_dependency 'isomorfeus-puppetmaster', '~> 0.9.3'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.13'
 end

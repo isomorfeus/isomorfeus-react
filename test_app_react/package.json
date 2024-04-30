@@ -2,9 +2,14 @@
   "name": "TestAppApp",
   "private": true,
   "dependencies": {
+    "esbuild": "^0.20.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0"
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4"
+  },
+  "scripts": {
+    "build_browser": "esbuild app/imports/application.js --bundle --minify --sourcemap --platform=browser --target=es2020,chrome120,firefox120,safari17 --outdir=public/assets/",
+    "build_server": "esbuild app/imports/application_ssr.js --bundle --minify --sourcemap --platform=node --target=node20 --outdir=public/assets/"
   }
 }

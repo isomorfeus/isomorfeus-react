@@ -40,5 +40,6 @@ yarn-debug.log*
 /vendor/bundle
 Gemfile.lock
 yarn.lock
+package-lock.json
 .idea
 *.gem

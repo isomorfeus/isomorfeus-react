@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Initializer
       def initialize(native_component)
         @native = native_component

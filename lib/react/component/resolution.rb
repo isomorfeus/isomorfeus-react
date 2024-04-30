@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Resolution
       def self.included(base)
         base.instance_exec do

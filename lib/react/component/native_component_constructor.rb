@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module NativeComponentConstructor
       # for should_component_update we apply ruby semantics for comparing props
       # to do so, we convert the props to ruby hashes and then compare

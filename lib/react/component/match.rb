@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     class Match
       include ::Native::Wrapper
 

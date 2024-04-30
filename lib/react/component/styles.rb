@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     class Styles
 
       def initialize(native, props_prop = false)

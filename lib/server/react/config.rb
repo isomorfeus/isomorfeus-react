@@ -51,7 +51,7 @@ module React
       def force_render
         begin
           if React.top_component
-            ReactDOM.find_dom_node(React.top_component) if on_browser? || on_desktop? # if not mounted will raise
+            React::DOM.find_dom_node(React.top_component) if on_browser? || on_desktop? # if not mounted will raise
             if `typeof Opal.global.deepForceUpdate === 'undefined'`
               React.top_component.JS.forceUpdate()
             else

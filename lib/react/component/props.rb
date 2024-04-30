@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     class Props
       def initialize(native)
         @native = native

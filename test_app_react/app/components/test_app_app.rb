@@ -1,4 +1,4 @@
-class TestAppApp < React::App::Base
+class TestAppApp < React::Component::Base
   render do
     Router(location: props.location) do
       Switch do

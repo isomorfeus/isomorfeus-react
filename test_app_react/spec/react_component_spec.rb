@@ -336,7 +336,7 @@ RSpec.describe 'React::Component' do
           end
         end
         React::TopLevel.mount_component(TestComponent, {}, '#test_anchor')
-        ReactDOM.unmount_component_at_node('#test_anchor')
+        React::DOM.unmount_component_at_node('#test_anchor')
         IT[:unmount_received]
       end
       expect(result).to be true

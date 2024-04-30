@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Elements
       # https://www.w3.org/TR/html52/fullindex.html#index-elements
       # https://www.w3.org/TR/SVG11/eltindex.html

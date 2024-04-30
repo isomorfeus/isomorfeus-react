@@ -1,12 +1,12 @@
 module React
-  module Component
+  class Component
     class History
       include ::Native::Wrapper
 
       def initialize(native)
         @native = native
       end
-      
+
       def block(prompt)
         @native.JS[:props].JS[:history].JS.block(prompt)
       end

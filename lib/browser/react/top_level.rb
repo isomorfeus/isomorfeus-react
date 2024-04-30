@@ -74,9 +74,9 @@ module React
         end
 
         top = if hydrated
-                ReactDOM.hydrate(React.create_element(component, props), element)
+                React::DOM.hydrate(React.create_element(component, props), element)
               else
-                ReactDOM.render(React.create_element(component, props), element)
+                React::DOM.render(React.create_element(component, props), element)
               end
         React.top_component = top if top
       end

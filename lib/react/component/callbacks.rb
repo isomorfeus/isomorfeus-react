@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Callbacks
       def self.included(base)
         base.instance_exec do

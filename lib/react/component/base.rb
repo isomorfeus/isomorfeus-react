@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     class Base
       def self.inherited(base)
         base.include(::React::Component::Mixin)

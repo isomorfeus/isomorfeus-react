@@ -1,7 +1,7 @@
 require 'opal'
 start = Time.now
 require 'isomorfeus-react'
-IR_REACT_REQUIRE_TIME = (ir_rt - ix_rt) * 1000
+IR_REACT_REQUIRE_TIME = (start - Time.now) * 1000
 
 %x{
   class NativeComponent extends Opal.global.React.Component {
@@ -36,7 +36,7 @@ IR_REACT_REQUIRE_TIME = (ir_rt - ix_rt) * 1000
   Opal.global.NestedNative.AnotherComponent = AnotherComponent;
 }
 
-require_tree 'components', :autoload
+require_tree 'components'
 start = Time.now
 React.start_app!
 IR_LOAD_TIME = (Time.now - start) * 1000

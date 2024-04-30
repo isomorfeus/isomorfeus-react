@@ -1,5 +1,5 @@
 module React
-  module Component
+  class Component
     module Features
       def Fragment(*args, &block)
         `Opal.React.internal_prepare_args_and_render(Opal.global.React.Fragment, args, block)`

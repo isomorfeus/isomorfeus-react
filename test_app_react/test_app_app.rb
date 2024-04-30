@@ -1,7 +1,14 @@
 require_relative 'app_loader'
+require 'opal/rack_handler'
 
 class TestAppApp < Roda
   include React::ViewHelper
+
+  use Opal::RackHandler, {
+    mount: '/opal',
+    hot_updates: true,
+    hot_ruby: "::React.force_render"
+  }
 
   plugin :public, root: 'public'
 
@@ -11,6 +18,8 @@ class TestAppApp < Roda
       <html>
         <head>
           <title>Welcome to TestAppApp</title>
+          <script src="/assets/application.js"></script>
+          <script src="/opal/react_loader.js"></script>
         </head>
         <body>
           #{rendered_tree}
