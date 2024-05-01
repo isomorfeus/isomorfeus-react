@@ -31,7 +31,7 @@ module React
       def unmount_component_at_node(element_or_query)
         if `(typeof element_or_query === 'string')` || (`(typeof element_or_query.$class === 'function')` && element_or_query.class == String)
           element = `document.body.querySelector(element_or_query)`
-        elsif `(typeof element_or_query.$is_a === 'function')` && element_or_query.is_a?(Browser::Element)
+        elsif `(typeof element_or_query.$is_a === 'function')` && element_or_query.is_a?(Browser::DOM::Element)
           element = element_or_query.to_n
         else
           element = element_or_query

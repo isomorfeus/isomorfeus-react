@@ -35,7 +35,7 @@ module React
     native_boolean_accessors :altKey, :bubbles, :cancelable, :ctrlKey, :defaultPrevented, :isPrimary, :isTrusted, :metaKey, :repeat, :shiftKey
 
     def current_target
-      Browser::Element.new(@native.JS[:currentTarget])
+      Browser::DOM::Element.new(@native.JS[:currentTarget])
     end
 
     def native_event
@@ -43,11 +43,11 @@ module React
     end
 
     def related_target
-      Browser::Element.new(@native.JS[:relatedTarget])
+      Browser::DOM::Element.new(@native.JS[:relatedTarget])
     end
 
     def target
-      Browser::Element.new(@native.JS[:target])
+      Browser::DOM::Element.new(@native.JS[:target])
     end
   end
 end

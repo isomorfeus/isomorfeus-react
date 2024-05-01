@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'json', '~> 2.7.2'
   s.add_dependency 'opal', '>= 1.8.2'
   s.add_dependency 'opal-activesupport', '~> 0.3.3'
+  s.add_dependency 'opal-browser', '~> 0.3.5'
   s.add_dependency 'speednode', '~> 0.8.2'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 3.13'

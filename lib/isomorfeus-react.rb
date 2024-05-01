@@ -3,18 +3,12 @@ require 'react/core_ext/kernel'
 if RUBY_ENGINE == 'opal'
   require 'active_support/core_ext/string'
   require 'native'
-
-  if on_browser?
-    require 'browser/event'
-    require 'browser/event_target'
-    require 'browser/delegate_native'
-    require 'browser/element'
-  end
-
+  require 'promise/v2'
   require 'server/react/config'
 
   # allow mounting of components
   if on_browser?
+    require 'opal-browser'
     require 'browser/react/top_level'
   else
     require 'server/react/top_level'
@@ -80,6 +74,7 @@ else
   require 'json'
   require 'opal'
   require 'opal-activesupport'
+  require 'opal-browser'
   require 'speednode'
   require 'react/version'
   require 'server/react/config'
